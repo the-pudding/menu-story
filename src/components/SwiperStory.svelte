@@ -49,6 +49,14 @@
 			body: "The check sits in its leather folder. Neither of you reaches for it. This is the highest compliment a meal can receive.",
 			accent: "#74b9ff",
 			zoom: { scale: 1.3, x: 0, y: 0 }
+		},
+		{
+			kicker: "Zoom demo",
+			title: "Pinch or double-tap",
+			body: null,
+			accent: "#ffffff",
+			zoom: { scale: 1.0, x: 0, y: 0 },
+			zoomSlide: true
 		}
 	];
 
