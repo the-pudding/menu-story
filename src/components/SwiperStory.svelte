@@ -111,10 +111,12 @@
 
 	onMount(() => {
 		swiper = new Swiper(containerEl, {
+			modules: [Zoom],
 			grabCursor: true,
 			resistanceRatio: 0.6,
 			speed: 420,
-			keyboard: { enabled: true }
+			keyboard: { enabled: true },
+			zoom: { maxRatio: 4, minRatio: 1 }
 		});
 
 		swiper.on("touchStart", () => {
@@ -157,18 +159,23 @@
 	<div class="swiper" bind:this={containerEl}>
 		<div class="swiper-wrapper">
 			{#each slides as slide, i}
-				<div class="swiper-slide">
-					<div class="slide-inner" class:is-active={activeIndex === i}>
-						<span class="slide-kicker">{slide.kicker}</span>
-						<h2 class="slide-title">{slide.title}</h2>
-						<p class="slide-body">{slide.body}</p>
-
-						<!-- Inline progress for this slide's accent color -->
-						<div
-							class="slide-rule"
-							style="background: {accentColor}"
-						></div>
-					</div>
+				<div class="swiper-slide" class:is-zoom-slide={slide.zoomSlide}>
+					{#if slide.zoomSlide}
+						<div class="swiper-zoom-container">
+							<img src="/assets/demo/test.jpg" alt="Zoom demo" draggable="false" />
+						</div>
+						<div class="zoom-label" class:is-active={activeIndex === i}>
+							<span class="slide-kicker">{slide.kicker}</span>
+							<h2 class="slide-title">{slide.title}</h2>
+						</div>
+					{:else}
+						<div class="slide-inner" class:is-active={activeIndex === i}>
+							<span class="slide-kicker">{slide.kicker}</span>
+							<h2 class="slide-title">{slide.title}</h2>
+							<p class="slide-body">{slide.body}</p>
+							<div class="slide-rule" style="background: {accentColor}"></div>
+						</div>
+					{/if}
 				</div>
 			{/each}
 		</div>
@@ -311,6 +318,42 @@
 		height: 2px;
 		border-radius: 1px;
 		opacity: 0.8;
+	}
+
+	/* ── Zoom slide ───────────────────────────────────────────────── */
+
+	.is-zoom-slide {
+		background: #000;
+	}
+
+	.swiper-zoom-container {
+		width: 100%;
+		height: 100%;
+	}
+
+	.swiper-zoom-container img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.zoom-label {
+		position: absolute;
+		bottom: clamp(5rem, 12vh, 8rem);
+		left: clamp(1.5rem, 6vw, 5rem);
+		color: #fff;
+		opacity: 0;
+		transform: translateY(8px);
+		transition: opacity 0.5s ease, transform 0.5s ease;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.zoom-label.is-active {
+		opacity: 1;
+		transform: translateY(0);
 	}
 
 	/* ── Dot navigation ───────────────────────────────────────────── */
