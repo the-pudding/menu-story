@@ -115,35 +115,54 @@
 		{ rot:  33, tx:  60, ty:  80, src: `${IMG_BASE}4000000070.jpg` },  // 2 — bottom-right
 		{ rot: -38, tx: -65, ty: -50, src: `${IMG_BASE}4000000071.jpg` },  // 3 — top-left
 		{ rot:  22, tx:  40, ty: -40, src: `${IMG_BASE}4000000072.jpg` },  // 4 — upper-right
-		{ rot: -44, tx: -35, ty:  55, src: `${IMG_BASE}4000000073.jpg` },  // 5 — lower-left
+		{ rot: 5, tx: -12, ty:  -5, src: `assets/fish.png` },  // 5 — lower-left
 		{ rot:  18, tx:  25, ty:  35, src: `assets/476900.png` },  // 6 — lower-right
 		{ rot: -60, tx: -20, ty: -25, src: `assets/4000000219.png` },  // 7 — upper-left
-		{ rot:  8, tx:   6, ty:   -20, src: "assets/buttolph_portrait.png" },  // 8 — near center
-		{ rot:  -3, tx:   2, ty:  -2, src: "assets/4000000068.png"},  // 9 top — centered (flies off)
+		{ rot:  8, tx:   -80, ty:   -20, src: "assets/buttolph_portrait.png" },  // 8 — near center
+		{ rot:  -3, tx:   20, ty:  -2, src: "assets/4000000068.png"},  // 9 top — centered (flies off)
 	];
 
 	// t = 0 at slide 0, t = 1 fully into slide 1
 	let stackT = $derived(Math.max(0, Math.min(slidePosition, 1)));
 
-	// Stack container fades out as you swipe from slide 1 → slide 2
+	// Non-hero cards fade out as you swipe from slide 1 → slide 2
 	let stackOpacity = $derived(Math.max(0, Math.min(1, 2 - slidePosition)));
 
+	// Hero pair: cards 7 & 8 animate to center side-by-side as you enter slide 3
+	// t goes 0→1 as slidePosition goes 1→2
+	let heroT = $derived(smoothstep(Math.max(0, Math.min(1, slidePosition - 1))));
+	let isDesktop = $derived(dims.width > 600);
+
 	// Per-card transform strings, driven by stackT
+	const STACK_SPEED = 300; // ms — stack card fly-off speed (independent of Swiper slide speed)
 	// transition is only applied during snap (not during drag) — same pattern as story-image —
 	// so a fast flick still plays the full animation rather than jumping to the end state
-	const SNAP_TRANSITION = 'transform 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+	const SNAP_TRANSITION = `transform ${STACK_SPEED}ms cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity ${STACK_SPEED}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
 
 	let stackStyles = $derived(STACK.map((card, i) => {
 		const isTop = i === STACK.length - 1;
+		const isHeroLeft = i === 7;
+		const isHeroRight = i === 8;
+		const isHero = isHeroLeft || isHeroRight;
 		const transition = isDragging ? 'none' : SNAP_TRANSITION;
+		// Heroes stay fully visible; background cards dim but remain visible
+		const opacity = isHero ? 1 : Math.max(1, stackOpacity);
+
 		if (isTop) {
-			// Top card: slides right and rotates further off screen
 			const tx = lerp(card.tx, 130, stackT);
 			const rot = lerp(card.rot, card.rot + 15, stackT);
-			return `transform: rotate(${rot}deg) translate(${tx}%, ${card.ty}%); transition: ${transition}`;
+			return `transform: rotate(${rot}deg) translate(${tx}%, ${card.ty}%); transition: ${transition}; opacity: ${opacity}`;
+		} else if (isHero) {
+			const sign = isHeroLeft ? -1 : 1;
+			// Desktop: side by side; mobile: stacked vertically
+			const targetTx = isDesktop ? sign * 55 : 0;
+			const targetTy = isDesktop ? 0 : sign * 60;
+			const tx = lerp(card.tx, targetTx, heroT);
+			const ty = lerp(card.ty, targetTy, heroT);
+			const rot = lerp(card.rot, 0, heroT);
+			return `transform: rotate(${rot}deg) translate(${tx}%, ${ty}%); transition: ${transition}; opacity: ${opacity}`;
 		} else {
-			// All other cards stay in their resting positions
-			return `transform: rotate(${card.rot}deg) translate(${card.tx}%, ${card.ty}%)`;
+			return `transform: rotate(${card.rot}deg) translate(${card.tx}%, ${card.ty}%); opacity: ${opacity}`;
 		}
 	}));
 
@@ -170,11 +189,11 @@
 		swiper = new Swiper(containerEl, {
 			modules: [Zoom],
 			grabCursor: true,
-			resistanceRatio: 0.6,
-			speed: 420,
-			threshold: 5,
+			// resistanceRatio: 0.6,
+			speed: 300,
+			// threshold: 5,
 			longSwipesRatio: 0.2,
-			longSwipesMs: 300,
+			// longSwipesMs: 300,
 			keyboard: { enabled: true },
 			zoom: { maxRatio: 4, minRatio: 1 }
 		});
@@ -217,7 +236,7 @@
 		></div>
 
 		<!-- Stack of photos — sits above story-image, fades out on slide 1→2 -->
-		<div class="stack" style="opacity: {stackOpacity}; pointer-events: none">
+		<div class="stack" style="pointer-events: none">
 			{#each STACK as card, i}
 				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => e.currentTarget.style.width = e.currentTarget.naturalWidth / 2 + 'px'} />
 			{/each}
@@ -391,21 +410,12 @@
 		height: 100%;
 		/* padding: 0 1rem clamp(3rem, 8vh, 5rem); */
 		/* color: #fff; */
-		opacity: 0.45;
-		transform: translateY(8px);
-		transition:
-			opacity 0.5s ease,
-			transform 0.5s ease;
-	}
-
-	.slide-inner.is-active {
-		opacity: 1;
-		transform: translateY(0);
 	}
 
 	.slide-body-wrapper {
 		background: #fffffb;
 		height: 30vh;
+		margin-bottom: 20px;
 		border: 1px solid rgba(0, 0, 0, .1);
 		/* flex-direction: column; */
 		padding: 20px 25px 15px;
