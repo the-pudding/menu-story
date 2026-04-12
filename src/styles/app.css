@@ -27,7 +27,7 @@
 	--radius-md: 0.5rem;
 	--radius-lg: 1rem;
 	
-	--color-bg: var(--color-white);
+	--color-bg: #FFFEF5;
 	--color-fg: var(--color-gray-900);
 	--color-fg-light: var(--color-gray-500);
 	--color-primary: var(--color-black);

@@ -28,6 +28,6 @@ export default defineConfig({
 		}
 	},
 	ssr: {
-		noExternal: ["bits-ui"]
+		noExternal: ["bits-ui"],
 	}
 });
