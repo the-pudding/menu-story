@@ -6,59 +6,6 @@
 	import "swiper/css/zoom";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
 
-	// const slides = [
-	// 	{
-	// 		kicker: "Arrival",
-	// 		title: "The first table",
-	// 		body: "You fold your coat across the chair. The maître d' brings water without being asked. This is how you know it's going to be a good night.",
-	// 		accent: "#e94560",
-	// 		zoom: { scale: 1.9, x: 0, y: 4 }
-	// 	},
-	// 	{
-	// 		kicker: "Amuse-bouche",
-	// 		title: "Something unexpected",
-	// 		body: "A single bite arrives unsolicited — cold beet, warm goat cheese, one herb leaf. The kitchen is saying: we see you. We're paying attention.",
-	// 		accent: "#c77dff",
-	// 		zoom: { scale: 1.7, x: -3, y: 7 }
-	// 	},
-	// 	{
-	// 		kicker: "First course",
-	// 		title: "The soup that changes everything",
-	// 		body: "Celery root velouté. You didn't order it meaning to. But now you understand why people write letters to restaurants.",
-	// 		accent: "#0ac5bf",
-	// 		zoom: { scale: 2.0, x: 3, y: -3 }
-	// 	},
-	// 	{
-	// 		kicker: "Main",
-	// 		title: "The weight of it",
-	// 		body: "Duck breast, quince, something smoky underneath. You set down your fork to fully inhabit the moment. The table beside you is laughing.",
-	// 		accent: "#ff6b35",
-	// 		zoom: { scale: 2.3, x: -2, y: 2 }
-	// 	},
-	// 	{
-	// 		kicker: "Dessert",
-	// 		title: "Sweetness, earned",
-	// 		body: "Tarte Tatin, crème fraîche pooling at the edge. You came here hungry for something and found it, though you couldn't name it if asked.",
-	// 		accent: "#ffd166",
-	// 		zoom: { scale: 1.8, x: 1, y: 5 }
-	// 	},
-	// 	{
-	// 		kicker: "The bill",
-	// 		title: "Staying a little longer",
-	// 		body: "The check sits in its leather folder. Neither of you reaches for it. This is the highest compliment a meal can receive.",
-	// 		accent: "#74b9ff",
-	// 		zoom: { scale: 1.3, x: 0, y: 0 }
-	// 	},
-	// 	{
-	// 		kicker: "Zoom demo",
-	// 		title: "Pinch or double-tap",
-	// 		body: null,
-	// 		accent: "#ffffff",
-	// 		zoom: { scale: 1.0, x: 0, y: 0 },
-	// 		zoomSlide: true
-	// 	}
-	// ];
-
 	[]
 
 	let { slides } = $props();
@@ -73,9 +20,15 @@
 
 	// ─── Pretext / font sizing ────────────────────────────────────────────────────
 
-	const FONT_FAMILY = "Tiempos Text, serif";
-	const LINE_HEIGHT = 1.7;
 	const REF_SIZE = 16; // baseline measurement size in px
+	let fontFamily = $state("serif"); // read from DOM after mount — matches whatever CSS sets on .slide-body
+	const PARA_MARGIN_EM = 0.75; // margin-bottom between <p> tags (em)
+
+	// Standard typographic line-height: tighter at larger sizes, looser at smaller.
+	// ~1.65 at 16px, ~1.45 at 32px, ~1.33 at 48px.
+	function lineHeightFor(fontSize) {
+		return Math.max(1.25, Math.min(1.3, 1.2 + 6.4 / fontSize));
+	}
 
 	// prepare() and layout() loaded dynamically — @chenglou/pretext is ESM-only
 	// and must not run during SSR
@@ -89,36 +42,55 @@
 
 	let dims = new useWindowDimensions();
 
-	// Mirror CSS clamp(1.5rem, 6vw, 5rem) and clamp(5rem, 12vh, 8rem)
-	let hPad = $derived(Math.min(Math.max(24, dims.width * 0.06), 80));
-	let bPad = $derived(Math.min(Math.max(80, dims.height * 0.12), 128));
-	let textWidth = $derived(dims.width - hPad * 2);
+	// Both measured from the DOM — CSS padding/max-height changes are reflected automatically
+	let textWidth = $state(0);
+	let availH = $state(0);
+
+	// Any wrapper element is sufficient — all share the same CSS, last bind:this write wins
+	let wrapperEl = $state(null);
+
+	$effect(() => {
+		const el = wrapperEl;
+		if (!el) return;
+		dims.height; // re-run on viewport resize
+		const s = getComputedStyle(el);
+		const padV = parseFloat(s.paddingTop) + parseFloat(s.paddingBottom);
+		availH = el.clientHeight - padV;
+		const bodyEl = el.querySelector(".slide-body");
+		if (bodyEl) fontFamily = getComputedStyle(bodyEl).fontFamily;
+	});
 
 	// Per-slide chrome (kicker + title + rule) heights — bound from DOM
 	let chromeHeights = $state(Array.from({ length: untrack(() => slides.length) }, () => 0));
 
 	// Binary search for the largest font size where all paragraphs fit availH.
-	// Needed because reflow is non-linear: bigger font → fewer words/line → more lines.
-	// Each iteration is ~0.0002ms so 12 iterations ≈ 0.002ms total per slide.
-	function fitFontSize(text, availH) {
+	// Measures each paragraph separately to correctly account for inter-paragraph margins.
+	function fitFontSize(paragraphs, availH) {
 		let lo = 10, hi = 200;
-		for (let i = 0; i < 12; i++) {
+		for (let iter = 0; iter < 12; iter++) {
 			const mid = (lo + hi) / 2;
-			const prepared = ptPrepare(text, `${mid}px ${FONT_FAMILY}`);
-			const h = ptLayout(prepared, textWidth, mid * LINE_HEIGHT).height;
+			const lh = lineHeightFor(mid);
+			let h = 0;
+			for (const para of paragraphs) {
+				const prepared = ptPrepare(para, `${mid}px ${fontFamily}`);
+				h += ptLayout(prepared, textWidth, mid * lh).height;
+			}
+			// Add inter-paragraph margins (CSS margin-bottom, skipped on last <p>)
+			h += (paragraphs.length - 1) * mid * PARA_MARGIN_EM;
 			if (h <= availH) lo = mid; else hi = mid;
 		}
 		return lo;
 	}
 
 	let bodyFontSizes = $derived(
-		slides.map((slide, i) => {
-			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || dims.height <= 0) return REF_SIZE;
-			const text = slide.body.map((l) => l.value ?? l).join("\n\n");
-			const availH = dims.height - bPad - chromeHeights[i] - 32;
-			return fitFontSize(text, availH);
+		slides.map((slide) => {
+			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || availH <= 0) return REF_SIZE;
+			const paragraphs = slide.body.map((l) => l.value ?? l);
+			return fitFontSize(paragraphs, availH);
 		})
 	);
+
+	let bodyLineHeights = $derived(bodyFontSizes.map(lineHeightFor));
 
 	// ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -134,19 +106,20 @@
 	// ─── Stack cards ─────────────────────────────────────────────────────────────
 
 	// Static resting rotations/offsets for each card in the stack (bottom → top).
-	// Bottom cards have wider spreads; cards get progressively more aligned toward the top.
+	// Wide fan spread — cards fill and overflow the screen at various angles.
+	// tx/ty are percentages of card width/height.
 	const IMG_BASE = 'https://s3.us-east-1.amazonaws.com/pudding.cool/projects/menu-images/';
 	const STACK = [
-		{ rot: -13, tx:  -9, ty: 14, src: `${IMG_BASE}4000000068.jpg` },  // 0 bottom
-		{ rot:  11, tx:   8, ty: 11, src: `${IMG_BASE}4000000069.jpg` },  // 1
-		{ rot: -10, tx:  -7, ty:  9, src: `${IMG_BASE}4000000070.jpg` },  // 2
-		{ rot:   8, tx:   6, ty:  7, src: `${IMG_BASE}4000000071.jpg` },  // 3
-		{ rot:  -7, tx:  -5, ty:  5, src: `${IMG_BASE}4000000072.jpg` },  // 4
-		{ rot:   6, tx:   5, ty:  4, src: `${IMG_BASE}4000000073.jpg` },  // 5
-		{ rot:  -5, tx:  -3, ty:  3, src: `${IMG_BASE}4000000074.jpg` },  // 6
-		{ rot:   4, tx:   3, ty:  2, src: `${IMG_BASE}4000000075.jpg` },  // 7
-		{ rot:  -3, tx:   2, ty:  1, src: `${IMG_BASE}4000000076.jpg` },  // 8
-		{ rot:  -2, tx:   2, ty: -2, src: `${IMG_BASE}4000000077.jpg` },  // 9 top (flies off)
+		{ rot:  47, tx:  90, ty: -60, src: `${IMG_BASE}4000000068.jpg` },  // 0 bottom — top-right corner
+		{ rot: -55, tx: -80, ty:  70, src: `${IMG_BASE}4000000069.jpg` },  // 1 — bottom-left
+		{ rot:  33, tx:  60, ty:  80, src: `${IMG_BASE}4000000070.jpg` },  // 2 — bottom-right
+		{ rot: -38, tx: -65, ty: -50, src: `${IMG_BASE}4000000071.jpg` },  // 3 — top-left
+		{ rot:  22, tx:  40, ty: -40, src: `${IMG_BASE}4000000072.jpg` },  // 4 — upper-right
+		{ rot: -44, tx: -35, ty:  55, src: `${IMG_BASE}4000000073.jpg` },  // 5 — lower-left
+		{ rot:  18, tx:  25, ty:  35, src: `assets/476900.png` },  // 6 — lower-right
+		{ rot: -60, tx: -20, ty: -25, src: `assets/4000000219.png` },  // 7 — upper-left
+		{ rot:  8, tx:   6, ty:   -20, src: "assets/buttolph_portrait.png" },  // 8 — near center
+		{ rot:  -3, tx:   2, ty:  -2, src: "assets/4000000068.png"},  // 9 top — centered (flies off)
 	];
 
 	// t = 0 at slide 0, t = 1 fully into slide 1
@@ -169,11 +142,8 @@
 			const rot = lerp(card.rot, card.rot + 15, stackT);
 			return `transform: rotate(${rot}deg) translate(${tx}%, ${card.ty}%); transition: ${transition}`;
 		} else {
-			// Cards beneath: drift toward their resting position as the top lifts
-			const settle = smoothstep(stackT) * 0.4; // subtle upward settle
-			const tx = lerp(card.tx, card.tx * (1 - settle), stackT);
-			const rot = lerp(card.rot, card.rot * (1 - settle), stackT);
-			return `transform: rotate(${rot}deg) translate(${tx}%, ${card.ty}%); transition: ${transition}`;
+			// All other cards stay in their resting positions
+			return `transform: rotate(${card.rot}deg) translate(${card.tx}%, ${card.ty}%)`;
 		}
 	}));
 
@@ -249,7 +219,7 @@
 		<!-- Stack of photos — sits above story-image, fades out on slide 1→2 -->
 		<div class="stack" style="opacity: {stackOpacity}; pointer-events: none">
 			{#each STACK as card, i}
-				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} />
+				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => e.currentTarget.style.width = e.currentTarget.naturalWidth / 2 + 'px'} />
 			{/each}
 		</div>
 
@@ -274,11 +244,14 @@
 							{#if slide.body}
 								<div
 									class="slide-body-wrapper"
-									style="font-size: {bodyFontSizes[i]}px"
+									bind:this={wrapperEl}
+									style="font-size: {bodyFontSizes[i]}px; line-height: {bodyLineHeights[i]}"
 								>
-									{#each slide.body as line}
-										<p class="slide-body">{@html line.value ?? line}</p>
-									{/each}
+									<div class="slide-body-text" bind:clientWidth={textWidth}>
+										{#each slide.body as line}
+											<p class="slide-body">{@html line.value ?? line}</p>
+										{/each}
+									</div>
 								</div>
 							{/if}
 							<div class="slide-chrome" bind:clientHeight={chromeHeights[i]}>
@@ -354,22 +327,25 @@
 
 	.stack-card {
 		position: absolute;
-		width: 72vmin;
+		/* width: 60vmin; */
 		height: auto;
+		max-width: 60vmin;
+		width: auto;
 		will-change: transform, opacity;
 		transform-origin: center bottom;
 		display: block;
 		pointer-events: none;
 		user-select: none;
+		filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.14));
 		/* Stacked paper edge: cream-toned 1px steps simulate page thickness,
 		   final value is the ambient drop shadow */
-		box-shadow:
+		/* box-shadow:
 			1px 1px 0 #e8e2d6,
 			2px 2px 0 #dfd9cc,
 			3px 3px 0 #d6cfc2,
 			4px 4px 0 #cdc7b8,
 			5px 5px 0 #c4beae,
-			8px 16px 32px rgba(0, 0, 0, 0.05);
+			8px 16px 32px rgba(0, 0, 0, 0.05); */
 	}
 
 	.story-image {
@@ -408,9 +384,13 @@
 	.slide-inner {
 		display: flex;
 		flex-direction: column;
-		width: 100%;
+		justify-content: flex-end;
+		width: calc(100% - 20px);
+		max-width: 800px;
+		margin: 0 auto;
 		height: 100%;
-		color: #fff;
+		/* padding: 0 1rem clamp(3rem, 8vh, 5rem); */
+		/* color: #fff; */
 		opacity: 0.45;
 		transform: translateY(8px);
 		transition:
@@ -424,21 +404,29 @@
 	}
 
 	.slide-body-wrapper {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
+		background: #fffffb;
+		height: 30vh;
+		border: 1px solid rgba(0, 0, 0, .1);
+		/* flex-direction: column; */
+		padding: 20px 25px 15px;
+		/* justify-content: flex-end; */
+		border-radius: 3px;
 		overflow: hidden;
 		/* padding-bottom: 2rem; */
 	}
 
+	.slide-body-text {
+		overflow: hidden;
+		width: 100%;
+	}
+
 	.slide-body {
-		font-family: var(--font-serif);
+		font-family: var(--font-body);
 		font-size: inherit;
-		line-height: 1.7;
-		margin: 0 0 0.5em;
-		opacity: 0.85;
+		line-height: inherit;
+		margin-bottom: 0.75em;
 		color: inherit;
+		margin-top: 0;
 	}
 
 	.slide-body:last-child {
@@ -447,6 +435,7 @@
 
 	.slide-chrome {
 		flex-shrink: 0;
+		display: none;
 	}
 
 	.slide-kicker {
@@ -461,7 +450,6 @@
 	}
 
 	.slide-title {
-		font-family: var(--font-serif);
 		font-size: clamp(1.75rem, 5vw, 3rem);
 		line-height: 1.15;
 		font-weight: 400;
@@ -556,6 +544,7 @@
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
+		display: none;
 	}
 
 	.counter-current {
