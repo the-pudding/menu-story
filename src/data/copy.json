@@ -2,14 +2,33 @@
   "ignore": [],
   "slides": [
     {
-      "id": "header"
-    },
-    {
-      "id": "map",
+      "id": "cold",
       "body": [
         {
           "type": "text",
-          "value": "A menu describes what a restaurant serves – but a menu also describes who is being served."
+          "value": "The New York Public Library has an archive of menus that tracks the transformation of dining and society in America from the 1880s to the 1920s."
+        },
+        {
+          "type": "text",
+          "value": "In this crucial period, we can see how the American restaurant was born – and how much, or how little, we’ve changed in the ensuing 100 years."
+        }
+      ]
+    },
+    {
+      "id": "buttolph",
+      "body": [
+        {
+          "type": "text",
+          "value": "The collection was sourced and donated by Frank E. Buttolph, who spent decades preserving menus as a record of her time. TK TK biographical."
+        }
+      ]
+    },
+    {
+      "id": "side",
+      "body": [
+        {
+          "type": "text",
+          "value": "A menu describes what a restaurant serves – but a menu also describes <i>who</i> is being served."
         },
         {
           "type": "text",
@@ -22,7 +41,7 @@
       ]
     },
     {
-      "id": "chart",
+      "id": "tk",
       "body": [
         {
           "type": "text",
@@ -31,17 +50,8 @@
       ]
     },
     {
-      "id": "buttolph",
-      "image": "assets/demo/test.jpg",
+      "id": "illustration",
       "body": [
-        {
-          "type": "text",
-          "value": "Frank E. Buttolph spent decades preserving menus as a record of her time. TK TK biographical. Thanks to the collection she sourced and donated to the New York Public Library, we have an archive that tracks the transformation of dining and society in America from the 1880s to the 1920s:"
-        },
-        {
-          "type": "text",
-          "value": "In this crucial period, we can see how the American restaurant was born – and how much, or how little, we’ve changed in the ensuring 100 years."
-        },
         {
           "type": "text",
           "value": "I’ve rifled through the archive to tell you that story in ten dishes."
@@ -53,10 +63,35 @@
       ]
     },
     {
-      "id": "title"
+      "id": "title",
+      "body": [
+        {
+          "type": "text",
+          "value": "TK TK"
+        }
+      ]
     },
     {
       "id": "soup",
+      "layout": "fit-height",
+      "bgSrc": "assets/4000000068.png",
+      "body": [
+        {
+          "type": "text",
+          "value": "We begin with oysters, pardon me – <i>huitres</i> – and potages, the soup. Perhaps you’d like the consomme de volaille, a la Victoria or Consomme Chatelaine? But <b>Bisque d’ecrevisses</b> or the terrapin would also be an excellent choice. Whatever you choose, you can be certain that it will approach, as best as possible, the finest French cuisine that 19th Century America can muster. It will be convincing: after all, you will order the French dish in French from a French, and your chef there in New York, will have likely been imported from France – or at least somewhere, over there."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/4000000068.png",
+      "bgZoom": "1",
+      "focalX": "490",
+      "focalY": "300",
+      "anchorX": 0.5,
+      "anchorY": 0.2,
+      "annotationX": "490",
+      "annotationY": "300",
       "body": [
         {
           "type": "text",
