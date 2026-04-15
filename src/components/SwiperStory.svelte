@@ -1,7 +1,7 @@
 <script>
 	import { onMount, untrack } from "svelte";
 	import Swiper from "swiper";
-	import { Zoom } from "swiper/modules";
+	import { Zoom, Keyboard } from "swiper/modules";
 	import "swiper/css";
 	import "swiper/css/zoom";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
@@ -27,7 +27,12 @@
 	// Standard typographic line-height: tighter at larger sizes, looser at smaller.
 	// ~1.65 at 16px, ~1.45 at 32px, ~1.33 at 48px.
 	function lineHeightFor(fontSize) {
-		return Math.max(1.25, Math.min(1.2, 1.2 + 6.4 / fontSize));
+		return Math.max(1.25, Math.min(1.65, 1.2 + 6.4 / fontSize));
+	}
+
+	// Strip HTML tags so pretext measures visible characters only, not tag syntax.
+	function stripHtml(html) {
+		return html.replace(/<[^>]+>/g, '');
 	}
 
 	// prepare() and layout() loaded dynamically — @chenglou/pretext is ESM-only
@@ -42,9 +47,10 @@
 
 	let dims = new useWindowDimensions();
 
-	// Both measured from the DOM — CSS padding/max-height changes are reflected automatically
+	// Both measured from the DOM — CSS padding changes are reflected automatically
 	let textWidth = $state(0);
 	let availH = $state(0);
+	let wrapperPadV = $state(0); // vertical padding of .slide-body-wrapper, stored separately
 
 	// Any wrapper element is sufficient — all share the same CSS, last bind:this write wins
 	let wrapperEl = $state(null);
@@ -52,10 +58,10 @@
 	$effect(() => {
 		const el = wrapperEl;
 		if (!el) return;
-		dims.height; // re-run on viewport resize
+		dims.height; dims.width; // re-run on viewport resize or orientation change
 		const s = getComputedStyle(el);
-		const padV = parseFloat(s.paddingTop) + parseFloat(s.paddingBottom);
-		availH = el.clientHeight - padV;
+		wrapperPadV = parseFloat(s.paddingTop) + parseFloat(s.paddingBottom);
+		availH = el.clientHeight - wrapperPadV;
 		const bodyEl = el.querySelector(".slide-body");
 		if (bodyEl) fontFamily = getComputedStyle(bodyEl).fontFamily;
 	});
@@ -63,10 +69,11 @@
 	// Per-slide chrome (kicker + title + rule) heights — bound from DOM
 	let chromeHeights = $state(Array.from({ length: untrack(() => slides.length) }, () => 0));
 
-	// Binary search for the largest font size where all paragraphs fit availH.
-	// Measures each paragraph separately to correctly account for inter-paragraph margins.
+	const MIN_FONT = 14;
+
+	// Binary search for the largest font size ≥ MIN_FONT where all paragraphs fit availH.
 	function fitFontSize(paragraphs, availH) {
-		let lo = 10, hi = 30;
+		let lo = MIN_FONT, hi = 30;
 		for (let iter = 0; iter < 12; iter++) {
 			const mid = (lo + hi) / 2;
 			const lh = lineHeightFor(mid);
@@ -82,15 +89,39 @@
 		return lo;
 	}
 
-	let bodyFontSizes = $derived(
+	// Measure actual text height at a fixed font size (no binary search).
+	function textHeightAt(paragraphs, fontSize) {
+		const lh = lineHeightFor(fontSize);
+		let h = 0;
+		for (const para of paragraphs) {
+			const prepared = ptPrepare(para, `${fontSize}px ${fontFamily}`);
+			h += ptLayout(prepared, textWidth, fontSize * lh).height;
+		}
+		h += (paragraphs.length - 1) * fontSize * PARA_MARGIN_EM;
+		return h;
+	}
+
+	// Per-slide layout: font size + optional wrapper height override when text hits MIN_FONT.
+	let bodyLayouts = $derived(
 		slides.map((slide) => {
-			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || availH <= 0) return REF_SIZE;
-			const paragraphs = slide.body.map((l) => l.value ?? l);
-			return fitFontSize(paragraphs, availH - 8);
+			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || availH <= 0) {
+				return { fontSize: REF_SIZE, wrapperMinH: null };
+			}
+			const paragraphs = slide.body.map((l) => stripHtml(l.value ?? l));
+			const fontSize = fitFontSize(paragraphs, availH - 8);
+			let wrapperMinH = null;
+			if (fontSize <= MIN_FONT) {
+				// Text hit the floor — expand the box to fit rather than clip.
+				const needed = textHeightAt(paragraphs, MIN_FONT) + 8 + wrapperPadV;
+				if (needed > dims.height * 0.30) wrapperMinH = Math.ceil(needed);
+			}
+			return { fontSize, wrapperMinH };
 		})
 	);
 
+	let bodyFontSizes = $derived(bodyLayouts.map(l => l.fontSize));
 	let bodyLineHeights = $derived(bodyFontSizes.map(lineHeightFor));
+	let wrapperMinHeights = $derived(bodyLayouts.map(l => l.wrapperMinH));
 
 	// ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -251,30 +282,51 @@
 			: 'none'
 	);
 
-	// Annotation — shown on the zoom soup slide, pinned to annotationX/Y (native image pixels)
-	const zoomSoupSlide = untrack(() => slides.find(s => s.id === 'soup' && s.layout !== 'fit-height'));
+	// Annotation — pinned to the active zoom soup slide's annotationX/Y (native image pixels).
+	// Hides when the dominant slide has no annotation data.
+	function slideHasAnnotation(s) {
+		return s?.id === 'soup' && s?.layout !== 'fit-height'
+			&& s?.annotationX != null && s?.annotationY != null;
+	}
 	let annotationOpacity = $derived.by(() => {
 		const from = slides[fromIdx];
 		const to   = slides[toIdx];
-		const fromIsZoom = from?.id === 'soup' && from?.layout !== 'fit-height';
-		const toIsZoom   = to?.id   === 'soup' && to?.layout   !== 'fit-height';
-		if (!fromIsZoom && !toIsZoom) return 0;
+		const fromHas = slideHasAnnotation(from);
+		const toHas   = slideHasAnnotation(to);
+		if (!fromHas && !toHas) return 0;
+		if (fromHas && toHas) return 1;
 		const eased = smoothstep(blendT);
-		return fromIsZoom ? 1 - eased : eased;
+		return fromHas ? 1 - eased : eased;
 	});
 	let annotationScreenPos = $derived.by(() => {
 		const xform = soupBgXform;
 		const nw = soupBgNaturalW;
 		const vw = dims.width;
-		if (!xform || !nw || !zoomSoupSlide) return null;
-		const pf  = (v, d) => parseFloat(v ?? d);
-		const ax  = pf(zoomSoupSlide.annotationX, 0);
-		const ay  = pf(zoomSoupSlide.annotationY, 0);
+		if (!xform || !nw) return null;
+		const from = slides[fromIdx];
+		const to   = slides[toIdx];
+		// Use the dominant slide's annotation coords (switches at 50% of the swipe)
+		const src = slideHasAnnotation(to) && blendT >= 0.5 ? to
+		          : slideHasAnnotation(from) ? from
+		          : slideHasAnnotation(to) ? to : null;
+		if (!src) return null;
+		const ax = parseFloat(src.annotationX);
+		const ay = parseFloat(src.annotationY);
 		// native pixel → screen: tx + (native / naturalWidth) * viewportWidth * scale
 		return {
 			x: xform.tx + (ax / nw) * vw * xform.s,
 			y: xform.ty + (ay / nw) * vw * xform.s,
 		};
+	});
+
+	// Top label — crossfades between soup slides as you swipe between them
+	let soupTopLabel = $derived.by(() => {
+		const from = slides[fromIdx];
+		const to   = slides[toIdx];
+		const fromIsSoup = from?.id === 'soup';
+		const toIsSoup   = to?.id   === 'soup';
+		if (!fromIsSoup && !toIsSoup) return null;
+		return (toIsSoup && blendT >= 0.5 ? to : fromIsSoup ? from : to)?.topLabel ?? null;
 	});
 
 	const defaultZoom = { scale: 1, x: 0, y: 0 };
@@ -291,7 +343,7 @@
 
 	onMount(() => {
 		swiper = new Swiper(containerEl, {
-			modules: [Zoom],
+			modules: [Zoom, Keyboard],
 			grabCursor: true,
 			// resistanceRatio: 0.6,
 			speed: 300,
@@ -467,7 +519,7 @@
 								<div
 									class="slide-body-wrapper"
 									bind:this={wrapperEl}
-									style="font-size: {bodyFontSizes[i]}px; line-height: {bodyLineHeights[i]}"
+									style="font-size: {bodyFontSizes[i]}px; line-height: {bodyLineHeights[i]}; {wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : ''}"
 								>
 									<div class="slide-body-text" bind:clientWidth={textWidth}>
 										{#each slide.body as line}
@@ -512,6 +564,12 @@
 	{/if}
 
 	<!-- ── Slide counter ── -->
+	{#if soupTopLabel}
+		<div class="soup-top-label" style="opacity: {soupBg.opacity}; transition: {isDragging ? 'none' : `opacity ${STACK_SPEED}ms ease`}">
+			<span>{soupTopLabel}</span>
+		</div>
+	{/if}
+
 	<div class="slide-counter" aria-live="polite">
 		<span class="counter-current">{String(activeIndex + 1).padStart(2, "0")}</span>
 		<span class="counter-sep">/</span>
@@ -659,6 +717,12 @@
 		/* padding-bottom: 2rem; */
 	}
 
+	@media (max-width: 640px) {
+		.slide-body-wrapper {
+			padding: 10px 17.5px;
+		}
+	}
+
 	.slide-body-wrapper::after {
 		content: '';
 		position: absolute;
@@ -672,7 +736,7 @@
 	}
 
 	.slide-body-text {
-		overflow: hidden;
+		/* overflow: hidden; */
 		width: 100%;
 	}
 
@@ -859,6 +923,30 @@
 		display: block;
 		user-select: none;
 		transition: transform 0.5s ease;
+	}
+
+	.soup-top-label {
+		position: fixed;
+		top: 5px;
+		left: 0;
+		right: 5px;
+		z-index: 20;
+		font-family: monospace;
+		font-size: 12px;
+		text-align: left;
+		pointer-events: none;
+		display: flex;
+    	justify-content: flex-end;
+	}
+	.soup-top-label span {
+		display: inline-block;
+		padding: 6px;
+		color: rgba(0,0,0,.9);
+		background:#fff;
+		border-radius: 4px;
+		line-height: 1;
+		max-width: 100px;
+		box-shadow: -1px 1px 1px rgba(0, 0, 0, .1);
 	}
 
 	.soup-annotation {

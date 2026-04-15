@@ -73,8 +73,9 @@
     },
     {
       "id": "soup",
-      "layout": "fit-height",
       "bgSrc": "assets/4000000068.png",
+      "layout": "fit-height",
+      "topLabel": "Test XYZ",
       "body": [
         {
           "type": "text",
@@ -88,14 +89,85 @@
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
-      "anchorX": 0.5,
-      "anchorY": 0.2,
+      "anchorX": "0.5",
+      "anchorY": "0.2",
       "annotationX": "490",
       "annotationY": "300",
+      "topLabel": "Test XYZ",
       "body": [
         {
           "type": "text",
-          "value": "We begin with oysters, pardon me – <i>huitres</i> – and potages, the soup. Perhaps you’d like the consomme de volaille, a la Victoria or Consomme Chatelaine? But <b>Bisque d’ecrevisses</b> or the terrapin would also be an excellent choice. Whatever you choose, you can be certain that it will approach, as best as possible, the finest French cuisine that 19th Century America can muster. It will be convincing: after all, you will order the French dish in French from a French, and your chef there in New York, will have likely been imported from France – or at least somewhere, over there."
+          "value": "The first true restaurant dining in America – not just as places that served a customer food on demand, but as spaces for pleasures beyond function – answered to society’s new world elite, a class that sought to emulate what they saw as the height of culture and sophistication: the European, and particularly the French, aristocracy."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/4000000068.png",
+      "bgZoom": "1",
+      "focalX": "490",
+      "focalY": "300",
+      "anchorX": "0.5",
+      "anchorY": "0.2",
+      "topLabel": "Test XYZ",
+      "body": [
+        {
+          "type": "text",
+          "value": "Soup tended to be the first true course of these decadent meals, which would then proceed to 8, 10, or more courses of French classics or, possibly, other dishes simply given a European-sounding name."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/4000000068.png",
+      "bgZoom": "1",
+      "focalX": "490",
+      "focalY": "300",
+      "anchorX": "0.5",
+      "anchorY": "0.2",
+      "annotationX": "490",
+      "annotationY": "300",
+      "topLabel": "Test XYZ",
+      "body": [
+        {
+          "type": "text",
+          "value": "Without a true nobility in America, these restaurants were one of the ways the post-Civil War elite symbolically distinguished themselves from the masses. Language was one aspect of gatekeeping – luxury was another."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/4000000068.png",
+      "bgZoom": "1",
+      "focalX": "490",
+      "focalY": "300",
+      "anchorX": "0.5",
+      "anchorY": "0.2",
+      "annotationX": "490",
+      "annotationY": "300",
+      "topLabel": "Test XYZ",
+      "body": [
+        {
+          "type": "text",
+          "value": "While it has a humble place now, celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. After finishing their soup, a diner may reach out to take a stalk of celery proudly displayed in a decorative crystal celery vase."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/4000000068.png",
+      "bgZoom": "1",
+      "focalX": "490",
+      "focalY": "300",
+      "anchorX": "0.5",
+      "anchorY": "0.2",
+      "annotationX": "490",
+      "annotationY": "300",
+      "topLabel": "Test XYZ",
+      "body": [
+        {
+          "type": "text",
+          "value": "Relishes like celery, alongside sorbets and punches inserted later in the meal, functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as distinctly oriented to the aesthetic more than the practical. George G. Foster, a writer at the time, noted that this kind of meal  “is not merely a quantity of food deposited in the stomach, but is in every sense and to all the senses a great work of art.”(70-71)"
         }
       ]
     }
