@@ -24,10 +24,9 @@
 	let fontFamily = $state("serif"); // read from DOM after mount — matches whatever CSS sets on .slide-body
 	const PARA_MARGIN_EM = 0.75; // margin-bottom between <p> tags (em)
 
-	// Standard typographic line-height: tighter at larger sizes, looser at smaller.
-	// ~1.65 at 16px, ~1.45 at 32px, ~1.33 at 48px.
+	// Line-height ramps from 1.1 at 14px (min font, pack lines tighter) up to 1.25 at 18px+.
 	function lineHeightFor(fontSize) {
-		return Math.max(1.25, Math.min(1.65, 1.2 + 6.4 / fontSize));
+		return Math.max(1.1, Math.min(1.25, 0.575 + 0.0375 * fontSize));
 	}
 
 	// Strip HTML tags so pretext measures visible characters only, not tag syntax.
@@ -141,16 +140,16 @@
 	// tx/ty are percentages of card width/height.
 	const IMG_BASE = 'https://s3.us-east-1.amazonaws.com/pudding.cool/projects/menu-images/';
 	const STACK = [
-		{ rot:  47, tx:  90, ty: -60, widthPct: 50, src: `${IMG_BASE}4000000068.jpg` },  // bottom — top-right corner
-		{ rot: -55, tx: -80, ty:  70, widthPct: 50, src: `${IMG_BASE}4000000069.jpg` },  // bottom-left
-		{ rot:  33, tx:  60, ty:  80, widthPct: 50, src: `${IMG_BASE}4000000070.jpg` },  // bottom-right
-		{ rot: -38, tx: -65, ty: -50, widthPct: 50, src: `${IMG_BASE}4000000071.jpg` },  // top-left
-		{ rot:  22, tx:  40, ty: -40, widthPct: 50, src: `${IMG_BASE}4000000072.jpg` },  // upper-right
-		{ rot: 0, tx: 20, ty:  -10, widthPct: 100, src: `assets/fish.png` },  // lower-left
-		{ rot:  18, tx:  25, ty:  35, widthPct: 50, src: `assets/476900.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
-		{ rot: -60, tx: -20, ty: -25, widthPct: 50, src: `assets/4000000219.png`, role: 'heroRight' }, // hero right — animates to side-by-side
-		{ rot:  8, tx:   -80, ty:   -20, widthPct: 50, src: "assets/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
-		{ rot:  -3, tx:   20, ty:  -2, widthPct: 50, src: "assets/4000000068.png", role: 'top' },  // flies off on slide 1→2
+		{ rot: 8, tx: 65, ty: -50, widthPct: 50, src: `assets/menus/4000000219.png` },  // top-left
+		{ rot:  50, tx:  50, ty: 0, widthPct: 50, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
+		{ rot: -55, tx: -10, ty:  -30, widthPct: 50, src: `assets/menus/4046090.png` },  // bottom-left
+		{ rot:  3, tx:  -80, ty:  -20, widthPct: 50, src: `assets/menus/476900.png` },  // bottom-right
+		{ rot: 2, tx: 5, ty: -50, widthPct: 50, src: `assets/menus/4000008419.png` },  // top-left
+		{ rot: 0, tx: 20, ty:  -10, widthPct: 100, src: `assets/menus/fish.png` },  // lower-left
+		{ rot:  18, tx:  -20, ty:  35, widthPct: 50, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
+		{ rot: 10, tx: 50, ty: -50, widthPct: 50, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
+		{ rot:  8, tx:   -80, ty:   -20, widthPct: 50, src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
+		{ rot:  -3, tx:   20, ty:  -2, widthPct: 100, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
 	];
 
 	// t = 0 at slide 0, t = 1 fully into slide 1
@@ -567,6 +566,7 @@
 	{#if soupTopLabel}
 		<div class="soup-top-label" style="opacity: {soupBg.opacity}; transition: {isDragging ? 'none' : `opacity ${STACK_SPEED}ms ease`}">
 			<span>{soupTopLabel}</span>
+			<span class="blur">{soupTopLabel}</span>
 		</div>
 	{/if}
 
@@ -632,7 +632,7 @@
 		position: absolute;
 		/* width: 60vmin; */
 		height: auto;
-		max-width: 50vmin;
+		max-width: 60vmin;
 		width: auto;
 		will-change: transform, opacity;
 		transform-origin: center bottom;
@@ -721,6 +721,15 @@
 		.slide-body-wrapper {
 			padding: 10px 17.5px;
 		}
+		.soup-top-label {
+			font-size:12px;
+			min-width: auto;
+		}
+		.soup-top-label span {
+			padding: 6px;
+			max-width: 100px;
+		}
+
 	}
 
 	.slide-body-wrapper::after {
@@ -927,12 +936,12 @@
 
 	.soup-top-label {
 		position: fixed;
-		top: 5px;
+		top: 10px;
 		left: 0;
-		right: 5px;
+		right: 10px;
 		z-index: 20;
 		font-family: monospace;
-		font-size: 12px;
+		font-size: 16px;
 		text-align: left;
 		pointer-events: none;
 		display: flex;
@@ -940,13 +949,23 @@
 	}
 	.soup-top-label span {
 		display: inline-block;
-		padding: 6px;
-		color: rgba(0,0,0,.9);
+		padding: 12px;
+		color: rgba(0,0,0,.8);
 		background:#fff;
 		border-radius: 4px;
 		line-height: 1;
-		max-width: 100px;
-		box-shadow: -1px 1px 1px rgba(0, 0, 0, .1);
+		max-width: 300px;
+		min-width: 150px;
+		box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
+		-webkit-font-smoothing: antialiased;
+	}
+	.soup-top-label span.blur {
+		filter: blur(.9px);
+		opacity: .3;
+		position: absolute;
+		background: none;
+		display: none;
+
 	}
 
 	.soup-annotation {

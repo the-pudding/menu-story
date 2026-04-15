@@ -73,7 +73,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/4000000068.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "layout": "fit-height",
       "topLabel": "Test XYZ",
       "body": [
@@ -85,7 +85,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/4000000068.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
@@ -103,7 +103,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/4000000068.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
@@ -119,7 +119,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/4000000068.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
@@ -137,7 +137,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/4000000068.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
@@ -155,7 +155,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/4000000068.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
