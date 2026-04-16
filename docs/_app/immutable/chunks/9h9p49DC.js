@@ -1,0 +1,1 @@
+import{b as f,h as o,f as m,j as v,r as y,m as l,a as p,s as i,n as T,d as A}from"./C22nnEDb.js";import{B as R}from"./LYKrimRo.js";function E(d,_,s){var e;o&&(e=A,m());var r=new R(d);f(()=>{var a=_()??null;if(o){var h=y(e),c=h===T,u=a!==null;if(c!==u){var t=l();p(t),r.anchor=t,i(!1),r.ensure(a,a&&(n=>s(n,a))),i(!0);return}}r.ensure(a,a&&(n=>s(n,a)))},v)}export{E as c};

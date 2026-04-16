@@ -1,5 +1,6 @@
 <script>
 	import { onMount, untrack } from "svelte";
+	import { fade } from "svelte/transition";
 	import Swiper from "swiper";
 	import { Zoom, Keyboard } from "swiper/modules";
 	import "swiper/css";
@@ -224,44 +225,87 @@
 	let toIdx = $derived(Math.min(fromIdx + 1, slides.length - 1));
 	let blendT = $derived(Math.max(0, Math.min(slidePosition - fromIdx, 1)));
 
-	// Soup background
-	let soupBgNaturalW = $state(0);
-	let soupBgNaturalH = $state(0);
+	// Soup background — preload all bgSrc images up front so the img tag always gets
+	// pixel data that's already in memory, making in:fade play against a visible image.
+	let preloadedImages = $state(/** @type {Map<string, HTMLImageElement>} */ (new Map()));
 
-	// Opacity + src only — geometry is handled separately
+	onMount(() => {
+		const srcs = [...new Set(slides.map(s => s.bgSrc).filter(Boolean))];
+		srcs.forEach(src => {
+			const img = new Image();
+			img.onload = () => {
+				preloadedImages = new Map([...preloadedImages, [src, img]]);
+			};
+			img.src = src;
+		});
+	});
+
+	let soupBgNaturalW = $derived(preloadedImages.get(soupBg.src)?.naturalWidth ?? 0);
+	let soupBgNaturalH = $derived(preloadedImages.get(soupBg.src)?.naturalHeight ?? 0);
+	// Only expose src to the template once it's preloaded — prevents assigning a src the browser hasn't fetched yet
+	let soupBgReadySrc = $derived(preloadedImages.has(soupBg.src) ? soupBg.src : null);
+
 	let soupBg = $derived.by(() => {
 		const from = slides[fromIdx];
 		const to   = slides[toIdx];
 		const fromIsSoup = from?.id === 'soup';
 		const toIsSoup   = to?.id   === 'soup';
-		if (!fromIsSoup && !toIsSoup) return { opacity: 0, src: null };
-		const src    = (fromIsSoup ? from : to)?.bgSrc ?? null;
-		const eased  = smoothstep(blendT);
-		const opacity = (fromIsSoup && toIsSoup) ? 1 : fromIsSoup ? 1 - eased : eased;
-		return { opacity, src };
+		if (!fromIsSoup && !toIsSoup) return { src: null };
+		return { src: (fromIsSoup ? from : to)?.bgSrc ?? null };
 	});
 
-	// Compute (tx, ty, s) for a single soup slide given viewport + natural image dimensions.
-	// layout:'fit-height' → scale so image fills viewport height, centered horizontally.
-	// layout:'focal'      → zoom to focal point, landing it at (anchorX*vw, anchorY*vh).
-	function soupSlideXform(slide, vw, vh, nw, nh) {
-		if (!nw || !nh) return { tx: 0, ty: 0, s: 1 };
-		if (slide?.layout === 'fit-height') {
-			const s  = vh / (vw * nh / nw);          // scale so rendered height = vh
-			const tx = (vw - vw * s) / 2;             // center horizontally
-			return { tx, ty: 0, s };
-		}
-		// focal mode — default
-		const pf   = (v, d) => parseFloat(v ?? d);
-		const s    = pf(slide?.bgZoom, 1);
-		const px   = pf(slide?.focalX, 0) * (vw / nw); // native px → CSS px
-		const py   = pf(slide?.focalY, 0) * (vw / nw);
-		const ax   = pf(slide?.anchorX, 0.5) * vw;
-		const ay   = pf(slide?.anchorY, 0.5) * vh;
-		return { tx: ax - px * s, ty: ay - py * s, s };
+	// Slow zoom animation: when settled on a zoom soup slide, zoomProgress eases 0→1
+	// over ZOOM_DURATION ms, driving the image from fit-height toward the focal point.
+	const ZOOM_DURATION = 6000;
+	let zoomProgress = $state(0);
+
+	$effect(() => {
+		const slide = slides[activeIndex];
+		const isZoomSlide = slide?.id === 'soup' && slide?.layout !== 'fit-height';
+		if (!isZoomSlide) { zoomProgress = 0; return; }
+
+		zoomProgress = 0;
+		let frame;
+		const timeout = setTimeout(() => {
+			const start = performance.now();
+			function tick(now) {
+				const t = Math.min(1, (now - start) / ZOOM_DURATION);
+				zoomProgress = smoothstep(t);
+				if (t < 1) frame = requestAnimationFrame(tick);
+			}
+			frame = requestAnimationFrame(tick);
+		}, 3000);
+		return () => { clearTimeout(timeout); cancelAnimationFrame(frame); };
+	});
+
+	// Compute fit-height xform (common starting point for all soup slides).
+	function fitHeightXform(vw, vh, nw, nh) {
+		const s  = vh / (vw * nh / nw);
+		const tx = (vw - vw * s) / 2;
+		return { tx, ty: 0, s };
 	}
 
-	// Interpolate between the two soup slide transforms — exposes raw values for annotation positioning
+	// Compute (tx, ty, s) for a soup slide.
+	// zp (0–1): 0 = fit-height start, 1 = full focal zoom (ignored for fit-height slides).
+	function soupSlideXform(slide, vw, vh, nw, nh, zp = 1) {
+		if (!nw || !nh) return { tx: 0, ty: 0, s: 1 };
+		const fh = fitHeightXform(vw, vh, nw, nh);
+		if (slide?.layout === 'fit-height') return fh;
+		// Focal zoom target
+		const pf  = (v, d) => parseFloat(v ?? d);
+		const s   = pf(slide?.bgZoom, 1);
+		const px  = pf(slide?.focalX, 0) * (vw / nw);
+		const py  = pf(slide?.focalY, 0) * (vw / nw);
+		const ax  = pf(slide?.anchorX, 0.5) * vw;
+		const ay  = pf(slide?.anchorY, 0.5) * vh;
+		const focal = { tx: ax - px * s, ty: ay - py * s, s };
+		// Blend from fit-height → focal using zp
+		return { s: lerp(fh.s, focal.s, zp), tx: lerp(fh.tx, focal.tx, zp), ty: lerp(fh.ty, focal.ty, zp) };
+	}
+
+	// Interpolate between the two soup slide transforms — exposes raw values for annotation positioning.
+	// The from slide uses live zoomProgress; the to slide always starts at zp=0 (fit-height)
+	// so each new zoom slide begins its animation fresh on arrival.
 	let soupBgXform = $derived.by(() => {
 		const vw = dims.width, vh = dims.height;
 		const nw = soupBgNaturalW, nh = soupBgNaturalH;
@@ -270,8 +314,9 @@
 		const fromIsSoup = from?.id === 'soup';
 		const toIsSoup   = to?.id   === 'soup';
 		if (!fromIsSoup && !toIsSoup) return null;
-		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh);
-		const b = soupSlideXform(toIsSoup   ? to   : from, vw, vh, nw, nh);
+		const fromIsZoom = fromIsSoup && from?.layout !== 'fit-height';
+		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, fromIsZoom ? zoomProgress : 1);
+		const b = soupSlideXform(toIsSoup   ? to   : from, vw, vh, nw, nh, 0);
 		const t = smoothstep(blendT);
 		return { s: lerp(a.s, b.s, t), tx: lerp(a.tx, b.tx, t), ty: lerp(a.ty, b.ty, t) };
 	});
@@ -293,9 +338,12 @@
 		const fromHas = slideHasAnnotation(from);
 		const toHas   = slideHasAnnotation(to);
 		if (!fromHas && !toHas) return 0;
-		if (fromHas && toHas) return 1;
+		// Fade in during the second half of the zoom animation (zoomProgress 0.5 → 1.0)
+		const zoomFade = smoothstep(Math.max(0, zoomProgress * 2 - 1));
+		if (fromHas && toHas) return zoomFade;
 		const eased = smoothstep(blendT);
-		return fromHas ? 1 - eased : eased;
+		const slideFade = fromHas ? 1 - eased : eased;
+		return Math.min(zoomFade, slideFade);
 	});
 	let annotationScreenPos = $derived.by(() => {
 		const xform = soupBgXform;
@@ -466,15 +514,18 @@
 		</div>
 
 		<!-- Soup slide background image — zoomed and pinned to focal point -->
-		{#if soupBg.src}
-			<div class="soup-bg" style="opacity: {soupBg.opacity}; transition: {isDragging ? 'none' : `opacity ${STACK_SPEED}ms ease`}">
-				<img
-					src={soupBg.src}
-					alt=""
-					draggable="false"
-					onload={(e) => { soupBgNaturalW = e.currentTarget.naturalWidth; soupBgNaturalH = e.currentTarget.naturalHeight; }}
-					style="transform: {soupBgTransform}; transform-origin: 0 0"
-				/>
+		{#if soupBgReadySrc}
+			<div class="soup-bg">
+				{#key soupBgReadySrc}
+					<img
+						src={soupBgReadySrc}
+						alt=""
+						draggable="false"
+						out:fade={{ duration: 1000 }}
+						in:fade={{duration: 1000,delay:1000}}
+						style="transform: {soupBgTransform}; transform-origin: 0 0;"
+					/>
+				{/key}
 				{#if annotationScreenPos}
 					<div
 						class="soup-annotation"
@@ -927,11 +978,12 @@
 	}
 
 	.soup-bg img {
+		position: absolute;
+		top: 0;
+		left: 0;
 		width: 100%;
 		height: auto;
-		display: block;
 		user-select: none;
-		transition: transform 0.5s ease;
 	}
 
 	.soup-top-label {
@@ -941,7 +993,7 @@
 		right: 10px;
 		z-index: 20;
 		font-family: monospace;
-		font-size: 16px;
+		font-size: 14px;
 		text-align: left;
 		pointer-events: none;
 		display: flex;
@@ -956,6 +1008,7 @@
 		line-height: 1;
 		max-width: 300px;
 		min-width: 150px;
+		transform: rotate(-.3deg);
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
 		-webkit-font-smoothing: antialiased;
 	}
@@ -970,7 +1023,7 @@
 
 	.soup-annotation {
 		position: absolute;
-		width: 100px;
+		width: 80px;
 		animation: annotation-nudge 3s ease-in-out infinite;
 	}
 	.soup-annotation img {
@@ -978,12 +1031,12 @@
 		height: auto;
 		display: block;
 		user-select: none;
-		filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+		filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 	}
 
 	@keyframes annotation-nudge {
 		0%        { transform: translateX(0); }
-		10%       { transform: translateX(8px); }
+		10%       { transform: translateX(3px); }
 		20%, 100% { transform: translateX(0); }
 	}
 

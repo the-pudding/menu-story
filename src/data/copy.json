@@ -74,8 +74,14 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4000000068.png",
-      "layout": "fit-height",
-      "topLabel": "Test XYZ",
+      "bgZoom": "1",
+      "focalX": "490",
+      "focalY": "300",
+      "anchorX": "0.5",
+      "anchorY": "0.2",
+      "annotationX": "280",
+      "annotationY": "320",
+      "topLabel": "Manhattan Club, NYC, 1866",
       "body": [
         {
           "type": "text",
@@ -85,15 +91,15 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000000068.png",
-      "bgZoom": "1",
+      "bgSrc": "assets/menus/4000000219.png",
+      "bgZoom": "1.2",
       "focalX": "490",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "annotationX": "490",
-      "annotationY": "300",
-      "topLabel": "Test XYZ",
+      "annotationX": "220",
+      "annotationY": "320",
+      "topLabel": "Delmonico’s, NYC, 1881",
       "body": [
         {
           "type": "text",
@@ -103,13 +109,13 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000000068.png",
-      "bgZoom": "1",
+      "bgSrc": "assets/menus/476900.png",
+      "bgZoom": "1.5",
       "focalX": "490",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "topLabel": "Test XYZ",
+      "topLabel": "Astor House, NYC, 1854, Printed on silk.",
       "body": [
         {
           "type": "text",
@@ -119,7 +125,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000000068.png",
+      "bgSrc": "assets/menus/476900.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
@@ -157,13 +163,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4000000068.png",
       "bgZoom": "1",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "490",
-      "annotationY": "300",
-      "topLabel": "Test XYZ",
+      "layout": "fit-height",
       "body": [
         {
           "type": "text",
