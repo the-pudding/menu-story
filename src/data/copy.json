@@ -63,13 +63,9 @@
       ]
     },
     {
-      "id": "title",
-      "body": [
-        {
-          "type": "text",
-          "value": "TK TK"
-        }
-      ]
+      "id": "soup",
+      "layout": "fit-height",
+      "bgSrc": "assets/menus/title.png"
     },
     {
       "id": "soup",
@@ -79,7 +75,7 @@
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "annotationX": "280",
+      "annotationX": "270",
       "annotationY": "320",
       "topLabel": "Manhattan Club, NYC, 1866",
       "body": [
@@ -92,13 +88,7 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4000000219.png",
-      "bgZoom": "1.2",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "220",
-      "annotationY": "320",
+      "layout": "fit-height",
       "topLabel": "Delmonico’s, NYC, 1881",
       "body": [
         {
@@ -115,6 +105,8 @@
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
+      "annotationX": "344",
+      "annotationY": "405",
       "topLabel": "Astor House, NYC, 1854, Printed on silk.",
       "body": [
         {
@@ -125,15 +117,9 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/476900.png",
-      "bgZoom": "1",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "490",
-      "annotationY": "300",
-      "topLabel": "Test XYZ",
+      "bgSrc": "assets/menus/4000008419.png",
+      "layout": "fit-height",
+      "topLabel": "Delmonico’s, NYC, 1900",
       "body": [
         {
           "type": "text",
@@ -151,11 +137,15 @@
       "anchorY": "0.2",
       "annotationX": "490",
       "annotationY": "300",
-      "topLabel": "Test XYZ",
+      "topLabel": "Sherry’s, NY, 1891",
       "body": [
         {
           "type": "text",
           "value": "While it has a humble place now, celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. After finishing their soup, a diner may reach out to take a stalk of celery proudly displayed in a decorative crystal celery vase."
+        },
+        {
+          "type": "text",
+          "value": "Relishes like celery, alongside sorbets and punches inserted later in the meal, functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as distinctly oriented to the aesthetic more than the practical. George G. Foster, a writer at the time, noted that this kind of meal  “is not merely a quantity of food deposited in the stomach, but is in every sense and to all the senses a great work of art.”(70-71)"
         }
       ]
     },
