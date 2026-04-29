@@ -19,7 +19,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The collection was sourced and donated by Frank E. Buttolph, who spent decades preserving menus as a record of her time. TK TK biographical."
+          "value": "Over 25,000 menus collection were sourced and donated by Frank E. Buttolph (pictured above), who spent decades preserving menus as a record of her time."
         }
       ]
     },
@@ -41,24 +41,15 @@
       ]
     },
     {
-      "id": "tk",
-      "body": [
-        {
-          "type": "text",
-          "value": "Get enough menus together, and they can tell not just a culinary history, but a social one."
-        }
-      ]
-    },
-    {
       "id": "illustration",
       "body": [
         {
           "type": "text",
-          "value": "I’ve rifled through the archive to tell you that story in ten dishes."
+          "value": "Get enough menus together, and they can tell not just a culinary history, but a social one."
         },
         {
           "type": "text",
-          "value": "Your table is ready – right this way."
+          "value": "I’ve rifled through the archive to tell you that story in ten dishes. Your table is ready – right this way."
         }
       ]
     },
