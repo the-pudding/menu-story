@@ -10,7 +10,7 @@
         },
         {
           "type": "text",
-          "value": "In this crucial period, we can see how the American restaurant was born – and how much, or how little, we’ve changed in the ensuing 100 years."
+          "value": "In this crucial period, we can see the modern American restaurant emerge, both from a hodgepodge of predecessors and with a new society emerging itself. This kind of establishment offered something beyond the taverns of the 18th century where food was secondary, and something more accessible than the early restaurants for elites in the mid-19th century where food was exalted."
         }
       ]
     },
@@ -19,7 +19,11 @@
       "body": [
         {
           "type": "text",
-          "value": "Over 25,000 menus collection were sourced and donated by Frank E. Buttolph (pictured above), who spent decades preserving menus as a record of her time."
+          "value": "We can see the origins of restaurants with appealing and affordable food for all kinds of tastes – what we expect today –  and how much, or how little, our dining has changed in the ensuing 100 years."
+        },
+        {
+          "type": "text",
+          "value": "Over 25,000 menus were sourced and donated by Frank E. Buttolph (pictured above), who spent decades preserving menus as a record for future generations of the culinary and social history of her time."
         }
       ]
     },
@@ -28,11 +32,11 @@
       "body": [
         {
           "type": "text",
-          "value": "A menu describes what a restaurant serves – but a menu also describes <i>who</i> is being served."
+          "value": "A menu describes what a restaurant serves—but a menu also describes <i>who</i> is being served."
         },
         {
           "type": "text",
-          "value": "Beyond documenting the gastronomic preferences of a time and place, menus also reflect the class, gender, political, technological, and environmental shifts of history."
+          "value": "They reflect the class, gender, political, technological, and environmental shifts of history."
         },
         {
           "type": "text",
@@ -49,7 +53,7 @@
         },
         {
           "type": "text",
-          "value": "I’ve rifled through the archive to tell you that story in ten dishes. Your table is ready – right this way."
+          "value": "I’ve rifled through the archive to tell you that story in <b>ten dishes.</b> Your table is ready—right this way."
         }
       ]
     },
@@ -60,31 +64,37 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000000068.png",
+      "bgSrc": "assets/menus/4000000219.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "annotationX": "270",
-      "annotationY": "320",
+      "annotationX": "190",
+      "annotationY": "340",
       "topLabel": "Manhattan Club, NYC, 1866",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
       "body": [
         {
           "type": "text",
-          "value": "We begin with oysters, pardon me – <i>huitres</i> – and potages, the soup. Perhaps you’d like the consomme de volaille, a la Victoria or Consomme Chatelaine? But <b>Bisque d’ecrevisses</b> or the terrapin would also be an excellent choice. Whatever you choose, you can be certain that it will approach, as best as possible, the finest French cuisine that 19th Century America can muster. It will be convincing: after all, you will order the French dish in French from a French, and your chef there in New York, will have likely been imported from France – or at least somewhere, over there."
+          "value": "We begin our tour with oysters, pardon me—<i>huitres</i>—and <i>potages</i>, the soup. The consomme de volaille a la Victoria or Consomme Châtelaine are excellent choices – two styles of chicken soup – but I suggest the <b>bisque d’ecrevisses</b>, a crayfish soup made with cognac and cream."
+        },
+        {
+          "type": "text",
+          "value": "Whatever soup one chooses, you can be certain that it will approach, as best as possible, the finest French cuisine that 19th Century America can muster. It will be convincing: after all, you will order the French dish in French from a French, and your chef there in New York, will have likely been imported from France – or at least somewhere, over there."
         }
       ]
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000000219.png",
+      "bgSrc": "assets/menus/4000000068.png",
       "layout": "fit-height",
       "topLabel": "Delmonico’s, NYC, 1881",
       "body": [
         {
           "type": "text",
-          "value": "The first true restaurant dining in America – not just as places that served a customer food on demand, but as spaces for pleasures beyond function – answered to society’s new world elite, a class that sought to emulate what they saw as the height of culture and sophistication: the European, and particularly the French, aristocracy."
+          "value": "Restaurant dining in America began in the 1830s: these were not taverns that had whatever food was around to go with drink, nor just places that served a customer food on demand, but as spaces for culinary pleasures beyond function. They answered to society’s new world elite, a class that sought to emulate what they saw as the height of culture and sophistication: the European, and particularly the French, aristocracy."
         }
       ]
     },
@@ -111,32 +121,28 @@
       "bgSrc": "assets/menus/4000008419.png",
       "layout": "fit-height",
       "topLabel": "Delmonico’s, NYC, 1900",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
       "body": [
         {
           "type": "text",
-          "value": "Without a true nobility in America, these restaurants were one of the ways the post-Civil War elite symbolically distinguished themselves from the masses. Language was one aspect of gatekeeping – luxury was another."
+          "value": "While it has a humble place now, celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. After finishing their soup, a diner may reach out to take a stalk of celery proudly displayed in a decorative crystal celery vase. In fact, it’s the fourth most common item among the Buttolph Collection menus, after only coffee, tea, and olives. Celery’s reputation as a luxury arose first from its scarcity; its popularity followed agricultural and technological improvements making it widely available."
         }
       ]
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000000068.png",
+      "bgSrc": "assets/menus/474586.png",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "annotationX": "490",
-      "annotationY": "300",
       "topLabel": "Sherry’s, NY, 1891",
       "body": [
         {
           "type": "text",
-          "value": "While it has a humble place now, celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. After finishing their soup, a diner may reach out to take a stalk of celery proudly displayed in a decorative crystal celery vase."
-        },
-        {
-          "type": "text",
-          "value": "Relishes like celery, alongside sorbets and punches inserted later in the meal, functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as distinctly oriented to the aesthetic more than the practical. George G. Foster, a writer at the time, noted that this kind of meal  “is not merely a quantity of food deposited in the stomach, but is in every sense and to all the senses a great work of art.”(70-71)"
+          "value": "Alongside sorbets and punches inserted later in the meal as palate cleansers, celery functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as distinctly oriented to the aesthetic more than the practical. George G. Foster, a writer at the time, noted that this kind of meal  “is not merely a quantity of food deposited in the stomach, but is in every sense and to all the senses a great work of art.”(70-71)"
         }
       ]
     },
@@ -148,7 +154,21 @@
       "body": [
         {
           "type": "text",
-          "value": "Relishes like celery, alongside sorbets and punches inserted later in the meal, functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as distinctly oriented to the aesthetic more than the practical. George G. Foster, a writer at the time, noted that this kind of meal  “is not merely a quantity of food deposited in the stomach, but is in every sense and to all the senses a great work of art.”(70-71)"
+          "value": "Without a true nobility in America, these restaurants were one of the ways the post-Civil War elite <b>symbolically distinguished themselves from the masses.</b> French was one aspect of gatekeeping – luxury was another.  Delmonico’s TK TK, archetypal and original French cuisine in America."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4000008419.png",
+      "layout": "fit-height",
+      "topLabel": "Delmonico’s, NYC, 1900",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "While it has a humble place now, celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. After finishing their soup, a diner may reach out to take a stalk of celery proudly displayed in a decorative crystal celery vase. In fact, it’s the fourth most common item among the Buttolph Collection menus, after only coffee, tea, and olives. Celery’s reputation as a luxury arose first from its scarcity; its popularity followed agricultural and technological improvements making it widely available."
         }
       ]
     }
