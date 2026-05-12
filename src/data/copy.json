@@ -437,6 +437,126 @@
           "value": "In each of these establishments – and in restaurant dining, generally – menus from the beginning of the 20th century show wild departures from what dining looked like just a few decades earlier. They even start to look familiar to us today."
         }
       ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4067328.png",
+      "layout": "fit-height",
+      "topLabel": "Hotel Princesa Café, NYC, 1914",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "The Thursday Special at the Hotel Princesa Cafe and Restaurant – roast ham, sweet potato dressing, southern yams, apple sauce, johnny cakes – demonstrates how much the voracious middle-class was changing restaurant dining into the first decades of the 20th century."
+        },
+        {
+          "type": "text",
+          "value": "Out of all these experiments, the full American restaurant – a place that offers everything to everyone – is starting to take shape."
+        },
+        {
+          "type": "text",
+          "value": "New diners, new types of restaurants, new ways of eating all called for new kinds of menus. And, often, menus that had a lot more information about what restaurants and restaurant dining ought to be."
+        },
+        {
+          "type": "text",
+          "value": "At the Hotel Princesa Cafe & Restaurant, a particularly elaborate example, there are more words used on prose about dining than there are spent on dishes to order. Here and elsewhere, restaurateurs were speaking to a new cohort of diners – telling them why to come, who to pay, where to sit, and what’s available when."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4067314.png",
+      "layout": "fit-height",
+      "topLabel": "Rigg’s, NYC, 1914",
+      "body": [
+        {
+          "type": "text",
+          "value": "The elite European menu operated in courses: the middle-class restaurant understood that busy workers wanted a good deal and a complete meal in a fixed amount of time, that a new wave of shoppers could also be convinced to stop for a meal among their errands."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4067314.png",
+      "layout": "fit-height",
+      "topLabel": "Adams' Restaurant, NYC, 1914",
+      "body": [
+        {
+          "type": "text",
+          "value": "It’s normal today for a menu to offer specials or combination plates where a main comes with sides, but it was a restaurant breakthrough at the time. It signified that while diners surely wanted to eat out to enjoy it, they also demanded that it met their practical needs: balanced, affordable, and efficient."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4046433.png",
+      "layout": "fit-height",
+      "topLabel": "Café Savarin, NYC, 1915. https://digitalcollections.nypl.org/items/433747e0-c547-012f-693d-58d385a7bc34",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "When Café Savarin opened, in 1888, the Times <a href=https://timesmachine.nytimes.com/timesmachine/1888/01/08/106308764.html?pageNumber=5 target=_blank>wrote</a> that “the best corps of cooks and waiters Paris could afford has been secured” to serve the french menu."
+        },
+        {
+          "type": "text",
+          "value": "By 1915, the menu offered dishes inflected by French, German, Italian, Hungarian, British, Indian, Japanese, and Caribbean cuisines."
+        },
+        {
+          "type": "text",
+          "value": "It feels right to order the Pepper Pot here then – a <a href=https://philadelphiaencyclopedia.org/essays/philadelphia-pepper-pot/ target=_blank>dish</a> with origins in West Africa, transformation in the West Indies, and another evolution in the United States."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4066701.png",
+      "layout": "fit-height",
+      "topLabel": "Rathskeller, NYC, 1914",
+      "body": [
+        {
+          "type": "text",
+          "value": "Middle-class diners didn’t just want cheap copies of the fancy French restaurant or better versions of the old American taverns – they wanted something else to eat, too."
+        },
+        {
+          "type": "text",
+          "value": "By the early 1900s immigrants had established significant footholds and enclaves in American cities, bringing their food cultures with them. The emerging middle class living or working in those cities saw this culinary diversity as a source of national pride, immigrant entrepreneurship as a symbol of American accomplishment. Then, as now, Americans embracing foreign food was fully compatible with maintaining racist and xenophobic beliefs. Nonetheless, whether as authentic cultural inclusion or more cynical exoticism, as Haley writes, these diners “equated excellence with a diverse knowledge of cultural experiences rather than a mastery of a single highbrow tradition.”"
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4039920.png",
+      "layout": "fit-height",
+      "topLabel": "The Syrian Restaurant for Ladies' & Gents, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "Italian and German restaurants were early challengers to French dominance over American dominance, but middle class diners also found that there were already also a glut of restaurants serving local immigrant populations that would be happy to take their business, too."
+        },
+        {
+          "type": "text",
+          "value": "The specific offerings depended on the city, but diners started to bring big their money and demands to, say, Chinese, Russian, or Syrian restaurateurs, too."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4039920.png",
+      "layout": "fit-height",
+      "topLabel": "Mann Fang Lowe, NYC, 1905",
+      "body": [
+        {
+          "type": "text",
+          "value": "Even if these places were a little unfamiliar, they were more accessible than the old aristocratic restaurants: these businesses actually wanted to accommodate the middle classes. Some restaurants even offered split menus that offered all the American classics as well as food from a particular cuisine."
+        },
+        {
+          "type": "text",
+          "value": "The “cosmopolitan” trend wasn’t contained to ethnic restaurants – restaurants of all kinds started to serve dishes that were, or at least pretended to be, from foreign lands well beyond France."
+        }
+      ]
     }
   ]
 }
