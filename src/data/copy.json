@@ -478,7 +478,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4067314.png",
+      "bgSrc": "assets/menus/4066373.png",
       "layout": "fit-height",
       "topLabel": "Adams' Restaurant, NYC, 1914",
       "body": [
@@ -544,7 +544,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4039920.png",
+      "bgSrc": "assets/menus/471895.png",
       "layout": "fit-height",
       "topLabel": "Mann Fang Lowe, NYC, 1905",
       "body": [
@@ -555,6 +555,152 @@
         {
           "type": "text",
           "value": "The “cosmopolitan” trend wasn’t contained to ethnic restaurants – restaurants of all kinds started to serve dishes that were, or at least pretended to be, from foreign lands well beyond France."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4037718.png",
+      "layout": "fit-height",
+      "topLabel": "R.H. Macy and Co., NYC, 1917",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "Why not wash that down with a “Horse’s Neck”?  While the beverage later added alcohol, it originated as a nonalcoholic mix of ginger ale and a long curling lemon rind, one of many new booze-free options appearing on menus in the early 20th century."
+        },
+        {
+          "type": "text",
+          "value": "Inspecting the beverages on these menus suggests how much had changed from feasts accompanied solely with wines, liqueurs, and mineral waters. Now diners had work to do, appearances to keep up, or, well, just be children."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4029870.png",
+      "layout": "fit-height",
+      "topLabel": "Joe's Restaurant, Brooklyn, NY, 1920",
+      "body": [
+        {
+          "type": "text",
+          "value": "While restaurants didn’t fix racism in America, dining in America did diversify across age and gender in this era. Aristocratic French restaurants had once been the province purely of men; later, lunch counters and other new type of eateries segregated the sexes. But as the new century progressed, restaurants not only shifted to mixed gender dining rooms they also began to cater to the opportunity to feed entire families."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4025914.png",
+      "layout": "fit-height",
+      "topLabel": "Dinner to the Directors of Metropolitan Life Insurance, Metropolitan Club, NYC, 1921",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "Of course the rich were still eating out all this time, too."
+        },
+        {
+          "type": "text",
+          "value": "Into the first decades of the 20th century, the traditional, coursed menus still existed and the elite were still hosting luxurious banquets. Social transformation is slow and rarely complete."
+        },
+        {
+          "type": "text",
+          "value": "But in some fancier restaurants aimed at the elite, the menu might look a lot more like how the middle-classes were transforming restaurant dining."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4025971.png",
+      "layout": "fit-height",
+      "topLabel": "The Portland, 1921",
+      "body": [
+        {
+          "type": "text",
+          "value": "There were now English, a la carte menus with prices, combination plates, and even music – formerly scorned as interference in the true focus of dining."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4000017237.png",
+      "layout": "fit-height",
+      "topLabel": "Rector’s, Chicago, IL, 1906",
+      "body": [
+        {
+          "type": "text",
+          "value": "Just as middle class restaurants now offered customers a variety of options to meet their desires, some elite restaurants confronted the now crowded restaurant market with a new take on abundance. Rector’s, in Chicago, offers  a dizzying selection for every section – including 25 kinds of potatoes. Potatoes O’Brien Au Gratin is a fitting or the modern <i>melange</i>."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036997.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "Amidst all this, the emerging science of nutrition provided many diners extra nudge away from extravagant, calorie-rich meals. The early 20th century featured a concerted push for healthier, simpler eating."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036998.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "Of course, even if it was no longer included in a set menu, people still wanted to order dessert. Advances in artificial refrigeration – that didn’t rely on blocks of ice – made all kinds of sweet treats readily made and stored. Fleischmann’s offers almost twenty different frozen desserts and just as many cakes and pastries. A “nesselrode pudding” would have been a popular choice – a chestnut-based frozen dessert studded with liquor-soaked dried fruits."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036998.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "But to end this meal, perhaps it’s worth revisiting something a little more familiar."
+        },
+        {
+          "type": "text",
+          "value": "If you visit Delmonico’s today, the menu has changed a bit – there’s yellowtail crudo, a burrata, sichuan peppercorn sauce, a cocktail with pandan. But you can also still order a baked alaska, invented there in 1867."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036998.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "Restaurant dining in America was once an imitation: wannabe aristocrats attempting French feasting. But as the 19th became the 20th century, the American middle class and the true American restaurant emerged: diverse, accessible, opinionated, at times chaotic."
+        },
+        {
+          "type": "text",
+          "value": "And that was before the rise of fast food, revolutionizing American dining yet again a few decades later."
+        },
+        {
+          "type": "text",
+          "value": "Today’s menus show how while  TK TK"
+        },
+        {
+          "type": "TK",
+          "value": "comment on contemporary menu"
+        },
+        {
+          "type": "text",
+          "value": "To dive into the origins yourself, we’ve collected 5000 menus for you. Right this way:"
         }
       ]
     }

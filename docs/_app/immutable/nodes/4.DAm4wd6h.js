@@ -1,4 +1,4 @@
-import"../chunks/DsnmJJEf.js";import{al as w,Z as v,$ as A,_ as h,X as F,G as c,an as E,W as J,ag as z,Y as V,ad as ie,J as M,aE as Ce,am as P,bi as ke,I as Se}from"../chunks/C22nnEDb.js";import{b as d,f as x,c as N,t as Ae}from"../chunks/BiexGjK5.js";import{b as L,g as Te,f as ue}from"../chunks/CC-I0Egx.js";import{e as X,i as B,b as Ye,s as me,c as Le,d as Ne}from"../chunks/vreypQoA.js";import{e as oe}from"../chunks/Bd_JMBhL.js";import{c as se}from"../chunks/9h9p49DC.js";import{s as re,p as H}from"../chunks/BvCBrjWE.js";import{s as fe}from"../chunks/tXVS1ob-.js";import{b as Fe,i as ee}from"../chunks/BrYhcFmw.js";import{h as q,c as Ie}from"../chunks/BGqc1h43.js";import{b as De}from"../chunks/BjN56BlO.js";import"../chunks/DlOzM7pa.js";var Re=x('<section id="demo-link"><h2>Link</h2> <p><a href="elements">Default element styles demo</a></p> <p><a href="fonts">Pudding-hosted font previews</a></p> <p><a href="ui">BitsUI styled components</a></p></section>');function je(a){var e=Re();d(a,e)}var He=x('<section id="demo-image"><h2>Image</h2> <p>img tag</p> <img src="../assets/demo/test.jpg" alt="cat" class="svelte-b56t42"/> <p>background image</p> <div class="svelte-b56t42"></div></section>');function Ee(a){var e=He();d(a,e)}var Me=x('<section id="demo-element"><h2>Dynamic Svelte Element</h2> <!></section>');function Xe(a){const e=[{tag:"h3",text:"I am a h3 tag."},{tag:"p",text:"I am p tag."}];var t=Me(),o=w(v(t),2);X(o,17,()=>e,B,(s,r)=>{let m=()=>c(r).tag,p=()=>c(r).text;var y=N(),l=A(y);oe(l,m,!1,(i,n)=>{var u=Ae();F(()=>L(u,p())),d(n,u)}),d(s,y)}),h(t),d(a,t)}var Be=x("<p> </p>");function Oe(a,e){var t=Be(),o=v(t);h(t),F(()=>L(o,`I am component A and my favorite number is ${e.number??""}.`)),d(a,t)}var Pe=x("<p> </p>");function We(a,e){var t=Pe(),o=v(t);h(t),F(()=>L(o,`I am component B and my name is ${e.name??""}.`)),d(a,t)}var Ue=x('<section id="demo-component"><h2>Dynamic Svelte Component</h2> <!></section>');function qe(a){const e={A:Oe,B:We},t=[{component:"A",number:42},{component:"B",name:"Russell"}];var o=Ue(),s=w(v(o),2);X(s,17,()=>t,B,(r,m)=>{const p=E(()=>e[c(m).component]);var y=N(),l=A(y);se(l,()=>c(p),(i,n)=>{n(i,re(()=>c(m)))}),d(r,y)}),h(o),d(a,o)}var Ze=x("<div><!></div>");function Ge(a,e){J(e,!0);let t=H(e,"root",3,null),o=H(e,"top",3,0),s=H(e,"bottom",3,0),r=H(e,"increments",3,100),m=H(e,"value",15,void 0),p=[],y=[],l=[],i=[],n;function u(){let g=0,C=0;for(let k=0;k<p.length;k++)p[k]>g&&(g=p[k],C=k);g>0?m(C):m(void 0)}function _(g,C){const k=O=>{O[0].isIntersecting;const K=O[0].intersectionRatio;p[C]=K,u()},j=o()?o()*-1:0,R=s()?s()*-1:0,W=`${j}px 0px ${R}px 0px`,U={root:t(),rootMargin:W,threshold:y};i[C]&&i[C].disconnect();const T=new IntersectionObserver(k,U);T.observe(g),i[C]=T}function b(){l.length&&l.forEach(_)}z(()=>{for(let g=0;g<r()+1;g++)y.push(g/r());l=n.querySelectorAll(":scope > *:not(iframe)"),b()}),z(()=>{o(),s(),b()});var f=Ze(),S=v(f);fe(S,()=>e.children??ie),h(f),Fe(f,g=>n=g,()=>n),d(a,f),V()}var ze=x('<div><p class="svelte-1sxgmm9"> </p></div>'),Je=x('<section id="scrolly"><h2 class="svelte-1sxgmm9">Scrolly <span> </span></h2> <div class="spacer svelte-1sxgmm9"></div> <!> <div class="spacer svelte-1sxgmm9"></div></section>');function Ve(a){let e=P(void 0);var t=Je(),o=v(t),s=w(v(o)),r=v(s,!0);h(s),h(o);var m=w(o,4);Ge(m,{get value(){return c(e)},set value(p){M(e,p,!0)},children:(p,y)=>{var l=N(),i=A(l);X(i,16,()=>[0,1,2,3,4],B,(n,u,_)=>{const b=E(()=>c(e)===_);var f=ze();let S;var g=v(f),C=v(g,!0);h(g),h(f),F(()=>{S=Ye(f,1,"step svelte-1sxgmm9",null,S,{active:c(b)}),L(C,u)}),d(n,f)}),d(p,l)},$$slots:{default:!0}}),Ce(2),h(t),F(()=>L(r,c(e)||"-")),d(a,t)}const Ke=`{
+import"../chunks/DsnmJJEf.js";import{al as w,Z as v,$ as A,_ as h,X as F,G as u,an as B,W as J,ag as G,Y as V,ad as ie,J as M,aE as ke,am as P,bi as _e,I as Se}from"../chunks/C22nnEDb.js";import{b as d,f as x,c as N,t as Ae}from"../chunks/BiexGjK5.js";import{b as L,g as Te,f as ce}from"../chunks/CC-I0Egx.js";import{e as E,i as X,b as Ye,s as me,c as Le,d as Ne}from"../chunks/vreypQoA.js";import{e as oe}from"../chunks/Bd_JMBhL.js";import{c as se}from"../chunks/9h9p49DC.js";import{s as re,p as H}from"../chunks/BvCBrjWE.js";import{s as pe}from"../chunks/tXVS1ob-.js";import{b as Fe,i as ee}from"../chunks/BrYhcFmw.js";import{h as U,c as Re}from"../chunks/C47byzwX.js";import{b as Ie}from"../chunks/BVyut1_K.js";import"../chunks/DlOzM7pa.js";var De=x('<section id="demo-link"><h2>Link</h2> <p><a href="elements">Default element styles demo</a></p> <p><a href="fonts">Pudding-hosted font previews</a></p> <p><a href="ui">BitsUI styled components</a></p></section>');function je(a){var e=De();d(a,e)}var He=x('<section id="demo-image"><h2>Image</h2> <p>img tag</p> <img src="../assets/demo/test.jpg" alt="cat" class="svelte-b56t42"/> <p>background image</p> <div class="svelte-b56t42"></div></section>');function Be(a){var e=He();d(a,e)}var Me=x('<section id="demo-element"><h2>Dynamic Svelte Element</h2> <!></section>');function Ee(a){const e=[{tag:"h3",text:"I am a h3 tag."},{tag:"p",text:"I am p tag."}];var n=Me(),o=w(v(n),2);E(o,17,()=>e,X,(s,r)=>{let m=()=>u(r).tag,f=()=>u(r).text;var y=N(),l=A(y);oe(l,m,!1,(i,t)=>{var c=Ae();F(()=>L(c,f())),d(t,c)}),d(s,y)}),h(n),d(a,n)}var Xe=x("<p> </p>");function Oe(a,e){var n=Xe(),o=v(n);h(n),F(()=>L(o,`I am component A and my favorite number is ${e.number??""}.`)),d(a,n)}var Pe=x("<p> </p>");function We(a,e){var n=Pe(),o=v(n);h(n),F(()=>L(o,`I am component B and my name is ${e.name??""}.`)),d(a,n)}var qe=x('<section id="demo-component"><h2>Dynamic Svelte Component</h2> <!></section>');function Ue(a){const e={A:Oe,B:We},n=[{component:"A",number:42},{component:"B",name:"Russell"}];var o=qe(),s=w(v(o),2);E(s,17,()=>n,X,(r,m)=>{const f=B(()=>e[u(m).component]);var y=N(),l=A(y);se(l,()=>u(f),(i,t)=>{t(i,re(()=>u(m)))}),d(r,y)}),h(o),d(a,o)}var ze=x("<div><!></div>");function Ze(a,e){J(e,!0);let n=H(e,"root",3,null),o=H(e,"top",3,0),s=H(e,"bottom",3,0),r=H(e,"increments",3,100),m=H(e,"value",15,void 0),f=[],y=[],l=[],i=[],t;function c(){let g=0,k=0;for(let _=0;_<f.length;_++)f[_]>g&&(g=f[_],k=_);g>0?m(k):m(void 0)}function C(g,k){const _=O=>{O[0].isIntersecting;const K=O[0].intersectionRatio;f[k]=K,c()},j=o()?o()*-1:0,D=s()?s()*-1:0,W=`${j}px 0px ${D}px 0px`,q={root:n(),rootMargin:W,threshold:y};i[k]&&i[k].disconnect();const T=new IntersectionObserver(_,q);T.observe(g),i[k]=T}function b(){l.length&&l.forEach(C)}G(()=>{for(let g=0;g<r()+1;g++)y.push(g/r());l=t.querySelectorAll(":scope > *:not(iframe)"),b()}),G(()=>{o(),s(),b()});var p=ze(),S=v(p);pe(S,()=>e.children??ie),h(p),Fe(p,g=>t=g,()=>t),d(a,p),V()}var Ge=x('<div><p class="svelte-1sxgmm9"> </p></div>'),Je=x('<section id="scrolly"><h2 class="svelte-1sxgmm9">Scrolly <span> </span></h2> <div class="spacer svelte-1sxgmm9"></div> <!> <div class="spacer svelte-1sxgmm9"></div></section>');function Ve(a){let e=P(void 0);var n=Je(),o=v(n),s=w(v(o)),r=v(s,!0);h(s),h(o);var m=w(o,4);Ze(m,{get value(){return u(e)},set value(f){M(e,f,!0)},children:(f,y)=>{var l=N(),i=A(l);E(i,16,()=>[0,1,2,3,4],X,(t,c,C)=>{const b=B(()=>u(e)===C);var p=Ge();let S;var g=v(p),k=v(g,!0);h(g),h(p),F(()=>{S=Ye(p,1,"step svelte-1sxgmm9",null,S,{active:u(b)}),L(k,c)}),d(t,p)}),d(f,l)},$$slots:{default:!0}}),ke(2),h(n),F(()=>L(r,u(e)||"-")),d(a,n)}const Ke=`{
   "ignore": [],
   "slides": [
     {
@@ -478,7 +478,7 @@ import"../chunks/DsnmJJEf.js";import{al as w,Z as v,$ as A,_ as h,X as F,G as c,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4067314.png",
+      "bgSrc": "assets/menus/4066373.png",
       "layout": "fit-height",
       "topLabel": "Adams' Restaurant, NYC, 1914",
       "body": [
@@ -544,7 +544,7 @@ import"../chunks/DsnmJJEf.js";import{al as w,Z as v,$ as A,_ as h,X as F,G as c,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4039920.png",
+      "bgSrc": "assets/menus/471895.png",
       "layout": "fit-height",
       "topLabel": "Mann Fang Lowe, NYC, 1905",
       "body": [
@@ -557,10 +557,156 @@ import"../chunks/DsnmJJEf.js";import{al as w,Z as v,$ as A,_ as h,X as F,G as c,
           "value": "The “cosmopolitan” trend wasn’t contained to ethnic restaurants – restaurants of all kinds started to serve dishes that were, or at least pretended to be, from foreign lands well beyond France."
         }
       ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4037718.png",
+      "layout": "fit-height",
+      "topLabel": "R.H. Macy and Co., NYC, 1917",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "Why not wash that down with a “Horse’s Neck”?  While the beverage later added alcohol, it originated as a nonalcoholic mix of ginger ale and a long curling lemon rind, one of many new booze-free options appearing on menus in the early 20th century."
+        },
+        {
+          "type": "text",
+          "value": "Inspecting the beverages on these menus suggests how much had changed from feasts accompanied solely with wines, liqueurs, and mineral waters. Now diners had work to do, appearances to keep up, or, well, just be children."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4029870.png",
+      "layout": "fit-height",
+      "topLabel": "Joe's Restaurant, Brooklyn, NY, 1920",
+      "body": [
+        {
+          "type": "text",
+          "value": "While restaurants didn’t fix racism in America, dining in America did diversify across age and gender in this era. Aristocratic French restaurants had once been the province purely of men; later, lunch counters and other new type of eateries segregated the sexes. But as the new century progressed, restaurants not only shifted to mixed gender dining rooms they also began to cater to the opportunity to feed entire families."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4025914.png",
+      "layout": "fit-height",
+      "topLabel": "Dinner to the Directors of Metropolitan Life Insurance, Metropolitan Club, NYC, 1921",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "Of course the rich were still eating out all this time, too."
+        },
+        {
+          "type": "text",
+          "value": "Into the first decades of the 20th century, the traditional, coursed menus still existed and the elite were still hosting luxurious banquets. Social transformation is slow and rarely complete."
+        },
+        {
+          "type": "text",
+          "value": "But in some fancier restaurants aimed at the elite, the menu might look a lot more like how the middle-classes were transforming restaurant dining."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4025971.png",
+      "layout": "fit-height",
+      "topLabel": "The Portland, 1921",
+      "body": [
+        {
+          "type": "text",
+          "value": "There were now English, a la carte menus with prices, combination plates, and even music – formerly scorned as interference in the true focus of dining."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4000017237.png",
+      "layout": "fit-height",
+      "topLabel": "Rector’s, Chicago, IL, 1906",
+      "body": [
+        {
+          "type": "text",
+          "value": "Just as middle class restaurants now offered customers a variety of options to meet their desires, some elite restaurants confronted the now crowded restaurant market with a new take on abundance. Rector’s, in Chicago, offers  a dizzying selection for every section – including 25 kinds of potatoes. Potatoes O’Brien Au Gratin is a fitting or the modern <i>melange</i>."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036997.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "image": "assets/menus/fish.png",
+      "imageAlt": "Fish illustration",
+      "body": [
+        {
+          "type": "text",
+          "value": "Amidst all this, the emerging science of nutrition provided many diners extra nudge away from extravagant, calorie-rich meals. The early 20th century featured a concerted push for healthier, simpler eating."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036998.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "Of course, even if it was no longer included in a set menu, people still wanted to order dessert. Advances in artificial refrigeration – that didn’t rely on blocks of ice – made all kinds of sweet treats readily made and stored. Fleischmann’s offers almost twenty different frozen desserts and just as many cakes and pastries. A “nesselrode pudding” would have been a popular choice – a chestnut-based frozen dessert studded with liquor-soaked dried fruits."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036998.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "But to end this meal, perhaps it’s worth revisiting something a little more familiar."
+        },
+        {
+          "type": "text",
+          "value": "If you visit Delmonico’s today, the menu has changed a bit – there’s yellowtail crudo, a burrata, sichuan peppercorn sauce, a cocktail with pandan. But you can also still order a baked alaska, invented there in 1867."
+        }
+      ]
+    },
+    {
+      "id": "soup",
+      "bgSrc": "assets/menus/4036998.png",
+      "layout": "fit-height",
+      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "body": [
+        {
+          "type": "text",
+          "value": "Restaurant dining in America was once an imitation: wannabe aristocrats attempting French feasting. But as the 19th became the 20th century, the American middle class and the true American restaurant emerged: diverse, accessible, opinionated, at times chaotic."
+        },
+        {
+          "type": "text",
+          "value": "And that was before the rise of fast food, revolutionizing American dining yet again a few decades later."
+        },
+        {
+          "type": "text",
+          "value": "Today’s menus show how while  TK TK"
+        },
+        {
+          "type": "TK",
+          "value": "comment on contemporary menu"
+        },
+        {
+          "type": "text",
+          "value": "To dive into the origins yourself, we’ve collected 5000 menus for you. Right this way:"
+        }
+      ]
     }
   ]
-}`;var Qe=x("<p></p>"),$e=x('<details><summary></summary> <div class="content"><!></div></details>');function et(a,e){let t=E(()=>typeof e.content=="string"),o=E(()=>e.open==="true");var s=$e(),r=v(s);q(r,()=>e.summary,!0),h(r);var m=w(r,2),p=v(m);{var y=i=>{var n=N(),u=A(n);q(u,()=>e.content),d(i,n)},l=i=>{var n=N(),u=A(n);X(u,17,()=>e.content,B,(_,b)=>{let f=()=>c(b).value;var S=Qe();q(S,f,!0),h(S),d(_,S)}),d(i,n)};ee(p,i=>{c(t)?i(y):i(l,-1)})}h(m),h(s),F(()=>{s.open=c(o),me(s,"name",e.name)}),d(a,s)}var tt=x("<li></li>"),nt=x("<ul></ul>");function at(a,e){var t=nt();X(t,21,()=>e.li,B,(o,s)=>{var r=tt();q(r,()=>c(s),!0),h(r),d(o,r)}),h(t),d(a,t)}var ot=x("<li></li>"),st=x("<ol></ol>");function rt(a,e){var t=st();X(t,21,()=>e.li,B,(o,s)=>{var r=ot();q(r,()=>c(s),!0),h(r),d(o,r)}),h(t),d(a,t)}var it=x("<p></p>"),lt=x("<section><!></section>");function ct(a,e){J(e,!0);const t={details:et,ul:at,ol:rt};let o=H(e,"components",19,()=>({})),s=H(e,"body",19,()=>[]);var r=N(),m=A(r);X(m,17,s,B,(p,y)=>{let l=()=>c(y).section,i=()=>c(y).content;const n=E(()=>l().toLowerCase().replace(/[^a-z0-9]/g,"")),u=E(()=>o()[l()]);var _=lt(),b=v(_);{var f=g=>{var C=N(),k=A(C);se(k,()=>c(u),(j,R)=>{R(j,re(i))}),d(g,C)},S=g=>{var C=N(),k=A(C);X(k,17,i,B,(j,R,W,U)=>{let T=()=>c(R).type,O=()=>c(R).value;const K=E(()=>o()[T()]||t[T()]),ge=E(()=>typeof O()=="string");var le=N(),ve=A(le);{var ye=I=>{var D=N(),Z=A(D);se(Z,()=>c(K),(Q,$)=>{$(Q,re(O))}),d(I,D)},be=I=>{var D=it();q(D,O,!0),h(D),d(I,D)},we=I=>{var D=N(),Z=A(D);oe(Z,T,!1,(Q,$)=>{var ce=N(),_e=A(ce);q(_e,O),d($,ce)}),d(I,D)},xe=I=>{var D=N(),Z=A(D);oe(Z,T,!1,(Q,$)=>{Le(Q,()=>({...O()}))}),d(I,D)};ee(ve,I=>{c(K)?I(ye):T()==="text"?I(be,1):c(ge)?I(we,2):I(xe,-1)})}d(j,le)}),d(g,C)};ee(b,g=>{c(u)?g(f):g(S,-1)})}h(_),F(()=>me(_,"id",c(n))),d(p,_)}),d(a,r),V()}var ut=x('<p> </p> <progress max="100"></progress>',1);function dt(a,e){let t=H(e,"label",3,"A"),o=H(e,"value",3,0);var s=ut(),r=A(s),m=v(r,!0);h(r);var p=w(r,2);F(()=>{L(m,t()),Ne(p,o())}),d(a,s)}var ht=x('<section id="cms"><h2>MicroCMS</h2> <code><pre> </pre></code> <!></section>');function mt(a,e){J(e,!0);const{body:t}=Ie,o={Test:dt};var s=ht(),r=w(v(s),2),m=v(r),p=v(m,!0);h(m),h(r);var y=w(r,2);ct(y,{get components(){return o},get body(){return t}}),h(s),F(l=>L(p,l),[()=>Ke.replace(/\t/g," ")]),d(a,s),V()}const ft=(a,e=ie)=>{var t=pt(),o=v(t),s=v(o,!0);h(o);var r=w(o,2),m=v(r,!0);h(r),h(t),F(()=>{L(s,e().name),L(m,e().age)}),d(a,t)};var pt=x('<div class="person svelte-q3gttf"><p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p></div>'),gt=x('<h2>Svelte5</h2> <h3>Reactive variables 3 ways:</h3> <button class="svelte-q3gttf">count++</button> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <h3>Children (previously slots):</h3> <div class="children"><!></div> <h3>Dispatch Event</h3> <button class="svelte-q3gttf">Random</button>  <h3>Snippets</h3> <div class="people svelte-q3gttf"></div>',1);function vt(a,e){J(e,!0),H(e,"age",3,30);const t=[{name:"John",age:30},{name:"Jill",age:45}];let o=P(0),s=E(()=>c(o)*2),r=E(()=>c(o)*2),m=P(0);z(()=>{M(m,c(o)*2)});var p=gt(),y=w(A(p),4),l=w(y,2),i=v(l);h(l);var n=w(l,2),u=v(n);h(n);var _=w(n,2),b=v(_);h(_);var f=w(_,4),S=v(f);fe(S,()=>e.children??ie),h(f);var g=w(f,4),C=w(g,4);X(C,21,()=>t,B,(k,j)=>{ft(k,()=>c(j))}),h(C),F(()=>{L(i,`${c(o)??""} doubled is ${c(s)??""} (derived)`),L(u,`${c(o)??""} doubled is ${c(r)??""} (derived by)`),L(b,`${c(o)??""} doubled is ${c(m)??""} ($effect)`)}),ue("click",y,()=>ke(o)),ue("click",g,()=>e.random(Math.floor(Math.random()*10))),d(a,p),V()}Te(["click"]);var de={},te={},ne=34,G=10,ae=13;function pe(a){return new Function("d","return {"+a.map(function(e,t){return JSON.stringify(e)+": d["+t+'] || ""'}).join(",")+"}")}function yt(a,e){var t=pe(a);return function(o,s){return e(t(o),s,a)}}function he(a){var e=Object.create(null),t=[];return a.forEach(function(o){for(var s in o)s in e||t.push(e[s]=s)}),t}function Y(a,e){var t=a+"",o=t.length;return o<e?new Array(e-o+1).join(0)+t:t}function bt(a){return a<0?"-"+Y(-a,6):a>9999?"+"+Y(a,6):Y(a,4)}function wt(a){var e=a.getUTCHours(),t=a.getUTCMinutes(),o=a.getUTCSeconds(),s=a.getUTCMilliseconds();return isNaN(a)?"Invalid Date":bt(a.getUTCFullYear())+"-"+Y(a.getUTCMonth()+1,2)+"-"+Y(a.getUTCDate(),2)+(s?"T"+Y(e,2)+":"+Y(t,2)+":"+Y(o,2)+"."+Y(s,3)+"Z":o?"T"+Y(e,2)+":"+Y(t,2)+":"+Y(o,2)+"Z":t||e?"T"+Y(e,2)+":"+Y(t,2)+"Z":"")}function xt(a){var e=new RegExp('["'+a+`
-\r]`),t=a.charCodeAt(0);function o(n,u){var _,b,f=s(n,function(S,g){if(_)return _(S,g-1);b=S,_=u?yt(S,u):pe(S)});return f.columns=b||[],f}function s(n,u){var _=[],b=n.length,f=0,S=0,g,C=b<=0,k=!1;n.charCodeAt(b-1)===G&&--b,n.charCodeAt(b-1)===ae&&--b;function j(){if(C)return te;if(k)return k=!1,de;var W,U=f,T;if(n.charCodeAt(U)===ne){for(;f++<b&&n.charCodeAt(f)!==ne||n.charCodeAt(++f)===ne;);return(W=f)>=b?C=!0:(T=n.charCodeAt(f++))===G?k=!0:T===ae&&(k=!0,n.charCodeAt(f)===G&&++f),n.slice(U+1,W-1).replace(/""/g,'"')}for(;f<b;){if((T=n.charCodeAt(W=f++))===G)k=!0;else if(T===ae)k=!0,n.charCodeAt(f)===G&&++f;else if(T!==t)continue;return n.slice(U,W)}return C=!0,n.slice(U,b)}for(;(g=j())!==te;){for(var R=[];g!==de&&g!==te;)R.push(g),g=j();u&&(R=u(R,S++))==null||_.push(R)}return _}function r(n,u){return n.map(function(_){return u.map(function(b){return i(_[b])}).join(a)})}function m(n,u){return u==null&&(u=he(n)),[u.map(i).join(a)].concat(r(n,u)).join(`
-`)}function p(n,u){return u==null&&(u=he(n)),r(n,u).join(`
-`)}function y(n){return n.map(l).join(`
-`)}function l(n){return n.map(i).join(a)}function i(n){return n==null?"":n instanceof Date?wt(n):e.test(n+="")?'"'+n.replace(/"/g,'""')+'"':n}return{parse:o,parseRows:s,format:m,formatBody:p,formatRows:y,formatRow:l,formatValue:i}}var _t=xt(","),Ct=_t.parse;const kt=(a,e)=>{let t=P(Se(a)),o=P(null),s=P(!0),r=P(void 0);const m=(l=!0)=>{M(s,l,!0),l===!0&&(M(r,null),M(o,null))},p=async()=>{try{const l=await fetch(c(t),e);if(!l.ok)throw new Error(`Unexpected error occurred (status ${l.status})`);let i;if(c(t).includes(".csv")){const n=await l.text();i=Ct(n)}else i=await l.json();return[null,i]}catch(l){const{errorMessage:i="Unexpected error eccurred"}=l;return[i,null]}},y=async l=>{m(!0);const[i,n]=await p();if(l===c(t)){if(i){m(!1),M(r,i,!0);return}m(!1),M(o,n,!0)}};return z(()=>{y(c(t))}),{get data(){return c(o)},get loading(){return c(s)},get error(){return c(r)},get url(){return c(t)},set url(l){c(t)!==l&&M(t,l,!0)}}};var St=x("<p>loading data...</p>"),At=x("<p> </p>"),Tt=x("<p>data loaded</p> <pre> </pre>",1),Yt=x('<div class="c"><h2>Load Data</h2> <div class="response"><!></div></div>');function Lt(a,e){J(e,!0);const t=`${De}/assets/demo/test.csv`,o=kt(t);z(()=>{});var s=Yt(),r=w(v(s),2),m=v(r);{var p=i=>{var n=St();d(i,n)},y=i=>{var n=At(),u=v(n);h(n),F(()=>L(u,`error: ${o.error??""}`)),d(i,n)},l=i=>{var n=Tt(),u=w(A(n),2),_=v(u,!0);h(u),F(b=>L(_,b),[()=>JSON.stringify(o.data,null,2)]),d(i,n)};ee(m,i=>{o.loading?i(p):o.error?i(y,1):i(l,-1)})}h(r),h(s),d(a,s),V()}var Nt=x('<div id="demo" class="svelte-15aotx7"><h1>Demo</h1> <!> <!> <!> <!> <!> <!> <!> <!></div>');function Ft(a){let e=P(0);function t(u){console.log(u)}var o=Nt(),s=w(v(o),2);je(s);var r=w(s,2);Ee(r);var m=w(r,2);Xe(m);var p=w(m,2);qe(p);var y=w(p,2);mt(y,{});var l=w(y,2);Lt(l,{});var i=w(l,2);Ve(i);var n=w(i,2);vt(n,{random:t,get value(){return c(e)},set value(u){M(e,u,!0)}}),h(o),d(a,o)}function qt(a){Ft(a)}export{qt as component};
+}`;var Qe=x("<p></p>"),$e=x('<details><summary></summary> <div class="content"><!></div></details>');function en(a,e){let n=B(()=>typeof e.content=="string"),o=B(()=>e.open==="true");var s=$e(),r=v(s);U(r,()=>e.summary,!0),h(r);var m=w(r,2),f=v(m);{var y=i=>{var t=N(),c=A(t);U(c,()=>e.content),d(i,t)},l=i=>{var t=N(),c=A(t);E(c,17,()=>e.content,X,(C,b)=>{let p=()=>u(b).value;var S=Qe();U(S,p,!0),h(S),d(C,S)}),d(i,t)};ee(f,i=>{u(n)?i(y):i(l,-1)})}h(m),h(s),F(()=>{s.open=u(o),me(s,"name",e.name)}),d(a,s)}var nn=x("<li></li>"),tn=x("<ul></ul>");function an(a,e){var n=tn();E(n,21,()=>e.li,X,(o,s)=>{var r=nn();U(r,()=>u(s),!0),h(r),d(o,r)}),h(n),d(a,n)}var on=x("<li></li>"),sn=x("<ol></ol>");function rn(a,e){var n=sn();E(n,21,()=>e.li,X,(o,s)=>{var r=on();U(r,()=>u(s),!0),h(r),d(o,r)}),h(n),d(a,n)}var ln=x("<p></p>"),un=x("<section><!></section>");function cn(a,e){J(e,!0);const n={details:en,ul:an,ol:rn};let o=H(e,"components",19,()=>({})),s=H(e,"body",19,()=>[]);var r=N(),m=A(r);E(m,17,s,X,(f,y)=>{let l=()=>u(y).section,i=()=>u(y).content;const t=B(()=>l().toLowerCase().replace(/[^a-z0-9]/g,"")),c=B(()=>o()[l()]);var C=un(),b=v(C);{var p=g=>{var k=N(),_=A(k);se(_,()=>u(c),(j,D)=>{D(j,re(i))}),d(g,k)},S=g=>{var k=N(),_=A(k);E(_,17,i,X,(j,D,W,q)=>{let T=()=>u(D).type,O=()=>u(D).value;const K=B(()=>o()[T()]||n[T()]),ge=B(()=>typeof O()=="string");var le=N(),ve=A(le);{var ye=R=>{var I=N(),z=A(I);se(z,()=>u(K),(Q,$)=>{$(Q,re(O))}),d(R,I)},be=R=>{var I=ln();U(I,O,!0),h(I),d(R,I)},we=R=>{var I=N(),z=A(I);oe(z,T,!1,(Q,$)=>{var ue=N(),Ce=A(ue);U(Ce,O),d($,ue)}),d(R,I)},xe=R=>{var I=N(),z=A(I);oe(z,T,!1,(Q,$)=>{Le(Q,()=>({...O()}))}),d(R,I)};ee(ve,R=>{u(K)?R(ye):T()==="text"?R(be,1):u(ge)?R(we,2):R(xe,-1)})}d(j,le)}),d(g,k)};ee(b,g=>{u(c)?g(p):g(S,-1)})}h(C),F(()=>me(C,"id",u(t))),d(f,C)}),d(a,r),V()}var dn=x('<p> </p> <progress max="100"></progress>',1);function hn(a,e){let n=H(e,"label",3,"A"),o=H(e,"value",3,0);var s=dn(),r=A(s),m=v(r,!0);h(r);var f=w(r,2);F(()=>{L(m,n()),Ne(f,o())}),d(a,s)}var mn=x('<section id="cms"><h2>MicroCMS</h2> <code><pre> </pre></code> <!></section>');function pn(a,e){J(e,!0);const{body:n}=Re,o={Test:hn};var s=mn(),r=w(v(s),2),m=v(r),f=v(m,!0);h(m),h(r);var y=w(r,2);cn(y,{get components(){return o},get body(){return n}}),h(s),F(l=>L(f,l),[()=>Ke.replace(/\t/g," ")]),d(a,s),V()}const fn=(a,e=ie)=>{var n=gn(),o=v(n),s=v(o,!0);h(o);var r=w(o,2),m=v(r,!0);h(r),h(n),F(()=>{L(s,e().name),L(m,e().age)}),d(a,n)};var gn=x('<div class="person svelte-q3gttf"><p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p></div>'),vn=x('<h2>Svelte5</h2> <h3>Reactive variables 3 ways:</h3> <button class="svelte-q3gttf">count++</button> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <h3>Children (previously slots):</h3> <div class="children"><!></div> <h3>Dispatch Event</h3> <button class="svelte-q3gttf">Random</button>  <h3>Snippets</h3> <div class="people svelte-q3gttf"></div>',1);function yn(a,e){J(e,!0),H(e,"age",3,30);const n=[{name:"John",age:30},{name:"Jill",age:45}];let o=P(0),s=B(()=>u(o)*2),r=B(()=>u(o)*2),m=P(0);G(()=>{M(m,u(o)*2)});var f=vn(),y=w(A(f),4),l=w(y,2),i=v(l);h(l);var t=w(l,2),c=v(t);h(t);var C=w(t,2),b=v(C);h(C);var p=w(C,4),S=v(p);pe(S,()=>e.children??ie),h(p);var g=w(p,4),k=w(g,4);E(k,21,()=>n,X,(_,j)=>{fn(_,()=>u(j))}),h(k),F(()=>{L(i,`${u(o)??""} doubled is ${u(s)??""} (derived)`),L(c,`${u(o)??""} doubled is ${u(r)??""} (derived by)`),L(b,`${u(o)??""} doubled is ${u(m)??""} ($effect)`)}),ce("click",y,()=>_e(o)),ce("click",g,()=>e.random(Math.floor(Math.random()*10))),d(a,f),V()}Te(["click"]);var de={},ne={},te=34,Z=10,ae=13;function fe(a){return new Function("d","return {"+a.map(function(e,n){return JSON.stringify(e)+": d["+n+'] || ""'}).join(",")+"}")}function bn(a,e){var n=fe(a);return function(o,s){return e(n(o),s,a)}}function he(a){var e=Object.create(null),n=[];return a.forEach(function(o){for(var s in o)s in e||n.push(e[s]=s)}),n}function Y(a,e){var n=a+"",o=n.length;return o<e?new Array(e-o+1).join(0)+n:n}function wn(a){return a<0?"-"+Y(-a,6):a>9999?"+"+Y(a,6):Y(a,4)}function xn(a){var e=a.getUTCHours(),n=a.getUTCMinutes(),o=a.getUTCSeconds(),s=a.getUTCMilliseconds();return isNaN(a)?"Invalid Date":wn(a.getUTCFullYear())+"-"+Y(a.getUTCMonth()+1,2)+"-"+Y(a.getUTCDate(),2)+(s?"T"+Y(e,2)+":"+Y(n,2)+":"+Y(o,2)+"."+Y(s,3)+"Z":o?"T"+Y(e,2)+":"+Y(n,2)+":"+Y(o,2)+"Z":n||e?"T"+Y(e,2)+":"+Y(n,2)+"Z":"")}function Cn(a){var e=new RegExp('["'+a+`
+\r]`),n=a.charCodeAt(0);function o(t,c){var C,b,p=s(t,function(S,g){if(C)return C(S,g-1);b=S,C=c?bn(S,c):fe(S)});return p.columns=b||[],p}function s(t,c){var C=[],b=t.length,p=0,S=0,g,k=b<=0,_=!1;t.charCodeAt(b-1)===Z&&--b,t.charCodeAt(b-1)===ae&&--b;function j(){if(k)return ne;if(_)return _=!1,de;var W,q=p,T;if(t.charCodeAt(q)===te){for(;p++<b&&t.charCodeAt(p)!==te||t.charCodeAt(++p)===te;);return(W=p)>=b?k=!0:(T=t.charCodeAt(p++))===Z?_=!0:T===ae&&(_=!0,t.charCodeAt(p)===Z&&++p),t.slice(q+1,W-1).replace(/""/g,'"')}for(;p<b;){if((T=t.charCodeAt(W=p++))===Z)_=!0;else if(T===ae)_=!0,t.charCodeAt(p)===Z&&++p;else if(T!==n)continue;return t.slice(q,W)}return k=!0,t.slice(q,b)}for(;(g=j())!==ne;){for(var D=[];g!==de&&g!==ne;)D.push(g),g=j();c&&(D=c(D,S++))==null||C.push(D)}return C}function r(t,c){return t.map(function(C){return c.map(function(b){return i(C[b])}).join(a)})}function m(t,c){return c==null&&(c=he(t)),[c.map(i).join(a)].concat(r(t,c)).join(`
+`)}function f(t,c){return c==null&&(c=he(t)),r(t,c).join(`
+`)}function y(t){return t.map(l).join(`
+`)}function l(t){return t.map(i).join(a)}function i(t){return t==null?"":t instanceof Date?xn(t):e.test(t+="")?'"'+t.replace(/"/g,'""')+'"':t}return{parse:o,parseRows:s,format:m,formatBody:f,formatRows:y,formatRow:l,formatValue:i}}var kn=Cn(","),_n=kn.parse;const Sn=(a,e)=>{let n=P(Se(a)),o=P(null),s=P(!0),r=P(void 0);const m=(l=!0)=>{M(s,l,!0),l===!0&&(M(r,null),M(o,null))},f=async()=>{try{const l=await fetch(u(n),e);if(!l.ok)throw new Error(`Unexpected error occurred (status ${l.status})`);let i;if(u(n).includes(".csv")){const t=await l.text();i=_n(t)}else i=await l.json();return[null,i]}catch(l){const{errorMessage:i="Unexpected error eccurred"}=l;return[i,null]}},y=async l=>{m(!0);const[i,t]=await f();if(l===u(n)){if(i){m(!1),M(r,i,!0);return}m(!1),M(o,t,!0)}};return G(()=>{y(u(n))}),{get data(){return u(o)},get loading(){return u(s)},get error(){return u(r)},get url(){return u(n)},set url(l){u(n)!==l&&M(n,l,!0)}}};var An=x("<p>loading data...</p>"),Tn=x("<p> </p>"),Yn=x("<p>data loaded</p> <pre> </pre>",1),Ln=x('<div class="c"><h2>Load Data</h2> <div class="response"><!></div></div>');function Nn(a,e){J(e,!0);const n=`${Ie}/assets/demo/test.csv`,o=Sn(n);G(()=>{});var s=Ln(),r=w(v(s),2),m=v(r);{var f=i=>{var t=An();d(i,t)},y=i=>{var t=Tn(),c=v(t);h(t),F(()=>L(c,`error: ${o.error??""}`)),d(i,t)},l=i=>{var t=Yn(),c=w(A(t),2),C=v(c,!0);h(c),F(b=>L(C,b),[()=>JSON.stringify(o.data,null,2)]),d(i,t)};ee(m,i=>{o.loading?i(f):o.error?i(y,1):i(l,-1)})}h(r),h(s),d(a,s),V()}var Fn=x('<div id="demo" class="svelte-15aotx7"><h1>Demo</h1> <!> <!> <!> <!> <!> <!> <!> <!></div>');function Rn(a){let e=P(0);function n(c){console.log(c)}var o=Fn(),s=w(v(o),2);je(s);var r=w(s,2);Be(r);var m=w(r,2);Ee(m);var f=w(m,2);Ue(f);var y=w(f,2);pn(y,{});var l=w(y,2);Nn(l,{});var i=w(l,2);Ve(i);var t=w(i,2);yn(t,{random:n,get value(){return u(e)},set value(c){M(e,c,!0)}}),h(o),d(a,o)}function zn(a){Rn(a)}export{zn as component};
