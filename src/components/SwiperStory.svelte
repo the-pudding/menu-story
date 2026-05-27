@@ -30,6 +30,7 @@
 	let activeIndex = $state(0);
 	let swipeDirection = $state(1); // 1 = moving to next slide, -1 = moving to previous
 	let isDragging = $state(false);
+	let justLeftNoImage = $state(false);
 
 	// ─── Pretext / font sizing ────────────────────────────────────────────────────
 
@@ -221,7 +222,7 @@
 	const STACK = [
 		{ rot: 8, tx: 65, ty: -50, widthPct: 50, src: `assets/menus/4000000219.png` },  // top-left
 		{ rot:  50, tx:  50, ty: 0, widthPct: 50, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
-		{ rot: -55, tx: -10, ty:  -30, widthPct: 50, src: `assets/menus/4046090.png` },  // bottom-left
+		{ rot: -20, tx: -120, ty:  40, widthPct: 50, src: `assets/menus/4046090.png` },  // bottom-left
 		{ rot:  3, tx:  -80, ty:  -20, widthPct: 50, src: `assets/menus/476900.png` },  // bottom-right
 		{ rot: 2, tx: 5, ty: -50, widthPct: 50, src: `assets/menus/4000008419.png` },  // top-left
 		{ rot: 0, tx: 20, ty:  -20, widthPct: 20, src: `assets/menus/fish.png` },  // lower-left
@@ -231,27 +232,89 @@
 		{ rot:  -3, tx:   20, ty:  -2, widthPct: 100, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
 	];
 
-	// t = 0 at slide 0, t = 1 fully into slide 1
-	let stackT = $derived(Math.max(0, Math.min(slidePosition, 1)));
+	const clamp01 = (v) => Math.max(0, Math.min(1, v));
+	function phaseProgress(startIdx, endIdx) {
+		if (startIdx < 0 || endIdx < 0) return 0;
+		const span = Math.max(1, endIdx - startIdx);
+		return clamp01((slidePosition - startIdx) / span);
+	}
 
-	// Non-hero cards fade out as you swipe from slide 1 → slide 2
-	let stackOpacity = $derived(Math.max(0, Math.min(1, 2 - slidePosition)));
+	const coldNarrativeIdx = untrack(() => slides.findIndex((s) => s.id === 'cold'));
+	const buttolphIdx = untrack(() => slides.findIndex((s) => s.id === 'buttolph'));
+	const sideIdx = untrack(() => slides.findIndex((s) => s.id === 'side'));
+	const illustrationIdx = untrack(() => slides.findIndex((s) => s.id === 'illustration'));
+
+	// Top-card fly off stays aligned to cold -> buttolph transition.
+	let stackT = $derived(phaseProgress(coldNarrativeIdx, buttolphIdx >= 0 ? buttolphIdx : coldNarrativeIdx + 1));
+
+	// Non-hero fade + hero center move stay aligned to buttolph -> side transition.
+	let sideEntryT = $derived(phaseProgress(buttolphIdx, sideIdx >= 0 ? sideIdx : buttolphIdx + 1));
+	let stackOpacity = $derived(1 - sideEntryT);
 
 	// Entire stack fades out when entering the first soup slide
 	const titleIdx = untrack(() => slides.findIndex(s => s.id === 'soup'));
 	let stackTitleOpacity = $derived(titleIdx >= 0 ? 1 - smoothstep(Math.max(0, Math.min(1, slidePosition - (titleIdx - 1)))) : 1);
+
+	// Stack slides in from the right when reaching the 'cold' slide.
+	const coldIdx = untrack(() => slides.findIndex(s => s.id === 'cold'));
+	let stackSlideX = $derived(coldIdx >= 0 && activeIndex < coldIdx ? 100 : 0);
+	const STACK_SLIDE_DURATION = 360;
+	const STACK_SLIDE_DELAY = 0;
+	let tweenedStackSlideX = $state(100);
+	let stackSlideRaf = 0;
+
+	$effect(() => {
+		const target = stackSlideX;
+		if (isDragging) {
+			tweenedStackSlideX = target;
+			if (stackSlideRaf) cancelAnimationFrame(stackSlideRaf);
+			return;
+		}
+
+		const start = untrack(() => tweenedStackSlideX);
+		if (Math.abs(start - target) < 0.01) {
+			tweenedStackSlideX = target;
+			return;
+		}
+
+		const startedAt = performance.now();
+		if (stackSlideRaf) cancelAnimationFrame(stackSlideRaf);
+
+		function animate(now) {
+			const elapsed = now - startedAt - STACK_SLIDE_DELAY;
+			if (elapsed < 0) {
+				stackSlideRaf = requestAnimationFrame(animate);
+				return;
+			}
+			const t = Math.min(1, elapsed / STACK_SLIDE_DURATION);
+			tweenedStackSlideX = lerp(start, target, smoothstep(t));
+			if (t < 1) stackSlideRaf = requestAnimationFrame(animate);
+		}
+
+		stackSlideRaf = requestAnimationFrame(animate);
+		return () => {
+			if (stackSlideRaf) cancelAnimationFrame(stackSlideRaf);
+		};
+	});
+
+	const newSlideIdx = untrack(() => slides.findIndex(s => s.id === 'new-slide'));
+	let introBgSlideX = $derived(coldIdx >= 0 && slidePosition < coldIdx ? 0 : -100);
+	let introBgOpacity = $derived(
+		newSlideIdx >= 0
+			? (slidePosition >= newSlideIdx && (coldIdx < 0 || slidePosition < coldIdx + 0.35) ? 1 : 0)
+			: 0
+	);
 
 
 	// Widths of animated cards — set by onload, included in stackStyles so reactive updates don't wipe them
 	let heroRightWidth = $state(0);
 	let secondWidth = $state(0);
 
-	// Hero pair: cards 7 & 8 animate to center side-by-side as you enter slide 3
-	// t goes 0→1 as slidePosition goes 1→2
-	let heroT = $derived(smoothstep(Math.max(0, Math.min(1, slidePosition - 1))));
+	// Hero pair: cards 7 & 8 animate to center side-by-side entering "side".
+	let heroT = $derived(smoothstep(sideEntryT));
 
-	// Hero pair exits off-screen when swiping away from "side" slide (slidePosition 2→3)
-	let heroExitT = $derived(smoothstep(Math.max(0, Math.min(1, slidePosition - 2))));
+	// Hero pair exits off-screen when swiping away from "side" toward "illustration".
+	let heroExitT = $derived(smoothstep(phaseProgress(sideIdx, illustrationIdx >= 0 ? illustrationIdx : sideIdx + 1)));
 	let isDesktop = $derived(dims.width > 600);
 
 	// Per-card transform strings, driven by stackT
@@ -303,9 +366,13 @@
 	let fromIdx = $derived(Math.floor(Math.max(0, Math.min(slidePosition, slides.length - 1))));
 	let toIdx = $derived(Math.min(fromIdx + 1, slides.length - 1));
 	let blendT = $derived(Math.max(0, Math.min(slidePosition - fromIdx, 1)));
+	function hasSoupBg(slide) {
+		return slide?.id === 'soup' && slide?.layout !== 'no-image' && !!slide?.bgSrc;
+	}
+	let isNoImageSlideActive = $derived(slides[activeIndex]?.layout === 'no-image');
 	// While dragging on a soup slide, keep soup references pinned to the snapped active slide
 	// so bg/label/annotation don't switch to the next soup slide mid-drag.
-	let soupDragLocked = $derived(isDragging && slides[activeIndex]?.id === 'soup');
+	let soupDragLocked = $derived(isDragging && hasSoupBg(slides[activeIndex]));
 	let soupRefFromIdx = $derived(soupDragLocked ? activeIndex : fromIdx);
 	let soupRefToIdx = $derived(soupDragLocked ? activeIndex : toIdx);
 	let soupRefBlendT = $derived(soupDragLocked ? 0 : blendT);
@@ -319,6 +386,7 @@
 	// Soup background — preload all bgSrc images up front so the img tag always gets
 	// pixel data that's already in memory, making in:fade play against a visible image.
 	let preloadedImages = $state(/** @type {Map<string, HTMLImageElement>} */ (new Map()));
+	let lastSoupBgSrc = $state(null);
 
 	onMount(() => {
 		const srcs = [...new Set(slides.map(s => s.bgSrc).filter(Boolean))];
@@ -331,20 +399,27 @@
 		});
 	});
 
-	let soupBgNaturalW = $derived(preloadedImages.get(soupBg.src)?.naturalWidth ?? 0);
-	let soupBgNaturalH = $derived(preloadedImages.get(soupBg.src)?.naturalHeight ?? 0);
+	let soupBgRenderSrc = $derived(soupBg.src ?? (isNoImageSlideActive ? lastSoupBgSrc : null));
+	$effect(() => {
+		if (soupBg.src) lastSoupBgSrc = soupBg.src;
+	});
+	let soupBgNaturalW = $derived(preloadedImages.get(soupBgRenderSrc)?.naturalWidth ?? 0);
+	let soupBgNaturalH = $derived(preloadedImages.get(soupBgRenderSrc)?.naturalHeight ?? 0);
 	// Only expose src to the template once it's preloaded — prevents assigning a src the browser hasn't fetched yet
-	let soupBgReadySrc = $derived(preloadedImages.has(soupBg.src) ? soupBg.src : null);
+	let soupBgReadySrc = $derived(soupBgRenderSrc && preloadedImages.has(soupBgRenderSrc) ? soupBgRenderSrc : null);
+	let soupBgMounted = $state(false);
+	let soupBgIntroDelay = $derived(soupBgMounted && !justLeftNoImage ? 400 : 0);
+	let soupBgOutroDelay = $derived(justLeftNoImage ? 0 : 100);
+	let soupBgOutroDuration = $derived(justLeftNoImage ? 0 : 200);
+	let soupBgLayerOpacity = $derived(isNoImageSlideActive ? 0 : 1);
+	let overlayLoadedIds = $state(new Set());
 	let currentSoupBgImageId = $derived(normalizeImageId(soupBgReadySrc));
 	let filteredZoomIds = $derived((zoomIds ?? []).filter((id) => normalizeImageId(id) !== currentSoupBgImageId));
 
 	let soupBg = $derived.by(() => {
-		const from = slides[soupRefFromIdx];
-		const to   = slides[soupRefToIdx];
-		const fromIsSoup = from?.id === 'soup';
-		const toIsSoup   = to?.id   === 'soup';
-		if (!fromIsSoup && !toIsSoup) return { src: null };
-		return { src: (fromIsSoup ? from : to)?.bgSrc ?? null };
+		const active = slides[activeIndex];
+		if (!hasSoupBg(active)) return { src: null };
+		return { src: active.bgSrc ?? null };
 	});
 
 	// Slow zoom animation: when settled on a zoom soup slide, zoomProgress eases 0→1
@@ -354,7 +429,7 @@
 
 	$effect(() => {
 		const slide = slides[activeIndex];
-		const isZoomSlide = slide?.id === 'soup' && slide?.layout !== 'fit-height';
+		const isZoomSlide = hasSoupBg(slide) && slide?.layout !== 'fit-height';
 		if (!isZoomSlide || soupPanZoom) { zoomProgress = 0; return; }
 
 		zoomProgress = 0;
@@ -404,8 +479,8 @@
 		const nw = soupBgNaturalW, nh = soupBgNaturalH;
 		const from = slides[soupRefFromIdx];
 		const to   = slides[soupRefToIdx];
-		const fromIsSoup = from?.id === 'soup';
-		const toIsSoup   = to?.id   === 'soup';
+		const fromIsSoup = hasSoupBg(from);
+		const toIsSoup   = hasSoupBg(to);
 		if (!fromIsSoup && !toIsSoup) return null;
 		const fromIsZoom = fromIsSoup && from?.layout !== 'fit-height';
 		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, fromIsZoom ? zoomProgress : 1);
@@ -474,14 +549,11 @@
 		};
 	});
 
-	// Top label — crossfades between soup slides as you swipe between them
+	// Top label follows the active soup-bg slide only.
 	let soupTopLabel = $derived.by(() => {
-		const from = slides[soupRefFromIdx];
-		const to   = slides[soupRefToIdx];
-		const fromIsSoup = from?.id === 'soup';
-		const toIsSoup   = to?.id   === 'soup';
-		if (!fromIsSoup && !toIsSoup) return null;
-		return (toIsSoup && soupRefBlendT >= 0.5 ? to : fromIsSoup ? from : to)?.topLabel ?? null;
+		const active = slides[activeIndex];
+		if (!hasSoupBg(active)) return null;
+		return active?.topLabel ?? null;
 	});
 
 	const defaultZoom = { scale: 1, x: 0, y: 0 };
@@ -501,7 +573,7 @@
 			modules: [Zoom, Keyboard],
 			// grabCursor: true,
 			// resistanceRatio: 0.6,
-			speed: 300,
+			speed: 400,
 			// threshold: 5,
 			longSwipesRatio: 0.2,
 			// longSwipesMs: 300,
@@ -524,6 +596,9 @@
 		});
 
 		swiper.on("activeIndexChange", (s) => {
+			const prevSlide = slides[activeIndex];
+			const nextSlide = slides[s.activeIndex];
+			justLeftNoImage = prevSlide?.layout === 'no-image' && nextSlide?.layout !== 'no-image';
 			swipeDirection = s.activeIndex >= activeIndex ? 1 : -1;
 			activeIndex = s.activeIndex;
 		});
@@ -606,6 +681,8 @@
 	const PZ_MAX_ZOOM = 8;
 	const PZ_RESET_DURATION = 280;
 	const SOUP_ZOOM_RESET_DURATION = 620;
+	const PZ_PAN_STEP = 60;
+	const PZ_ZOOM_STEP = 1.2;
 
 	const pzPointers = new Map();
 	let pzLastPinchDist = 0;
@@ -654,6 +731,7 @@
 		if (zoomProgress > 0 || soupBgXform) {
 			await animateSoupZoomOut();
 		}
+		overlayLoadedIds = new Set();
 		soupPanZoom = true;
 		const imagePathTail = String(imageId ?? '').split('/').pop() ?? '';
 		const normalizedImageId = normalizeImageId(imageId);
@@ -666,6 +744,7 @@
 	function exitPanZoom() {
 		resetPanZoomView();
 		soupPanZoom = false;
+		overlayLoadedIds = new Set();
 	}
 
 	function onPzPointerDown(e) {
@@ -711,17 +790,33 @@
 		pzPanY = e.clientY * (1 - k) + pzPanY * k;
 		pzZoom = newZoom;
 	}
+
+	function nudgePan(dx, dy) {
+		pzResetAnimating = false;
+		pzPanX += dx;
+		pzPanY += dy;
+	}
+
+	function stepZoom(multiplier) {
+		pzResetAnimating = false;
+		pzZoom = Math.max(0.5, Math.min(PZ_MAX_ZOOM, pzZoom * multiplier));
+	}
 </script>
 
 <section class="story">
 	<!-- ── Fixed background ── -->
 	<div class="story-bg" aria-hidden="true">
+		<div
+			class="intro-bg"
+			style="opacity: {introBgOpacity}; transform: translateX({introBgSlideX}%) rotate(-2deg); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
+		></div>
+
 		<!-- Zoomed photo background (visible from slide 1 onward) -->
 		<div
 			class="story-image"
 			style="transform: scale({zoomScale}) translate({zoomX}%, {zoomY}%);
 			       opacity: {Math.min(1, slidePosition)};
-			       transition: {isDragging ? 'none' : 'transform 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'}"
+			       transition: {isDragging ? 'none' : 'transform 420ms ease-in'}"
 		></div>
 
 		<!-- Soup slide background image — zoomed and pinned to focal point -->
@@ -729,6 +824,7 @@
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div class="soup-bg"
 				class:panzoom-active={soupPanZoom}
+				style="opacity: {soupBgLayerOpacity}; transition: opacity 320ms ease;"
 				onpointerdown={soupPanZoom ? onPzPointerDown : undefined}
 				onpointermove={soupPanZoom ? onPzPointerMove : undefined}
 				onpointerup={soupPanZoom ? onPzPointerUp : undefined}
@@ -741,17 +837,25 @@
 							src={soupBgReadySrc}
 							alt=""
 							draggable="false"
+							onintroend={() => { soupBgMounted = true; justLeftNoImage = false; }}
+							onoutroend={() => { if (!soupBgReadySrc) soupBgMounted = false; }}
 							class:soup-zoom-resetting={soupZoomResetting}
-							out:fade={{ duration: 200, delay:100,easing: cubicOut }}
-							in:fly={{ duration: 500, delay: 400, x: dims.width/2 * swipeDirection, easing: cubicOut }}
+							out:fade|global={{ duration: soupBgOutroDuration, delay: soupBgOutroDelay, easing: cubicOut }}
+							in:fly|global={{ duration: 500, delay: soupBgIntroDelay, x: dims.width/2 * swipeDirection, easing: cubicOut }}
 							style="transform: {soupPageTransform(0)}; transform-origin: 0 0;"
 						/>
 					{/key}
 					{#if soupPanZoom}
-						{#each filteredZoomIds as pageSrc, pageIndex}
-							
+						{#each filteredZoomIds as pageSrc, pageIndex}	
 							<img
 								class="soup-bg-overlay-mock"
+								class:loaded={overlayLoadedIds.has(pageSrc)}
+								onload={() => {
+									if (!overlayLoadedIds.has(pageSrc)) {
+										overlayLoadedIds = new Set([...overlayLoadedIds, pageSrc]);
+									}
+								}}
+								in:fade={{ duration: 300, delay: 0, easing: cubicOut }}
 								src={`https://s3.us-east-1.amazonaws.com/pudding.cool/projects/menu-images/${pageSrc}.jpg`}
 								alt=""
 								draggable="false"
@@ -771,7 +875,7 @@
 			</div>
 		{/if}
 
-		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity}; transition: {isDragging ? 'none' : `opacity 700ms ease`}">
+		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity}; transform: translate3d(0%, {-tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
 			{#each STACK as card, i}
 				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
 						const w = e.currentTarget.naturalWidth * (card.widthPct / 100);
@@ -804,7 +908,7 @@
 											<div class="slide-curve">
 												{@html curve}
 											</div>
-											{#if soupBgReadySrc}
+											{#if hasSoupBg(slide) && soupBgReadySrc}
 												<button onclick={() => enterPanZoom(slide.bgSrc)} aria-label="Explore image" class="">
 													<span>EXPLORE FULL MENU</span>
 												</button>
@@ -815,12 +919,12 @@
 											</div>
 										</div>
 
-										{#if soupTopLabel}
+										{#if slide.topLabel}
 											<div class="slide-tab">
 												<div class="slide-curve">
 													{@html curve}
 												</div>
-												<p>{soupTopLabel}</p>
+												<p>{@html slide.topLabel}</p>
 												<div style="
 													"
 													class="slide-curve slide-curve-right">
@@ -830,10 +934,14 @@
 										{/if}
 									{/if}
 									<div
-										class="slide-body-wrapper {slide.image ? 'has-image' : ''} {firstSlide ? 'first-slide' : ''}"
+										class="slide-body-wrapper {slide.image ? 'has-image' : ''} {firstSlide ? 'first-slide' : ''} {slide.layout === 'no-image' ? 'no-image' : ''}"
 										bind:this={wrapperEl}
 										bind:clientHeight={wrapperClientHeights[i]}
-										style="font-size: {bodyFontSizes[i]}px; line-height: {bodyLineHeights[i]}; {wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : ''}"
+										style={slide.layout === 'no-image'
+											? `font-size: ${slide.id === 'new-slide' ? 36 : bodyFontSizes[i]}px; line-height: ${slide.id === 'new-slide' ? 1.1 : bodyLineHeights[i]}; height: calc(100svh - 40px); ${(slide.id === 'new-slide' || bodyFontSizes[i] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
+											: slide.id === 'new-slide'
+												? 'font-size: 36px; line-height: 1.1; -webkit-font-smoothing: antialiased;'
+												: `font-size: ${bodyFontSizes[i]}px; line-height: ${bodyLineHeights[i]}; ${wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : ''} ${bodyFontSizes[i] > 36 ? '-webkit-font-smoothing: antialiased;' : ''}`}
 									>
 										<div class="slide-body-text" bind:clientWidth={textWidths[i]}>
 											{#each slide.body as line}
@@ -877,6 +985,18 @@
 
 	<!-- ── Pan/zoom button ── -->
 	{#if soupPanZoom}
+		<div class="soup-panzoom-controls" aria-label="Pan and zoom controls" role="group">
+			<div class="soup-panzoom-controls-grid">
+				<button class="pz-btn pz-up" onclick={() => nudgePan(0, PZ_PAN_STEP)} aria-label="Pan up">↑</button>
+				<button class="pz-btn pz-left" onclick={() => nudgePan(PZ_PAN_STEP, 0)} aria-label="Pan left">←</button>
+				<button class="pz-btn pz-right" onclick={() => nudgePan(-PZ_PAN_STEP, 0)} aria-label="Pan right">→</button>
+				<button class="pz-btn pz-down" onclick={() => nudgePan(0, -PZ_PAN_STEP)} aria-label="Pan down">↓</button>
+			</div>
+			<div class="soup-panzoom-controls-actions">
+				<button class="pz-btn" onclick={() => stepZoom(PZ_ZOOM_STEP)} aria-label="Zoom in">+</button>
+				<button class="pz-btn" onclick={() => stepZoom(1 / PZ_ZOOM_STEP)} aria-label="Zoom out">-</button>
+			</div>
+		</div>
 		<!-- <button class="soup-panzoom-reset" onclick={() => resetPanZoomView(true)} aria-label="Reset zoom">Reset</button> -->
 		<button class="soup-panzoom-exit soup-top-label" onclick={exitPanZoom} aria-label="Exit pan/zoom">
 			<span>
@@ -953,6 +1073,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		transition: opacity 700ms ease;
 	}
 
 	.stack-card {
@@ -988,6 +1109,21 @@
 		display: none;
 	}
 
+	.intro-bg {
+		position: absolute;
+		inset: 0;
+		background-image: url('/assets/menus/intro.png');
+		background-size: contain;
+		background-position: center;
+		will-change: transform, opacity;
+		pointer-events: none;
+		background-repeat: no-repeat;
+		z-index: 100;
+		height: 90lvh;
+ 	   	top: 5lvh;
+		transform: rotate(2deg);
+	}
+
 	.story-overlay {
 		position: absolute;
 		inset: 0;
@@ -1019,6 +1155,8 @@
 		max-width: 800px;
 		margin: 0 auto;
 		height: 100%;
+		padding-bottom: 20px;
+		transform: rotate(-0.2deg);
 		/* padding: 0 1rem clamp(3rem, 8vh, 5rem); */
 		/* color: #fff; */
 	}
@@ -1031,7 +1169,7 @@
 	.slide-body-wrapper {
 		height: 30vh;
 		/* flex-direction: column; */
-		padding: 20px 35px;
+		padding: 15px 20px;
 		/* justify-content: flex-end; */
 		border-radius: 3px;
 		overflow: hidden;
@@ -1041,6 +1179,11 @@
 		justify-content: center;
 
 		/* padding-bottom: 2rem; */
+	}
+
+	.slide-body-wrapper.no-image {
+		height: calc(100svh - 40px);
+		justify-content: flex-start;
 	}
 
 	.has-image {
@@ -1072,24 +1215,24 @@
 		display: flex;
 		flex-direction: column;
 		border-radius: 1px;
-		filter: drop-shadow(0px -1px 6px rgba(0, 0, 0, .15));
+		/* filter: drop-shadow(0px -1px 6px rgba(0, 0, 0, .15)); */
 		border-top: 1px solid rgb(252 252 252 / 32%);
 	}
 	.slide-tab {
 		position: absolute;
-		top: -1px;
-		right: 170px;
+		top: 2px;
+		right: 190px;
 		background: #fff4d2;
 		height: 23px;
 		transform: translate(0%, -100%);
 		font-family: monospace;
 		color:rgba(0, 0, 0, .7);
 		line-height: 2;
-		font-size: 12px;
-		padding-right: 10px;
+		font-size: 14px;
 	}
 	.slide-tab-explore {
 		background: #eee4be;
+		top: -1px;
 	}
 	.slide-tab-explore {
 		padding-left: 0;
@@ -1105,24 +1248,27 @@
 		margin:0;
 		text-decoration: underline;
 		padding-left: 10px;
-		transform: translate(8px, 0)rotate(.1deg);
+		transform: translate(0px, 0)rotate(.1deg);
 		letter-spacing: -0.3px;
 		background:none;
 		color:rgba(0, 0, 0, .7);
 		font-family: monospace;
+		z-index: 10000;
+    	position: relative;
 	}
 	.slide-tab p {
-		transform: translate(8px, 0) rotate(-0.2deg);
+		transform: translate(0px, 0) rotate(-0.2deg);
 		letter-spacing: -0.7px;
 		margin: 0;
-		max-width: 200PX;
+		max-width: 240PX;
 		LINE-HEIGHT: 1;
 		MARGIN-TOP: 6PX;
+		min-width: 30px;
 	}
 	.slide-tab-explore p {
 		text-decoration: underline;
 		padding-left: 10px;
-		transform: translate(8px, 0)rotate(.1deg);
+		transform: translate(-5px, 0)rotate(.1deg);
 		letter-spacing: -0.3px;
 	}
 
@@ -1171,6 +1317,9 @@
 	}
 	
 	.first-slide {
+		height: auto;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
 		/* height: calc(35vh - 100px); */
 	}
 
@@ -1221,6 +1370,11 @@
 		margin-top: 0;
 		/* -webkit-font-smoothing: antialiased; */
 		color: rgba(0,0,0,.9);
+		/* -webkit-font-smoothing: antialiased; */
+	}
+
+	:global(.slide-body b) {
+		-webkit-font-smoothing: auto;
 	}
 
 	.slide-body:last-child {
@@ -1403,13 +1557,19 @@
 	}
 
 	.soup-bg img.soup-bg-overlay-mock {
-		opacity: 1;
+		opacity: 0;
+		transition: opacity 280ms ease;
 		filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.18));
 		z-index: 2;
 	}
 
+	.soup-bg img.soup-bg-overlay-mock.loaded {
+		opacity: 1;
+	}
+
 	.panzoom-label {
 		position: fixed;
+		max-width: 200px;
 		top: 60px;
 		transform: translate(0, 0) rotate(-1deg);
 		left: 0;
@@ -1549,6 +1709,56 @@
 		font-size: 0.95rem;
 		cursor: pointer;
 		backdrop-filter: blur(4px);
+	}
+
+	.soup-panzoom-controls {
+		position: fixed;
+		top: 12px;
+		right: 12px;
+		z-index: 30;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.soup-panzoom-controls-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 36px);
+		grid-template-rows: repeat(2, 36px);
+		gap: 4px;
+	}
+
+	.pz-up { grid-column: 2; grid-row: 1; }
+	.pz-left { grid-column: 1; grid-row: 2; }
+	.pz-right { grid-column: 2; grid-row: 2; }
+	.pz-down { grid-column: 2; grid-row: 3; }
+
+	.soup-panzoom-controls-actions {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 4px;
+	}
+
+	.pz-btn {
+		height: 36px;
+		min-width: 36px;
+		border: 1px solid rgba(0, 0, 0, 0.32);
+		border-radius: 8px;
+		background: #fff;
+		color: #000;
+		font-family: monospace;
+		font-size: 14px;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.pz-btn:hover {
+		background: rgba(71, 59, 59, 0.2);
+	}
+
+	.pz-btn:focus-visible {
+		outline: 2px solid #fff;
+		outline-offset: 1px;
 	}
 
 	/* .soup-panzoom-btn {
