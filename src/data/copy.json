@@ -15,7 +15,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The New York Public Library has an archive of menus, primarily from the 1880s to the 1920s, including some of the first menus to resemble modern-day restaurant dining."
+          "value": "The New York Public Library has an archive of over 25,000 menus, primarily from 1880-1920, including some of the first menus to resemble modern-day restaurant dining."
         }
       ]
     },
@@ -24,7 +24,7 @@
       "body": [
         {
           "type": "text",
-          "value": "These menus were sourced by Frank E. Buttolph (pictured above) who spent decades archiving over 25,000 menus as a record for future generations of the culinary and social history of her time."
+          "value": "Frank E. Buttolph (pictured above) spent decades assembling the menus as a record for future generations of the culinary and social history of her time."
         },
         {
           "type": "text",
@@ -47,14 +47,11 @@
     },
     {
       "id": "illustration",
+      "type": "auto",
       "body": [
         {
           "type": "text",
-          "value": "Get enough menus together, and they can tell not just a culinary history, but a social one."
-        },
-        {
-          "type": "text",
-          "value": "I’ve searched through the archive to tell you that story in <b>ten dishes.</b> Your table is ready—right this way."
+          "value": "Get enough menus together, and they can tell not just a culinary history, but a social one. I’ve searched through the archive to tell you that story in <b>ten dishes.</b> Your table is ready—right this way."
         }
       ]
     },
@@ -175,7 +172,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Restaurant dining was one way the post-Civil War elite <b>symbolically distinguished themselves from the masses.</b> French was one aspect of gatekeeping – luxury was another."
+          "value": "Restaurant dining was one way the post-Civil War elite <b>symbolically distinguished themselves from the masses.</b> French was one aspect of gatekeeping—luxury was another."
         },
         {
           "type": "text",
@@ -198,11 +195,11 @@
       "body": [
         {
           "type": "text",
-          "value": "Speaking of rare meats: your third course: <i>vol au vent of sweetbread a la toulouse</i> – a pastry case filled with sweetbreads and a brown sauce – here paired with champagne at the “Ninth Annual Dinner in Honor of Crow Charlton” hosted at the Hotel Bellevue."
+          "value": "Speaking of rare meats: your third course: <i>vol au vent of sweetbread a la toulouse</i>, a pastry case filled with sweetbreads and a brown sauce, here paired with champagne at the “Ninth Annual Dinner in Honor of Crow Charlton” hosted at the Hotel Bellevue."
         },
         {
           "type": "text",
-          "value": "The American aristocratic restaurant of the late 19th century didn’t just serve food that paired complex cooking technique with decadent, luxury ingredients – it also publicly flaunted that decadence."
+          "value": "The American aristocratic restaurant of the late-1800s didn’t just serve food that paired complex cooking technique with decadent, luxury ingredients; it also publicly flaunted that decadence."
         }
       ]
     },
@@ -252,7 +249,8 @@
       "anchorY": "0.2",
       "annotationX": "344",
       "annotationY": "405",
-      "topLabel": "St. Andrew’s Society Anniversary, Palace Hotel, San Francisco, CA, 1896",
+      "topLabelSmall": "true",
+      "topLabel": "St. Andrew’s Society Anniversary, Palace Hotel, SF, CA, 1896",
       "body": [
         {
           "type": "text",
@@ -301,7 +299,7 @@
         },
         {
           "type": "text",
-          "value": "The century is turning over, and so is the menu: the dishes are now mostly in English, there’s a price attached, and it’s one of a number of a la carte options. The menu even warns that some dishes may take 15 minutes more to prepare!"
+          "value": "The century is turning over, and so is the menu: dishes are mostly in English, there’s a price attached, and it’s one of a number of <i>à la carte options</i>. The menu even warns that some dishes may take 15 minutes more to prepare!"
         }
       ]
     },

@@ -38,9 +38,9 @@
 	let fontFamily = $state("serif"); // read from DOM after mount — matches whatever CSS sets on .slide-body
 	const PARA_MARGIN_EM = 0.75; // margin-bottom between <p> tags (em)
 
-	// Line-height ramps from 1.1 at 14px (min font, pack lines tighter) up to 1.25 at 18px+.
+	// Line-height ramps from 1.15 at 21px up to 1.25 at 36px+, with a 1.1 floor.
 	function lineHeightFor(fontSize) {
-		return Math.max(1.1, Math.min(1.25, 0.575 + 0.0375 * fontSize));
+		return Math.max(1.1, Math.min(1.15, 1.01 + fontSize / 150));
 	}
 
 	// Strip HTML tags so pretext measures visible characters only, not tag syntax.
@@ -144,6 +144,16 @@
 	let chromeHeights = $state(Array.from({ length: untrack(() => slides.length) }, () => 0));
 
 	const MIN_FONT = 14;
+	const AUTO_BODY_FONT_SIZE = 24;
+
+	function isAutoTypeSlide(slide) {
+		return slide?.type === 'auto';
+	}
+
+	function isTopLabelSmall(slide) {
+		if(slide?.topLabelSmall === 'true') return true;
+		return false;
+	}
 
 	// Binary search for the largest font size ≥ MIN_FONT where all paragraphs fit availH.
 	function fitFontSize(paragraphs, availH, textWidth) {
@@ -178,6 +188,10 @@
 	// Per-slide layout: font size + optional wrapper height override when text hits MIN_FONT.
 	let bodyLayouts = $derived(
 		slides.map((slide, idx) => {
+			if (isAutoTypeSlide(slide)) {
+				// type:auto opts out of measured fitting and keeps a fixed body size.
+				return { fontSize: AUTO_BODY_FONT_SIZE, wrapperMinH: null };
+			}
 			const clientH = wrapperClientHeights[idx] ?? 0;
 			const textWidth = textWidths[idx] ?? 0;
 			const slideAvailH = clientH - wrapperPadV;
@@ -258,8 +272,8 @@
 	// Stack slides in from the right when reaching the 'cold' slide.
 	const coldIdx = untrack(() => slides.findIndex(s => s.id === 'cold'));
 	let stackSlideX = $derived(coldIdx >= 0 && activeIndex < coldIdx ? 100 : 0);
-	const STACK_SLIDE_DURATION = 360;
-	const STACK_SLIDE_DELAY = 0;
+	const STACK_SLIDE_DURATION = 500;
+	const STACK_SLIDE_DELAY = 200;
 	let tweenedStackSlideX = $state(100);
 	let stackSlideRaf = 0;
 
@@ -287,7 +301,7 @@
 				return;
 			}
 			const t = Math.min(1, elapsed / STACK_SLIDE_DURATION);
-			tweenedStackSlideX = lerp(start, target, smoothstep(t));
+			tweenedStackSlideX = lerp(start, target, cubicOut(t));
 			if (t < 1) stackSlideRaf = requestAnimationFrame(animate);
 		}
 
@@ -910,7 +924,7 @@
 											</div>
 											{#if hasSoupBg(slide) && soupBgReadySrc}
 												<button onclick={() => enterPanZoom(slide.bgSrc)} aria-label="Explore image" class="">
-													<span>EXPLORE FULL MENU</span>
+													<span>EXPLORE MENU</span>
 												</button>
 											{/if}
 											
@@ -920,7 +934,7 @@
 										</div>
 
 										{#if slide.topLabel}
-											<div class="slide-tab">
+											<div class="slide-tab" class:slide-tab-small={isTopLabelSmall(slide)}>
 												<div class="slide-curve">
 													{@html curve}
 												</div>
@@ -934,7 +948,7 @@
 										{/if}
 									{/if}
 									<div
-										class="slide-body-wrapper {slide.image ? 'has-image' : ''} {firstSlide ? 'first-slide' : ''} {slide.layout === 'no-image' ? 'no-image' : ''}"
+										class="slide-body-wrapper {slide.image ? 'has-image' : ''} {firstSlide ? 'first-slide' : ''} {slide.layout === 'no-image' ? 'no-image' : ''} {isAutoTypeSlide(slide) ? 'is-auto-type' : ''}"
 										bind:this={wrapperEl}
 										bind:clientHeight={wrapperClientHeights[i]}
 										style={slide.layout === 'no-image'
@@ -1186,6 +1200,10 @@
 		justify-content: flex-start;
 	}
 
+	.slide-body-wrapper.is-auto-type:not(.no-image) {
+		height: auto;
+	}
+
 	.has-image {
 		padding-left: 20px;
 	}
@@ -1221,7 +1239,7 @@
 	.slide-tab {
 		position: absolute;
 		top: 2px;
-		right: 190px;
+		right: 150px;
 		background: #fff4d2;
 		height: 23px;
 		transform: translate(0%, -100%);
@@ -1229,6 +1247,10 @@
 		color:rgba(0, 0, 0, .7);
 		line-height: 2;
 		font-size: 14px;
+	}
+
+	.slide-tab.slide-tab-small {
+		font-size: 12px;
 	}
 	.slide-tab-explore {
 		background: #eee4be;
