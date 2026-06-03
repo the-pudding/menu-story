@@ -1873,7 +1873,11 @@
 
 	.soup-guide-overlay {
 		position: absolute;
-		inset: 0;
+		top: 0;
+		right: 0;
+		height: 100%;
+		width: max-content;
+		display: block;
 		overflow: hidden;
 		pointer-events: auto;
 		cursor: pointer;
@@ -1881,12 +1885,13 @@
 		border: 0;
 		background: transparent;
 		z-index: 2;
-		transform: translateX(92%);
+		transform: translateX(80%);
 		animation: soup-guide-peek 320ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	.soup-guide-overlay img {
-		position: absolute;
+		position: relative;
+		display: block;
 		top: 0;
 		left: 0;
 		height: 100%;
@@ -1902,6 +1907,7 @@
 		width: 36%;
 		z-index: 1000;
 		height: 100%;
+		width: auto;
 	}
 
 	:global(.soup-guide-overlay svg rect) {
@@ -1972,7 +1978,7 @@
 		}
 		to {
 			opacity: 1;
-			transform: translateX(92%);
+			transform: translateX(80%);
 		}
 	}
 

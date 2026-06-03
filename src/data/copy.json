@@ -100,7 +100,7 @@
       "bgSrc": "assets/menus/4000000068.png",
       "layout": "fit-height",
       "topLabel": "Manhattan Club, NYC, 1866",
-      "course": "1&colon; Soup",
+      "course": "1 <i>of</i> 10&colon; Soup",
       "body": [
         {
           "type": "text",
@@ -119,7 +119,7 @@
       "annotationX": "344",
       "annotationY": "405",
       "topLabel": "Astor House, NYC, 1854, Printed on silk.",
-      "course": "1&colon; Soup",
+      "course": "1 <i>of</i> 10&colon; Soup",
       "body": [
         {
           "type": "text",
@@ -145,7 +145,7 @@
       "topLabel": "Delmonico’s, NYC, 1900",
       "annotationX": "344",
       "annotationY": "405",
-      "course": "2&colon; Celery",
+      "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
           "type": "text",
@@ -168,7 +168,7 @@
       "annotationX": "344",
       "annotationY": "405",
       "topLabel": "Sherry’s, NY, 1891",
-      "course": "2&colon; Celery",
+      "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
           "type": "text",
@@ -182,7 +182,7 @@
       "bgZoom": "1",
       "layout": "fit-height",
       "topLabel": "NY Board of Trade Dinner, Hotel Brunswick, NYC, 1887",
-      "course": "2&colon; Celery",
+      "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
           "type": "text",
@@ -206,7 +206,7 @@
       "bgSrc": "assets/menus/4000008419.png",
       "layout": "fit-height",
       "topLabel": "Delmonico’s, NYC, 1900",
-      "course": "3&colon; Vol-au-vent",
+      "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
@@ -230,7 +230,7 @@
       "anchorY": "0.2",
       "annotationX": "344",
       "annotationY": "405",
-      "course": "3&colon; Vol-au-vent",
+      "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
@@ -244,7 +244,7 @@
       "bgZoom": "1",
       "layout": "fit-height",
       "topLabel": "St. Nicholas Hotel, Cincinnati, OH, 1895",
-      "course": "3&colon; Vol-au-vent",
+      "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
@@ -261,7 +261,7 @@
       "type": "auto",
       "infoLabel": "This menu from a celebration held by a Scottish expat society is even carved, roughly, in the shape of Scotland.",
       "topLabel": "St. Andrew’s Society Anniversary, Palace Hotel, SF, CA, 1896",
-      "course": "3&colon; Vol-au-vent",
+      "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
@@ -281,7 +281,7 @@
       "annotationY": "405",
       "type": "auto",
       "topLabel": "Dinner, Friends of William Clauss, The St. Nicolas Hotel, Cincinnati, OH, 1908",
-      "course": "3&colon; Vol-au-vent",
+      "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
@@ -301,7 +301,7 @@
       "bgSrc": "assets/menus/466407.png",
       "layout": "fit-height",
       "topLabel": "Union Hotel, NYC, 1900",
-      "course": "4&colon; Pork Chops Saute, Sauce Robert",
+      "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
       "body": [
         {
           "type": "text",
@@ -318,7 +318,7 @@
       "bgSrc": "assets/menus/4000004412.png",
       "layout": "fit-height",
       "topLabel": "Waldorf-Astoria, NYC, 1897",
-      "course": "4&colon; Pork Chops Saute, Sauce Robert",
+      "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
       "body": [
         {
           "type": "text",
@@ -330,7 +330,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4039367.png",
       "layout": "fit-height",
-      "course": "4&colon; Pork Chops Saute, Sauce Robert",
+      "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
       "topLabel": "English/French menu versions, Delmonicos, NYC, 1917",
       "body": [
         {
@@ -355,7 +355,7 @@
       "bgSrc": "assets/menus/4000009030.png",
       "layout": "fit-height",
       "topLabel": "Hamblen’s Restaurant, NYC, 1900",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
           "type": "text",
@@ -368,7 +368,7 @@
       "bgSrc": "assets/menus/475432.png",
       "layout": "fit-height",
       "topLabel": "Putnam House Hotel, NYC, 1900",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
           "type": "text",
@@ -385,7 +385,7 @@
       "bgSrc": "assets/menus/467291.png",
       "layout": "no-image",
       "topLabel": "&nbsp;",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
           "type": "text",
@@ -405,7 +405,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/475432.png",
       "layout": "fit-height",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Putnam House, Table d’ Hote, NYC, 1900",
       "body": [
         {
@@ -423,7 +423,7 @@
       "bgSrc": "assets/menus/467308.png",
       "layout": "fit-height",
       "topLabel": "Pure Food Cafes, NYC, 1900",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
           "type": "text",
@@ -435,7 +435,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4066460.png",
       "layout": "fit-height",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Walton’s Old Homestead Oyster and Chop House, NYC, 1914",
       "body": [
         {
@@ -448,7 +448,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/470923.png",
       "layout": "fit-height",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Child’s Lunch Rooms, NYC, 1901",
       "body": [
         {
@@ -461,7 +461,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/475314.png",
       "layout": "fit-height",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Dennett’s Surpassing Coffee, NYC, 1900",
       "body": [
         {
@@ -474,7 +474,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4034351.png",
       "layout": "fit-height",
-      "course": "5&colon; Iced Coffee",
+      "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Regal Bakery & Restaurant, NYC, 1919",
       "body": [
         {
@@ -494,7 +494,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
       "layout": "fit-height",
-      "course": "6&colon; Thursday Special",
+      "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Café, NYC, 1914",
       "body": [
         {
@@ -511,7 +511,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
       "layout": "fit-height",
-      "course": "6&colon; Thursday Special",
+      "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Café, NYC, 1914",
       "body": [
         {
@@ -528,7 +528,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4066373.png",
       "layout": "fit-height",
-      "course": "6&colon; Thursday Special",
+      "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Adams' Restaurant, NYC, 1914",
       "body": [
         {
@@ -549,7 +549,7 @@
       "bgSrc": "assets/menus/4046433.png",
       "layout": "fit-height",
       "topLabel": "Café Savarin, NYC, 1915",
-      "course": "7&colon; Pepper Pot",
+      "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
         {
           "type": "text",
@@ -570,7 +570,7 @@
       "bgSrc": "assets/menus/4066701.png",
       "layout": "fit-height",
       "topLabel": "Rathskeller, NYC, 1914",
-      "course": "7&colon; Pepper Pot",
+      "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
         {
           "type": "text",
@@ -586,7 +586,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4039920.png",
       "layout": "fit-height",
-      "course": "7&colon; Pepper Pot",
+      "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "topLabel": "The Syrian Restaurant for Ladies' & Gents, NYC, 1917",
       "body": [
         {
@@ -600,7 +600,7 @@
       "bgSrc": "assets/menus/471895.png",
       "layout": "fit-height",
       "topLabel": "Tokio Restaurant, NYC, 1914",
-      "course": "7&colon; Pepper Pot",
+      "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
         {
           "type": "text",
@@ -617,7 +617,7 @@
       "bgSrc": "assets/menus/4041320.png",
       "layout": "fit-height",
       "topLabel": "Healy’s Forty Second Street Restaurant, NYC, 1917",
-      "course": "7&colon; Pepper Pot",
+      "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
         {
           "type": "text",
@@ -641,7 +641,7 @@
       "bgSrc": "assets/menus/4037718.png",
       "layout": "fit-height",
       "topLabel": "R.H. Macy and Co., NYC, 1917",
-      "course": "8&colon; Horse’s Neck",
+      "course": "8 <i>of</i> 10&colon; Horse’s Neck",
       "body": [
         {
           "type": "text",
@@ -658,7 +658,7 @@
       "bgSrc": "assets/menus/4029870.png",
       "layout": "fit-height",
       "topLabel": "Joe's Restaurant, Brooklyn, NY, 1920",
-      "course": "8&colon; Horse’s Neck",
+      "course": "8 <i>of</i> 10&colon; Horse’s Neck",
       "body": [
         {
           "type": "text",
@@ -677,7 +677,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4025914.png",
       "layout": "fit-height",
-      "course": "9&colon; Potatoes O’Brien Au Gratin",
+      "course": "9 <i>of</i> 10&colon; Potatoes O’Brien Au Gratin",
       "topLabel": "Dinner to the Directors of Metropolitan Life Insurance, Metropolitan Club, NYC, 1921",
       "body": [
         {
@@ -695,7 +695,7 @@
       "bgSrc": "assets/menus/4025971.png",
       "layout": "fit-height",
       "topLabel": "The Portland, 1921",
-      "course": "9&colon; Potatoes O’Brien Au Gratin",
+      "course": "9 <i>of</i> 10&colon; Potatoes O’Brien Au Gratin",
       "body": [
         {
           "type": "text",
@@ -712,7 +712,7 @@
       "bgSrc": "assets/menus/4000017237.png",
       "layout": "fit-height",
       "topLabel": "Rector’s, Chicago, IL, 1906",
-      "course": "9&colon; Potatoes O’Brien Au Gratin",
+      "course": "9 <i>of</i> 10&colon; Potatoes O’Brien Au Gratin",
       "body": [
         {
           "type": "text",
@@ -732,7 +732,7 @@
       "bgSrc": "assets/menus/4036997.png",
       "layout": "fit-height",
       "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
-      "course": "10&colon; Baked Alaska",
+      "course": "10 <i>of</i> 10&colon; Baked Alaska",
       "body": [
         {
           "type": "text",
@@ -748,7 +748,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4036998.png",
       "layout": "fit-height",
-      "course": "10&colon; Baked Alaska",
+      "course": "10 <i>of</i> 10&colon; Baked Alaska",
       "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
       "body": [
         {
@@ -765,7 +765,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4036998.png",
       "layout": "fit-height",
-      "course": "10&colon; Baked Alaska",
+      "course": "10 <i>of</i> 10&colon; Baked Alaska",
       "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
       "body": [
         {
@@ -778,7 +778,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4036998.png",
       "layout": "fit-height",
-      "course": "10&colon; Baked Alaska",
+      "course": "10 <i>of</i> 10&colon; Baked Alaska",
       "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
       "body": [
         {
