@@ -83,7 +83,7 @@
       "annotationY": "340",
       "topLabel": "Delmonico’s, NYC, 1881",
       "infoLabel": "This menu is from Delmonico’s, founded in 1837 in New York, considered the origin of the French restaurant cuisine in America.",
-      "course": "1&colon; Soup",
+      "course": "1 <i>of</i> 10&colon; Soup",
       "body": [
         {
           "type": "text",
@@ -285,7 +285,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Back at the St. Nicholas, for example, one William Clauss was just hosting a dinner for his friends."
+          "value": "But for someone with the right resources, like one William Clauss, it was perfectly reasonable to have a menu made just for dinner with his friends."
         }
       ]
     },
@@ -305,15 +305,11 @@
       "body": [
         {
           "type": "text",
-          "value": "We hope you enjoyed that <i>vol au vent</i> – and America’s elite surely had – because American restaurant dining is headed somewhere new."
+          "value": "We hope you enjoyed that <i>vol au vent</i>—and America’s elite surely had—because American restaurant dining is headed somewhere new as the century turns over."
         },
         {
           "type": "text",
-          "value": "“Pork Chops Saute, Sauce Robert” feels like a fitting next course: a traditional French sauce, sure, but some American is starting to come through."
-        },
-        {
-          "type": "text",
-          "value": "The century is turning over, and so is the menu: dishes are mostly in English, there’s a price attached, and it’s one of a number of <i>à la carte</i> options. The menu even warns that some dishes may take 15 minutes more to prepare!"
+          "value": "“Pork Chops Saute, Sauce Robert” feels like a fitting next course: a traditional French sauce, sure, but American culture is starting to come through. Nevermind hours long banquets, the menu even warns that some dishes may take 15 minutes more to prepare!"
         }
       ]
     },
@@ -326,7 +322,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Our menus are following that same general structure from oysters to coffee, but they’re noticeably more complicated…"
+          "value": "Our menus are following that same general structure from oysters to coffee, but they’re noticeably more complicated: prices are attached, <i>à la carte</i> options have displaced the coursed menu …"
         }
       ]
     },
@@ -339,11 +335,11 @@
       "body": [
         {
           "type": "text",
-          "value": "…and noticeably more English-friendly."
+          "value": "…and English is becoming an acceptable choice for the sophisticated diner."
         },
         {
           "type": "text",
-          "value": "Elite dining is changing – because restaurant dining is being transformed by everyone else."
+          "value": "Elite dining is changing because restaurant dining is being transformed by everyone else."
         }
       ]
     },
@@ -418,7 +414,7 @@
         },
         {
           "type": "text",
-          "value": "In this explosion, the American restaurant didn’t just appear as an answer to the aristocratic restaurant model – it had evolved out of a host of other models of dining that emerged in between."
+          "value": "In this explosion, the American restaurant didn’t just appear as an answer to the aristocratic restaurant model; it had evolved out of a host of other models of dining that emerged in between."
         }
       ]
     },
@@ -431,7 +427,7 @@
       "body": [
         {
           "type": "text",
-          "value": "<b>Table d’hote menus</b> offered a selection of dishes at a fixed priced that mimicked the coursing of a fine dining restaurant, but with less luxurious ingredients and a more affordable price. As in this menu from the Putnam House, these places attempted to be “American” while also evoking the abundance of elite dining."
+          "value": "<b>Table d’hote menus</b> offered a selection of dishes at a fixed priced that mimicked the coursing of a fine dining restaurant, but with less luxurious ingredients and a more affordable price., These places attempted to be “American” while also evoking the abundance of elite dining."
         }
       ]
     },
@@ -444,7 +440,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The <b>beefsteak or chophouse</b> were, as it sounds, a place to find meat. The New York Times described, in 1881, how all kinds of men could be found here:   “the tables were full, and the customers were of all sorts and kinds – well dressed people, evidently with plenty of money in their pockets, market-men, countrymen, clerks, store boys – a regular gathering of clans scattered at Babel.”  And these restaurants offered just as many ways to eat meat."
+          "value": "The <b>beefsteak or chophouse</b> was, as it sounds, a place to find meat. The New York Times described, in 1881, how all kinds of men could be found here: “the customers were of all sorts and kinds – well dressed people, evidently with plenty of money in their pockets, market-men, countrymen, clerks, store boys – a regular gathering of clans scattered at Babel.”  And these restaurants offered just as many ways to eat meat."
         }
       ]
     },
@@ -595,11 +591,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Italian and German restaurants were early challengers to French dominance over dining, but middle class diners also found that there were already also a glut of restaurants serving local immigrant populations that would be happy to take their business, too."
-        },
-        {
-          "type": "text",
-          "value": "The specific offerings depended on the city, but diners started to bring their money and demands to, say, Chinese, Russian, or Syrian restaurateurs, too."
+          "value": "Italian and German restaurants were early challengers to French dominance in dining, but middle class diners found that there were restaurants serving local immigrant populations that would be happy to take their business, too."
         }
       ]
     },
@@ -653,11 +645,11 @@
       "body": [
         {
           "type": "text",
-          "value": "Why not wash that down with a “Horse’s Neck”?  While the drink later added alcohol, it originated as a mix of ginger ale and a long curling lemon rind, one of many new booze-free options appearing on menus in the early 20th century."
+          "value": "Why not wash that down with a “Horse’s Neck?”  While the drink later added alcohol, it originated as a mix of ginger ale and a curling lemon rind, one of many new booze-free options on early 20th century menus."
         },
         {
           "type": "text",
-          "value": "The beverages offered on these menus suggests the clientele had changed from a bit from those feasts accompanied solely with wine, liquor, and mineral water. Now diners had work to do, appearances to keep up, or, well, just be children."
+          "value": "The beverages offered suggest the clientele had changed a bit from those feasts accompanied solely with wine, liquor, and mineral water. Now diners had work to do, appearances to keep up, or, well, just be children."
         }
       ]
     },
@@ -792,10 +784,6 @@
         {
           "type": "text",
           "value": "And that was before the rise of fast food a few decades later, revolutionizing American dining yet again."
-        },
-        {
-          "type": "text",
-          "value": "Today’s menus show all of those influences: the oysters that still start many a meal, value meals and combinations, “fusion” and Americanized foreign cuisines, family-style dining,"
         },
         {
           "type": "text",

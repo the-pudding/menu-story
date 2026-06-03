@@ -12,6 +12,7 @@
 	import arrowRight from "$svg/arrow-right.svg";
 	import plus from "$svg/plus.svg";
 	import minus from "$svg/minus.svg";
+	import guide from "$svg/guide-text.svg";
 
 
 	[]
@@ -59,6 +60,8 @@
 	let ptLayout = $state(null);
 	let layout = $state('right');
 	const BODY_CHAPTER_BG_CLASS = 'story-chapter-active';
+	let soupGuideOpen = $state(false);
+	let guideOverlayEl = $state(null);
 	
 	onMount(async () => {
 		const mod = await import("@chenglou/pretext");
@@ -126,6 +129,45 @@
 		return tail.replace(/\.[^.]+$/, "");
 	}
 
+	function goToGuideSlide(idAttr) {
+		const idNum = Number.parseInt(String(idAttr ?? ''), 10);
+		if (!Number.isInteger(idNum) || idNum < 1 || idNum > 10) return false;
+		const nextIndex = Math.max(0, Math.min(idNum, slides.length - 1));
+		soupGuideOpen = false;
+		swiper?.slideTo(nextIndex);
+		return true;
+	}
+
+	function onGuideOverlayClick(event) {
+		// Fallback: clicking outside bound guide targets closes the overlay.
+		soupGuideOpen = false;
+	}
+
+	$effect(() => {
+		if (!soupGuideOpen || !guideOverlayEl) return;
+		const groups = Array.from(guideOverlayEl.querySelectorAll('svg g[id]'));
+		const cleanupFns = [];
+
+		groups.forEach((group) => {
+			const idAttr = group.getAttribute('id') ?? '';
+			const idNum = Number.parseInt(idAttr, 10);
+			if (!Number.isInteger(idNum) || idNum < 1 || idNum > 10) return;
+
+			group.style.cursor = 'pointer';
+			const onGroupClick = (event) => {
+				event.preventDefault();
+				event.stopPropagation();
+				goToGuideSlide(idAttr);
+			};
+			group.addEventListener('click', onGroupClick);
+			cleanupFns.push(() => group.removeEventListener('click', onGroupClick));
+		});
+
+		return () => {
+			cleanupFns.forEach((fn) => fn());
+		};
+	});
+
 
 	let dims = new useWindowDimensions();
 
@@ -155,6 +197,12 @@
 		wrapperPadV = parseFloat(s.paddingTop) + parseFloat(s.paddingBottom);
 		const bodyEl = el.querySelector(".slide-body");
 		if (bodyEl) fontFamily = getComputedStyle(bodyEl).fontFamily;
+	});
+
+	$effect(() => {
+		if (soupPanZoom || !slides[activeIndex]?.course) {
+			soupGuideOpen = false;
+		}
 	});
 
 	// Per-slide chrome (kicker + title + rule) heights — bound from DOM
@@ -453,7 +501,7 @@
 	let soupBgIntroDelay = $derived(soupBgMounted && !justLeftNoImage ? 400 : 0);
 	let soupBgOutroDelay = $derived(justLeftNoImage ? 0 : 100);
 	let soupBgOutroDuration = $derived(justLeftNoImage ? 0 : 200);
-	let soupBgLayerOpacity = $derived(isNoImageSlideActive ? 0 : 1);
+	let soupBgLayerOpacity = $derived(isNoImageSlideActive ? 0 : (soupGuideOpen ? 0.18 : 1));
 	let overlayLoadedIds = $state(new Set());
 	let currentSoupBgImageId = $derived(normalizeImageId(soupBgReadySrc));
 	let filteredZoomIds = $derived((zoomIds ?? []).filter((id) => normalizeImageId(id) !== currentSoupBgImageId));
@@ -653,6 +701,7 @@
 			justLeftNoImage = prevSlide?.layout === 'no-image' && nextSlide?.layout !== 'no-image';
 			swipeDirection = s.activeIndex >= activeIndex ? 1 : -1;
 			activeIndex = s.activeIndex;
+			soupGuideOpen = false;
 		});
 
 		return () => swiper?.destroy();
@@ -898,14 +947,14 @@
 	<div class="story-bg" aria-hidden="true">
 		<div
 			class="intro-bg"
-			style="opacity: {introBgOpacity}; transform: translateX({introBgSlideX}%) rotate(-2deg); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
+			style="opacity: {introBgOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translateX({introBgSlideX}%) rotate(-2deg); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
 		></div>
 
 		<!-- Zoomed photo background (visible from slide 1 onward) -->
 		<div
 			class="story-image"
 			style="transform: scale({zoomScale}) translate({zoomX}%, {zoomY}%);
-			       opacity: {Math.min(1, slidePosition)};
+			       opacity: {Math.min(1, slidePosition) * (soupGuideOpen ? 0.18 : 1)};
 			       transition: {isDragging ? 'none' : 'transform 420ms ease-in'}"
 		></div>
 
@@ -965,7 +1014,7 @@
 			</div>
 		{/if}
 
-		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity}; transform: translate3d(0%, {-tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
+		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate3d(0%, {-tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
 			{#each STACK as card, i}
 				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
 						if (card.fitViewportHeight) {
@@ -985,12 +1034,28 @@
 		<div class="story-overlay"></div>
 	</div>
 
+	{#if soupGuideOpen}
+		<button
+			type="button"
+			bind:this={guideOverlayEl}
+			class="soup-guide-overlay"
+			onclick={onGuideOverlayClick}
+			aria-label="Close guide"
+		>
+			{@html guide}
+			<img src="/assets/menus/guide.png" alt="" />
+		</button>
+	{/if}
+
 	{#if !soupPanZoom && slides[activeIndex]?.course}
 			<div
 				class="soup-slide-index-label"
+				class:guide-open={soupGuideOpen}
 				aria-live="polite"
 			>
-				<span>Course {@html slides[activeIndex]?.course}</span>
+				<details bind:open={soupGuideOpen}>
+					<summary>Course {@html slides[activeIndex]?.course}</summary>
+				</details>
 			</div>	
 	{/if}
 	<!-- ── Swiper ── -->
@@ -1085,7 +1150,7 @@
 					{:else}
 						<div class="slide-inline-image">
 							<div class="slide-inline-image-frame"
-								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '-2deg' : '0deg'});"
+								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '-.2deg' : '0deg'});"
 							>
 								<img src={slide.image} alt={slide.imageAlt ?? ''} class={slide.class ? slide.class : ''} />
 								{#if slide.image === 'assets/menus/title.png'}
@@ -1372,7 +1437,7 @@
 	.slide-content details {
 		padding: 15px 20px;
 		padding-top: 0;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 	}
 
 
@@ -1454,7 +1519,7 @@
 		background: #fff4d2;
 		height: 23px;
 		transform: translate(0%, -100%);
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		color:rgba(0, 0, 0, .7);
 		line-height: 2;
 		font-size: 14px;
@@ -1485,7 +1550,7 @@
 		letter-spacing: -0.3px;
 		background:none;
 		color:rgba(0, 0, 0, .7);
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		z-index: 10000;
     	position: relative;
 	}
@@ -1520,7 +1585,7 @@
 		transform: translate(100%, 0%) scaleX(-1);
 	}
 	.swipe-right {
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		z-index: 10;
 		position: relative;
 		display: flex;
@@ -1806,6 +1871,43 @@
 		opacity: 1;
 	}
 
+	.soup-guide-overlay {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		pointer-events: auto;
+		cursor: pointer;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		z-index: 2;
+		transform: translateX(92%);
+		animation: soup-guide-peek 320ms cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.soup-guide-overlay img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: auto;
+		max-width: none;
+		z-index: 100;
+	}
+
+	:global(.soup-guide-overlay svg) {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 36%;
+		z-index: 1000;
+		height: 100%;
+	}
+
+	:global(.soup-guide-overlay svg rect) {
+		display: none;
+	}
+
 	.soup-info-label {
 		position: absolute;
 		right: 12px;
@@ -1817,7 +1919,7 @@
 		border: 1px solid rgba(66, 57, 42, 0.28);
 		border-radius: 2px;
 		padding: 8px 10px;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 12px;
 		line-height: 1.35;
 		color: rgba(0, 0, 0, 0.78);
@@ -1840,24 +1942,38 @@
 		right: 12px;
 		top: 12px;
 		z-index: 4;
-		pointer-events: none;
+		transition: right 220ms ease;
 		background: rgba(255, 251, 239, 0.94);
 		border: 1px solid rgba(66, 57, 42, 0.28);
 		border-radius: 2px;
 		padding: 8px 10px;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 12px;
 		line-height: 1;
 		color: rgba(0, 0, 0, 0.78);
-		font-size: 14px;
+		font-size: 16px;
 		font-family: 'EB Garamond';
-		text-transform: uppercase;
 		font-weight: 900;
 	}
 
-	.soup-slide-index-label span {
+	.soup-slide-index-label.guide-open {
+		right: 90px;
+	}
+
+	.soup-slide-index-label details {
 		display: inline-block;
-		letter-spacing: 0.04em;
+		letter-spacing: -.3px;
+	}
+
+	@keyframes soup-guide-peek {
+		from {
+			opacity: 0;
+			transform: translateX(100%);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(92%);
+		}
 	}
 
 	.panzoom-label {
@@ -1867,7 +1983,7 @@
 		transform: translate(0, 0) rotate(-1deg);
 		left: 0;
 		z-index: 20;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 14px;
 		text-align: left;
 		/* pointer-events: none; */
@@ -1897,7 +2013,7 @@
 		top: 10px;
 		left: 0;
 		z-index: 20;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 16px;
 		text-align: left;
 		/* pointer-events: none; */
@@ -2013,7 +2129,7 @@
 		gap: 8px;
 	}
 	.soup-panzoom-controls p {
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 12px;
 		color: rgba(0, 0, 0, .7);
 		margin: 0;
@@ -2062,7 +2178,7 @@
 		border-radius: 2px;
 		background: #fff;
 		color: #000;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 14px;
 		line-height: 1;
 		cursor: pointer;
@@ -2193,7 +2309,7 @@
 		position: absolute;
 		bottom: 3rem;
 		left: 2rem;
-		font-family: monospace;
+		font-family: "Courier Prime", monospace;
 		font-size: 14px;
 		background: #fffef5;
     	border-radius: 2px;
