@@ -79,7 +79,7 @@
       "focalY": "300",
       "anchorX": "0.7",
       "anchorY": "0.2",
-      "annotationX": "190",
+      "annotationX": "620",
       "annotationY": "340",
       "topLabel": "Delmonico’s, NYC, 1881",
       "infoLabel": "This menu is from Delmonico’s, founded in 1837 in New York, considered the origin of the French restaurant cuisine in America.",
@@ -111,15 +111,14 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/476900.png",
-      "bgZoom": "1",
-      "focalX": "490",
+      "bgZoom": ".95",
+      "focalX": "390",
       "focalY": "300",
-      "anchorX": "0.5",
+      "anchorX": "0.7",
       "anchorY": "0.2",
-      "annotationX": "344",
-      "annotationY": "405",
       "topLabel": "Astor House, NYC, 1854, Printed on silk.",
       "course": "1 <i>of</i> 10&colon; Soup",
+      "infoLabel": "Terrapin is a turtle native to NYC waters.",
       "body": [
         {
           "type": "text",
@@ -133,7 +132,10 @@
     },
     {
       "id": "soup",
-      "image": "assets/menus/2.png",
+      "image": "assets/menus/section.png",
+      "sectionCount": "2",
+      "courseDescription": "TK TK",
+      "courseName": "Celery in a Crystal Celery Vase",
       "imageAlt": "Fish illustration",
       "class": "chapter",
       "body": []
@@ -196,7 +198,10 @@
     },
     {
       "id": "soup",
-      "image": "assets/menus/3.png",
+      "image": "assets/menus/section.png",
+      "sectionCount": "3",
+      "courseDescription": "TK TK",
+      "courseName": "Vol-au-vent",
       "imageAlt": "Fish illustration",
       "class": "chapter",
       "body": []
@@ -291,7 +296,10 @@
     },
     {
       "id": "soup",
-      "image": "assets/menus/4.png",
+      "image": "assets/menus/section.png",
+      "sectionCount": "4",
+      "courseDescription": "TK TK",
+      "courseName": "Pork Chop Saute",
       "imageAlt": "Fish illustration",
       "class": "chapter",
       "body": []
@@ -301,7 +309,7 @@
       "bgSrc": "assets/menus/466407.png",
       "layout": "fit-height",
       "topLabel": "Union Hotel, NYC, 1900",
-      "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
+      "course": "4 <i>of</i> 10&colon; Pork Chop Saute",
       "body": [
         {
           "type": "text",
@@ -345,7 +353,10 @@
     },
     {
       "id": "soup",
-      "image": "assets/menus/5.png",
+      "image": "assets/menus/section.png",
+      "sectionCount": "5",
+      "courseDescription": "TK TK",
+      "courseName": "Iced Coffee",
       "imageAlt": "Fish illustration",
       "class": "chapter",
       "body": []
