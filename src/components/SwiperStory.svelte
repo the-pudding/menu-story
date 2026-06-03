@@ -9,6 +9,10 @@
 	import "swiper/css/zoom";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
 	import curve from "$svg/curve.svg";
+	import arrowRight from "$svg/arrow-right.svg";
+	import plus from "$svg/plus.svg";
+	import minus from "$svg/minus.svg";
+
 
 	[]
 
@@ -40,7 +44,7 @@
 
 	// Line-height ramps from 1.15 at 21px up to 1.25 at 36px+, with a 1.1 floor.
 	function lineHeightFor(fontSize) {
-		return Math.max(1.1, Math.min(1.15, 1.01 + fontSize / 150));
+		return Math.max(1, Math.min(1.2, 1.01 + fontSize / 150));
 	}
 
 	// Strip HTML tags so pretext measures visible characters only, not tag syntax.
@@ -53,6 +57,9 @@
 	let zoomIds = $state(null);
 	let ptPrepare = $state(null);
 	let ptLayout = $state(null);
+	let layout = $state('right');
+	const BODY_CHAPTER_BG_CLASS = 'story-chapter-active';
+	
 	onMount(async () => {
 		const mod = await import("@chenglou/pretext");
 		ptPrepare = mod.prepare;
@@ -131,6 +138,16 @@
 	let wrapperEl = $state(null);
 
 	$effect(() => {
+		const body = document?.body;
+		if (!body) return;
+		const isChapterSlide = slides[activeIndex]?.class === 'chapter';
+		body.classList.toggle(BODY_CHAPTER_BG_CLASS, isChapterSlide);
+		return () => {
+			body.classList.remove(BODY_CHAPTER_BG_CLASS);
+		};
+	});
+
+	$effect(() => {
 		const el = wrapperEl;
 		if (!el) return;
 		dims.height; dims.width; // re-run on viewport resize or orientation change
@@ -144,6 +161,8 @@
 	let chromeHeights = $state(Array.from({ length: untrack(() => slides.length) }, () => 0));
 
 	const MIN_FONT = 14;
+	const MAX_FIT_FONT = 24;
+	const RIGHT_LAYOUT_BODY_MAX_VH = 0.8;
 	const AUTO_BODY_FONT_SIZE = 24;
 
 	function isAutoTypeSlide(slide) {
@@ -157,7 +176,7 @@
 
 	// Binary search for the largest font size ≥ MIN_FONT where all paragraphs fit availH.
 	function fitFontSize(paragraphs, availH, textWidth) {
-		let lo = MIN_FONT, hi = 30;
+		let lo = MIN_FONT, hi = MAX_FIT_FONT;
 		for (let iter = 0; iter < 12; iter++) {
 			const mid = (lo + hi) / 2;
 			const lh = lineHeightFor(mid);
@@ -194,7 +213,8 @@
 			}
 			const clientH = wrapperClientHeights[idx] ?? 0;
 			const textWidth = textWidths[idx] ?? 0;
-			const slideAvailH = clientH - wrapperPadV;
+			const rightLayoutAvailH = dims.height * RIGHT_LAYOUT_BODY_MAX_VH - wrapperPadV;
+			const slideAvailH = layout === 'right' ? rightLayoutAvailH : clientH - wrapperPadV;
 			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || slideAvailH <= 0) {
 				return { fontSize: REF_SIZE, wrapperMinH: null };
 			}
@@ -233,16 +253,24 @@
 	// Wide fan spread — cards fill and overflow the screen at various angles.
 	// tx/ty are percentages of card width/height.
 	const IMG_BASE = 'https://s3.us-east-1.amazonaws.com/pudding.cool/projects/menu-images/';
+	let buttolphPos = {
+		rot: 8, tx: -80, ty: -20, widthPct: 50
+	}
+	if (untrack(() => layout) === "right") {
+		buttolphPos = {
+			rot: 8, tx: 80, ty: 0, widthPct: 75
+		}
+	}
 	const STACK = [
 		{ rot: 8, tx: 65, ty: -50, widthPct: 50, src: `assets/menus/4000000219.png` },  // top-left
 		{ rot:  50, tx:  50, ty: 0, widthPct: 50, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
 		{ rot: -20, tx: -120, ty:  40, widthPct: 50, src: `assets/menus/4046090.png` },  // bottom-left
 		{ rot:  3, tx:  -80, ty:  -20, widthPct: 50, src: `assets/menus/476900.png` },  // bottom-right
 		{ rot: 2, tx: 5, ty: -50, widthPct: 50, src: `assets/menus/4000008419.png` },  // top-left
-		{ rot: 0, tx: 20, ty:  -20, widthPct: 20, src: `assets/menus/fish.png` },  // lower-left
+		{ rot: 4, tx: 50, ty:  0, widthPct: 30, fitViewportHeight: true, src: `assets/menus/fish.png` },  // lower-left
 		{ rot:  18, tx:  -20, ty:  35, widthPct: 50, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
 		{ rot: 10, tx: 50, ty: -50, widthPct: 50, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
-		{ rot:  8, tx:   -80, ty:   -20, widthPct: 50, src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
+		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
 		{ rot:  -3, tx:   20, ty:  -2, widthPct: 100, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
 	];
 
@@ -272,7 +300,7 @@
 	// Stack slides in from the right when reaching the 'cold' slide.
 	const coldIdx = untrack(() => slides.findIndex(s => s.id === 'cold'));
 	let stackSlideX = $derived(coldIdx >= 0 && activeIndex < coldIdx ? 100 : 0);
-	const STACK_SLIDE_DURATION = 500;
+	const STACK_SLIDE_DURATION = 300;
 	const STACK_SLIDE_DELAY = 200;
 	let tweenedStackSlideX = $state(100);
 	let stackSlideRaf = 0;
@@ -463,7 +491,7 @@
 	// Compute fit-height xform (common starting point for all soup slides).
 	function fitHeightXform(vw, vh, nw, nh) {
 		const s  = vh / (vw * nh / nw);
-		const tx = (vw - vw * s) / 2;
+		const tx = layout === 'right' ? vw - vw * s - 20 : (vw - vw * s) / 2;
 		return { tx, ty: 0, s };
 	}
 
@@ -519,8 +547,11 @@
 
 	function soupPageTransform(pageIndex = 0) {
 		if (!soupBgXform) return 'none';
+		const baseTx = soupPanZoom
+			? (dims.width - dims.width * soupBgXform.s) / 2
+			: soupBgXform.tx;
 		const pageOffset = pageIndex * (dims.width + PANZOOM_PAGE_GAP) * soupBgXform.s;
-		return `translate(${soupBgXform.tx + pageOffset}px, ${soupBgXform.ty}px) scale(${soupBgXform.s})`;
+		return `translate(${baseTx + pageOffset}px, ${soupBgXform.ty}px) scale(${soupBgXform.s})`;
 	}
 
 	// Annotation — pinned to the active zoom soup slide's annotationX/Y (native image pixels).
@@ -570,6 +601,13 @@
 		return active?.topLabel ?? null;
 	});
 
+	// Optional contextual label rendered over the soup background image.
+	let soupInfoLabel = $derived.by(() => {
+		const active = slides[activeIndex];
+		if (!hasSoupBg(active)) return null;
+		return active?.infoLabel ?? null;
+	});
+
 	const defaultZoom = { scale: 1, x: 0, y: 0 };
 
 	// Image zoom / pan — eased so transitions feel cinematic rather than linear
@@ -587,7 +625,7 @@
 			modules: [Zoom, Keyboard],
 			// grabCursor: true,
 			// resistanceRatio: 0.6,
-			speed: 400,
+			speed: 300,
 			// threshold: 5,
 			longSwipesRatio: 0.2,
 			// longSwipesMs: 300,
@@ -815,6 +853,44 @@
 		pzResetAnimating = false;
 		pzZoom = Math.max(0.5, Math.min(PZ_MAX_ZOOM, pzZoom * multiplier));
 	}
+
+	$effect(() => {
+		if (!soupPanZoom) return;
+
+		function onPanZoomKeydown(event) {
+			const target = event.target;
+			if (target instanceof HTMLElement) {
+				const tagName = target.tagName;
+				if (target.isContentEditable || tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT') {
+					return;
+				}
+			}
+
+			switch (event.key) {
+				case 'ArrowUp':
+					event.preventDefault();
+					nudgePan(0, PZ_PAN_STEP);
+					break;
+				case 'ArrowDown':
+					event.preventDefault();
+					nudgePan(0, -PZ_PAN_STEP);
+					break;
+				case 'ArrowLeft':
+					event.preventDefault();
+					nudgePan(PZ_PAN_STEP, 0);
+					break;
+				case 'ArrowRight':
+					event.preventDefault();
+					nudgePan(-PZ_PAN_STEP, 0);
+					break;
+			}
+		}
+
+		window.addEventListener('keydown', onPanZoomKeydown);
+		return () => {
+			window.removeEventListener('keydown', onPanZoomKeydown);
+		};
+	});
 </script>
 
 <section class="story">
@@ -892,6 +968,12 @@
 		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity}; transform: translate3d(0%, {-tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
 			{#each STACK as card, i}
 				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
+						if (card.fitViewportHeight) {
+							e.currentTarget.style.height = '100%';
+							e.currentTarget.style.width = 'auto';
+							e.currentTarget.style.maxWidth = 'none';
+							return;
+						}
 						const w = e.currentTarget.naturalWidth * (card.widthPct / 100);
 						if (card.role === 'heroRight') heroRightWidth = w;
 						else if (card.role === 'second') secondWidth = w;
@@ -903,6 +985,14 @@
 		<div class="story-overlay"></div>
 	</div>
 
+	{#if !soupPanZoom && slides[activeIndex]?.course}
+			<div
+				class="soup-slide-index-label"
+				aria-live="polite"
+			>
+				<span>Course {@html slides[activeIndex]?.course}</span>
+			</div>	
+	{/if}
 	<!-- ── Swiper ── -->
 	<div class="swiper" bind:this={containerEl} style="pointer-events: {soupPanZoom ? 'none' : 'auto'}">
 		<div class="swiper-wrapper">
@@ -910,8 +1000,10 @@
 				{@const firstSlide = i === 0}
 				<div class="swiper-slide" class:is-zoom-slide={slide.zoomSlide}>
 					{#if !slide.image}
-						<div class="slide-inner"
+						<div class="slide-inner {layout === 'right' ? 'right-align' : ''}"
 							class:is-active={activeIndex === i}
+							class:center-align={slide.layout === 'no-image'}
+							class:first-slide={firstSlide}
 							class:hidden={soupPanZoom}
 							style="justify-content: {slide.id == "title" ? 'center' : ''}"
 						>							
@@ -924,7 +1016,7 @@
 											</div>
 											{#if hasSoupBg(slide) && soupBgReadySrc}
 												<button onclick={() => enterPanZoom(slide.bgSrc)} aria-label="Explore image" class="">
-													<span>EXPLORE MENU</span>
+													<span>VIEW FULL MENU -&gt;</span>
 												</button>
 											{/if}
 											
@@ -952,9 +1044,9 @@
 										bind:this={wrapperEl}
 										bind:clientHeight={wrapperClientHeights[i]}
 										style={slide.layout === 'no-image'
-											? `font-size: ${slide.id === 'new-slide' ? 36 : bodyFontSizes[i]}px; line-height: ${slide.id === 'new-slide' ? 1.1 : bodyLineHeights[i]}; height: calc(100svh - 40px); ${(slide.id === 'new-slide' || bodyFontSizes[i] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
+											? `font-size: ${slide.id === 'new-slide' ? 36 : bodyFontSizes[i]}px; line-height: ${slide.id === 'new-slide' ? "1" : bodyLineHeights[i]}; ${(slide.id === 'new-slide' || bodyFontSizes[i] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
 											: slide.id === 'new-slide'
-												? 'font-size: 36px; line-height: 1.1; -webkit-font-smoothing: antialiased;'
+												? 'font-size: 36px; line-height: 1; -webkit-font-smoothing: antialiased;'
 												: `font-size: ${bodyFontSizes[i]}px; line-height: ${bodyLineHeights[i]}; ${wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : ''} ${bodyFontSizes[i] > 36 ? '-webkit-font-smoothing: antialiased;' : ''}`}
 									>
 										<div class="slide-body-text" bind:clientWidth={textWidths[i]}>
@@ -965,11 +1057,25 @@
 									</div>
 									{#if firstSlide}
 										<div class="swipe-right">
-											<span><u>swipe right to continue</u>&nbsp;--&gt;</span>
+											<span class="swipe-right-note">swipe right to continue&nbsp;--&gt;
+											
+												<span class="desktop-keyboard">or use the keyboard
+													<div class="key"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left svelte-drta2n" style="width: 1em; height: 1em; transform: rotate(0deg);"><g><polyline points="15 18 9 12 15 6"></polyline></g></svg></div>
+													<div class="key"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right svelte-drta2n" style="width: 1em; height: 1em; transform: rotate(0deg);"><g><polyline points="9 18 15 12 9 6"></polyline></g></svg></div>
+												</span>
+											</span>
+										
 										</div>
 									{/if}
+														{#if soupInfoLabel && !soupPanZoom}
+						<details class="">
+							<summary>Fun Fact</summary>
+							<p>{@html soupInfoLabel}</p>
+						</details>
+					{/if}
 								</div>
 							{/if}
+							
 							<div class="slide-chrome" bind:clientHeight={chromeHeights[i]}>
 								<span class="slide-kicker">{slide.kicker}</span>
 								<h2 class="slide-title">{slide.title}</h2>
@@ -978,9 +1084,30 @@
 						</div>
 					{:else}
 						<div class="slide-inline-image">
-							<img src={slide.image} alt={slide.imageAlt ?? ''} class={slide.class ? slide.class : ''} />
+							<div class="slide-inline-image-frame"
+								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '-2deg' : '0deg'});"
+							>
+								<img src={slide.image} alt={slide.imageAlt ?? ''} class={slide.class ? slide.class : ''} />
+								{#if slide.image === 'assets/menus/title.png'}
+									<div class="byline">
+										<p><a href="https://pudding.cool/author/stephen-lurie/" target="_blank">By Stephen Lurie</a></p>
+										<p>June 2026</p>
+									</div>
+								{/if}
+								{#if slide.image === 'assets/menus/section.png'}
+								<div class="section-text">
+									{#if slide.sectionCount}
+										<p class="course-count">Course {slide.sectionCount}</p>
+										<img src={`assets/menus/${slide.sectionCount}.png`} alt="" />
+										<p class="course-name">{slide.courseName}</p>
+										<p class="course-description">{slide.courseDescription}</p>
+									{/if}
+								</div>
+								{/if}
+							</div>
 						</div>
 					{/if}
+
 				</div>
 			{/each}
 		</div>
@@ -999,22 +1126,40 @@
 
 	<!-- ── Pan/zoom button ── -->
 	{#if soupPanZoom}
+
 		<div class="soup-panzoom-controls" aria-label="Pan and zoom controls" role="group">
+			<p>pan/zoom with your mouse</p>
 			<div class="soup-panzoom-controls-grid">
-				<button class="pz-btn pz-up" onclick={() => nudgePan(0, PZ_PAN_STEP)} aria-label="Pan up">↑</button>
-				<button class="pz-btn pz-left" onclick={() => nudgePan(PZ_PAN_STEP, 0)} aria-label="Pan left">←</button>
-				<button class="pz-btn pz-right" onclick={() => nudgePan(-PZ_PAN_STEP, 0)} aria-label="Pan right">→</button>
-				<button class="pz-btn pz-down" onclick={() => nudgePan(0, -PZ_PAN_STEP)} aria-label="Pan down">↓</button>
+				<button class="pz-btn pz-up" onclick={() => nudgePan(0, PZ_PAN_STEP)} aria-label="Pan up">
+					<div style="transform: rotate(-90deg);">
+						{@html arrowRight}
+					</div>
+				</button>
+				<button class="pz-btn pz-left" onclick={() => nudgePan(PZ_PAN_STEP, 0)} aria-label="Pan left">
+					<div style="transform: rotate(180deg);">
+						{@html arrowRight}
+					</div>
+				</button>
+				<button class="pz-btn pz-right" onclick={() => nudgePan(-PZ_PAN_STEP, 0)} aria-label="Pan right">
+					<div style="transform: rotate(0deg);">
+						{@html arrowRight}
+					</div>
+				</button>
+				<button class="pz-btn pz-down" onclick={() => nudgePan(0, -PZ_PAN_STEP)} aria-label="Pan down">
+					<div style="transform: rotate(90deg);">
+						{@html arrowRight}
+					</div>
+				</button>
 			</div>
 			<div class="soup-panzoom-controls-actions">
-				<button class="pz-btn" onclick={() => stepZoom(PZ_ZOOM_STEP)} aria-label="Zoom in">+</button>
-				<button class="pz-btn" onclick={() => stepZoom(1 / PZ_ZOOM_STEP)} aria-label="Zoom out">-</button>
+				<button class="pz-btn" onclick={() => stepZoom(PZ_ZOOM_STEP)} aria-label="Zoom in">{@html plus}</button>
+				<button class="pz-btn" onclick={() => stepZoom(1 / PZ_ZOOM_STEP)} aria-label="Zoom out">{@html minus}</button>
 			</div>
 		</div>
 		<!-- <button class="soup-panzoom-reset" onclick={() => resetPanZoomView(true)} aria-label="Reset zoom">Reset</button> -->
 		<button class="soup-panzoom-exit soup-top-label" onclick={exitPanZoom} aria-label="Exit pan/zoom">
 			<span>
-				&lt;-- GO BACK
+				GO BACK
 			</span>
 		</button>
 		<div class="panzoom-label">
@@ -1062,6 +1207,14 @@
 {/if}
 
 <style>
+	:global(body.story-chapter-active) {
+		background: #f7f7f7;
+	}
+
+	:global(body){
+		transition: background-color 500ms ease;
+	}
+
 	/* ── Layout ───────────────────────────────────────────────────── */
 
 	.story {
@@ -1175,6 +1328,54 @@
 		/* color: #fff; */
 	}
 
+	.slide-inner.right-align {
+		justify-content: center;
+		margin-left: 0;
+    	width: 50vw;
+		max-width: 500px;
+	}
+
+	.slide-inner.center-align {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 800px;
+		width: calc(100% - 50px);
+	}
+
+
+
+	.center-align .slide-tab {
+		display: none;
+	}
+
+	.right-align.first-slide {
+		margin-left: auto;
+		margin-right: 3rem;
+		justify-content: flex-end;
+		padding-bottom: 20px;
+	}
+
+	.slide-inner.right-align .slide-body-wrapper {
+		height: auto;
+		max-height: 80vh;
+		min-height: 200px;
+	}
+	.right-align .slide-content {
+		margin-top: 50px;
+		margin-left: 3rem;
+	}
+
+	.center-align .slide-content {
+		margin: 0 auto;
+	}
+
+	.slide-content details {
+		padding: 15px 20px;
+		padding-top: 0;
+		font-family: monospace;
+	}
+
+
 	.slide-inner.hidden {
 		opacity: 0;
 		pointer-events: none;
@@ -1196,7 +1397,7 @@
 	}
 
 	.slide-body-wrapper.no-image {
-		height: calc(100svh - 40px);
+		/* height: calc(100svh - 40px); */
 		justify-content: flex-start;
 	}
 
@@ -1213,6 +1414,16 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transform: rotate(-0.2deg);
+	}
+
+	.slide-inline-image-frame {
+		position: relative;
+		display: inline-block;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
 	}
 
 	.slide-inline-image img {
@@ -1239,7 +1450,7 @@
 	.slide-tab {
 		position: absolute;
 		top: 2px;
-		right: 150px;
+		right: 190px;
 		background: #fff4d2;
 		height: 23px;
 		transform: translate(0%, -100%);
@@ -1319,9 +1530,8 @@
 		
 	}
 
-	.swipe-right span {
+	.swipe-right .swipe-right-note {
 		background-color: #fffffb;
-		
 		display:inline-block;
 		padding: 12px;
 		color: rgba(0, 0, 0, .8);
@@ -1329,9 +1539,16 @@
 		border-radius: 4px;
 		line-height: 1;
 		transform: rotate(-.3deg);
-		box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
 		-webkit-font-smoothing: antialiased;
 		padding-right:15px;
+		box-shadow: 0 1px 2px #0003;
+	}
+	.desktop-keyboard {
+		display: flex;
+		font-size: .8rem;
+		margin-top: 8px;
+		align-items: center;
+		letter-spacing: -.5px;
 	}
 
 	.swipe-right span u {
@@ -1589,6 +1806,60 @@
 		opacity: 1;
 	}
 
+	.soup-info-label {
+		position: absolute;
+		right: 12px;
+		top: 12px;
+		width: 120px;
+		z-index: 4;
+		pointer-events: auto;
+		background: rgba(255, 251, 239, 0.94);
+		border: 1px solid rgba(66, 57, 42, 0.28);
+		border-radius: 2px;
+		padding: 8px 10px;
+		font-family: monospace;
+		font-size: 12px;
+		line-height: 1.35;
+		color: rgba(0, 0, 0, 0.78);
+	}
+
+	.soup-info-label summary {
+		cursor: pointer;
+	}
+
+	.soup-info-label summary::-webkit-details-marker {
+		/* display: none; */
+	}
+
+	.soup-info-label p {
+		margin: 8px 0 0;
+	}
+
+	.soup-slide-index-label {
+		position: absolute;
+		right: 12px;
+		top: 12px;
+		z-index: 4;
+		pointer-events: none;
+		background: rgba(255, 251, 239, 0.94);
+		border: 1px solid rgba(66, 57, 42, 0.28);
+		border-radius: 2px;
+		padding: 8px 10px;
+		font-family: monospace;
+		font-size: 12px;
+		line-height: 1;
+		color: rgba(0, 0, 0, 0.78);
+		font-size: 14px;
+		font-family: 'EB Garamond';
+		text-transform: uppercase;
+		font-weight: 900;
+	}
+
+	.soup-slide-index-label span {
+		display: inline-block;
+		letter-spacing: 0.04em;
+	}
+
 	.panzoom-label {
 		position: fixed;
 		max-width: 200px;
@@ -1642,7 +1913,6 @@
 		border-radius: 2px;
 		line-height: 1;
 		max-width: 300px;
-		min-width: 150px;
 		transform: rotate(-.3deg);
 		box-shadow: 0px 1px 2px rgba(0, 0, 0, .2);
 		-webkit-font-smoothing: antialiased;
@@ -1742,40 +2012,61 @@
 		flex-direction: column;
 		gap: 8px;
 	}
+	.soup-panzoom-controls p {
+		font-family: monospace;
+		font-size: 12px;
+		color: rgba(0, 0, 0, .7);
+		margin: 0;
+		transform: rotate(-0.2deg);
+		letter-spacing: -0.7px;
+		text-align: center;
+		background: linear-gradient(60deg, #fbf3d8, #fef4d2);
+    	border-right: 1px solid rgba(252, 252, 252, 0.32);
+    	border-radius: 1px;
+    	filter: drop-shadow(0px -1px 6px rgba(0, 0, 0, .15));
+    	border-top: 1px solid rgba(252, 252, 252, 0.32);
+		border-left: 1px solid #dddbd5;
+		border-bottom: 1px solid #e5dec8;
+		max-width: 97px;
+		margin: 0 auto;
+		padding: 0.1rem 0.5rem;
+		line-height: 1;
+	}
 
 	.soup-panzoom-controls-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 36px);
+		grid-template-columns: repeat(3, 36px);
 		grid-template-rows: repeat(2, 36px);
 		gap: 4px;
 	}
 
 	.pz-up { grid-column: 2; grid-row: 1; }
 	.pz-left { grid-column: 1; grid-row: 2; }
-	.pz-right { grid-column: 2; grid-row: 2; }
-	.pz-down { grid-column: 2; grid-row: 3; }
+	.pz-right { grid-column: 3; grid-row: 2; }
+	.pz-down { grid-column: 2; grid-row: 2; }
 
 	.soup-panzoom-controls-actions {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 4px;
+	}
+
+	.soup-panzoom-controls-actions .pz-btn {
+		grid-column: 2;
 	}
 
 	.pz-btn {
 		height: 36px;
 		min-width: 36px;
-		border: 1px solid rgba(0, 0, 0, 0.32);
-		border-radius: 8px;
+		border: 1px solid rgba(0,0,0,.62);
+		border-radius: 2px;
 		background: #fff;
 		color: #000;
 		font-family: monospace;
 		font-size: 14px;
 		line-height: 1;
 		cursor: pointer;
-	}
-
-	.pz-btn:hover {
-		background: rgba(71, 59, 59, 0.2);
+		padding: 8px;
 	}
 
 	.pz-btn:focus-visible {
@@ -1858,7 +2149,78 @@
 
 
 	.chapter {
-		max-height: 600px;
+		max-height: calc(100% - 40px);
+	}
+
+	.key {
+		display: flex;
+		margin-left:5px;
+		padding: 4px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		text-align: center;
+	}
+	.section-text {
+		position: absolute;
+		left: 20%;
+		right: 0;
+		margin: 0 auto;
+		width: 80%;
+	}
+	.course-name {
+		font-size: 36px;
+		max-width: 80%;
+		margin: 0 auto;
+		-webkit-font-smoothing: antialiased;
+		line-height: 1;
+		margin-top: 1rem;
+		color: rgba(0, 0, 0, .85);
+	}
+	.section-text p {
+		text-align: center;
+	}
+	.course-count {
+		font-style: italic;
+		margin: 0;
+		font-size: 24px;
+		-webkit-font-smoothing: antialiased;
+	}
+	.section-text img {
+		max-width: 80%;
+		margin: 0 auto;
+	}
+	.byline {
+		position: absolute;
+		bottom: 3rem;
+		left: 2rem;
+		font-family: monospace;
+		font-size: 14px;
+		background: #fffef5;
+    	border-radius: 2px;
+		line-height: 1.35;
+		min-width: 180px;
+		padding: 2px 10px;
+		border-right: 1px solid rgba(252, 252, 252, 0.32);
+		filter: drop-shadow(0px -1px 6px rgba(0, 0, 0, .05));
+		border-top: 1px solid rgba(252, 252, 252, 0.32);
+		border-left: 1px solid #dddbd5;
+		border-bottom: 1px solid #e5dec8;
+		transform: rotate(-0.2deg);
+		padding-left: 4px;
+	}
+
+	.byline p {
+		margin: 0;
+		font-family: "Courier Prime", monospace;
+		-webkit-font-smoothing: antialiased;
+		line-height: 1.2;
+		letter-spacing: -0.6px;
+	}
+
+	.byline a {
+		text-decoration: underline;
+		text-decoration-thickness: .8px;
+		text-underline-offset: 1px;
 	}
 
 
