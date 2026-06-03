@@ -315,7 +315,7 @@
 		{ rot: -20, tx: -120, ty:  40, widthPct: 50, src: `assets/menus/4046090.png` },  // bottom-left
 		{ rot:  3, tx:  -80, ty:  -20, widthPct: 50, src: `assets/menus/476900.png` },  // bottom-right
 		{ rot: 2, tx: 5, ty: -50, widthPct: 50, src: `assets/menus/4000008419.png` },  // top-left
-		{ rot: 4, tx: 50, ty:  0, widthPct: 30, fitViewportHeight: true, src: `assets/menus/fish.png` },  // lower-left
+		{ rot: 1, tx: 50, ty:  0, widthPct: 30, fitViewportHeight: true, src: `assets/menus/fish.png` },  // lower-left
 		{ rot:  18, tx:  -20, ty:  35, widthPct: 50, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
 		{ rot: 10, tx: 50, ty: -50, widthPct: 50, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
 		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
