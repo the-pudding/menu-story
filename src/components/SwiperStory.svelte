@@ -13,11 +13,12 @@
 	import plus from "$svg/plus.svg";
 	import minus from "$svg/minus.svg";
 	import guide from "$svg/guide-text.svg";
+	import sectionSvg from "$svg/section.svg";
 
 
 	[]
 
-	let { slides } = $props();
+	let { slides, height } = $props();
 
 	let containerEl = $state();
 	let swiper = $state();
@@ -45,7 +46,7 @@
 
 	// Line-height ramps from 1.15 at 21px up to 1.25 at 36px+, with a 1.1 floor.
 	function lineHeightFor(fontSize) {
-		return Math.max(1, Math.min(1.2, 1.01 + fontSize / 150));
+		return Math.max(1, Math.min(1.2, 1.01 + fontSize / 200));
 	}
 
 	// Strip HTML tags so pretext measures visible characters only, not tag syntax.
@@ -58,7 +59,9 @@
 	let zoomIds = $state(null);
 	let ptPrepare = $state(null);
 	let ptLayout = $state(null);
-	let layout = $state('right');
+	let dims = new useWindowDimensions();
+	let layout = $derived((dims.width ?? 0) < 500 ? 'center' : 'right');
+	let newSlideFontSize = $derived(layout === 'center' ? 24 : 36);
 	const BODY_CHAPTER_BG_CLASS = 'story-chapter-active';
 	let soupGuideOpen = $state(false);
 	let guideOverlayEl = $state(null);
@@ -132,7 +135,8 @@
 	function goToGuideSlide(idAttr) {
 		const idNum = Number.parseInt(String(idAttr ?? ''), 10);
 		if (!Number.isInteger(idNum) || idNum < 1 || idNum > 10) return false;
-		const nextIndex = Math.max(0, Math.min(idNum, slides.length - 1));
+		const nextIndex = slides.findIndex(s => Number(s.sectionCount) === idNum);
+		if (nextIndex === -1) return false;
 		soupGuideOpen = false;
 		swiper?.slideTo(nextIndex);
 		return true;
@@ -167,10 +171,6 @@
 			cleanupFns.forEach((fn) => fn());
 		};
 	});
-
-
-	let dims = new useWindowDimensions();
-
 	// Both measured from the DOM — CSS padding changes are reflected automatically
 	let textWidths = $state([]); // per-slide text width, updated via bind:clientWidth
 	let wrapperClientHeights = $state([]); // per-slide, updated via bind:clientHeight
@@ -214,6 +214,7 @@
 	const AUTO_BODY_FONT_SIZE = 24;
 
 	function isAutoTypeSlide(slide) {
+		if(layout == "center") return null; // type:auto only applies to right layout
 		return slide?.type === 'auto';
 	}
 
@@ -262,7 +263,9 @@
 			const clientH = wrapperClientHeights[idx] ?? 0;
 			const textWidth = textWidths[idx] ?? 0;
 			const rightLayoutAvailH = dims.height * RIGHT_LAYOUT_BODY_MAX_VH - wrapperPadV;
-			const slideAvailH = layout === 'right' ? rightLayoutAvailH : clientH - wrapperPadV;
+			const slideAvailH = layout === 'right' ? rightLayoutAvailH
+				: slide.layout === 'no-image' ? height * 0.9 - wrapperPadV
+				: height * 0.3 - wrapperPadV;
 			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || slideAvailH <= 0) {
 				return { fontSize: REF_SIZE, wrapperMinH: null };
 			}
@@ -302,25 +305,25 @@
 	// tx/ty are percentages of card width/height.
 	const IMG_BASE = 'https://s3.us-east-1.amazonaws.com/pudding.cool/projects/menu-images/';
 	let buttolphPos = {
-		rot: 8, tx: -80, ty: -20, widthPct: 50
+		rot: 8, tx: 0, ty: -20, widthPct: 50
 	}
 	if (untrack(() => layout) === "right") {
 		buttolphPos = {
 			rot: 8, tx: 80, ty: 0, widthPct: 75
 		}
 	}
-	const STACK = [
-		{ rot: 8, tx: 65, ty: -50, widthPct: 50, src: `assets/menus/4000000219.png` },  // top-left
-		{ rot:  50, tx:  50, ty: 0, widthPct: 50, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
-		{ rot: -20, tx: -120, ty:  40, widthPct: 50, src: `assets/menus/4046090.png` },  // bottom-left
-		{ rot:  3, tx:  -80, ty:  -20, widthPct: 50, src: `assets/menus/476900.png` },  // bottom-right
-		{ rot: 2, tx: 5, ty: -50, widthPct: 50, src: `assets/menus/4000008419.png` },  // top-left
-		{ rot: 1, tx: 50, ty:  0, widthPct: 30, fitViewportHeight: true, src: `assets/menus/fish.png` },  // lower-left
-		{ rot:  18, tx:  -20, ty:  35, widthPct: 50, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
-		{ rot: 10, tx: 50, ty: -50, widthPct: 50, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
+	let STACK = $derived([
+		{ rot: 8, tx: 65, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000219.png` },  // top-left
+		{ rot:  50, tx:  50, ty: 0, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
+		{ rot: -20, tx: -120, ty:  40, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4046090.png` },  // bottom-left
+		{ rot:  3, tx:  -80, ty:  -20, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/476900.png` },  // bottom-right
+		{ rot: 2, tx: 5, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000008419.png` },  // top-left
+		{ rot: 1, tx: layout === "right" ? 50 : -10, ty:  layout === "right" ? 0 : -20, widthPct: layout === "right" ? 30 : 25, fitViewportHeight: true, src: `assets/menus/fish.png` },  // lower-left
+		{ rot:  18, tx:  -20, ty:  35, widthPct: layout === "right" ? 50 : 75, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
+		{ rot: 10, tx: 50, ty: -50, widthPct: layout === "right" ? 50 : 30, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
 		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
-		{ rot:  -3, tx:   20, ty:  -2, widthPct: 100, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
-	];
+		{ rot:  -3, tx:   layout === "right" ? -2 : 20, ty:  layout === "right" ? -2 : 0, widthPct: layout === "right" ? 50 : 35, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
+	]);
 
 	const clamp01 = (v) => Math.max(0, Math.min(1, v));
 	function phaseProgress(startIdx, endIdx) {
@@ -388,7 +391,7 @@
 	});
 
 	const newSlideIdx = untrack(() => slides.findIndex(s => s.id === 'new-slide'));
-	let introBgSlideX = $derived(coldIdx >= 0 && slidePosition < coldIdx ? 0 : -100);
+	let introBgSlideX = $derived(coldIdx >= 0 && slidePosition < coldIdx ? (layout === 'center' ? -30 : 0) : -100);
 	let introBgOpacity = $derived(
 		newSlideIdx >= 0
 			? (slidePosition >= newSlideIdx && (coldIdx < 0 || slidePosition < coldIdx + 0.35) ? 1 : 0)
@@ -398,7 +401,9 @@
 
 	// Widths of animated cards — set by onload, included in stackStyles so reactive updates don't wipe them
 	let heroRightWidth = $state(0);
+	let heroLeftWidth = $state(0);
 	let secondWidth = $state(0);
+	let topWidth = $state(0);
 
 	// Hero pair: cards 7 & 8 animate to center side-by-side entering "side".
 	let heroT = $derived(smoothstep(sideEntryT));
@@ -426,7 +431,8 @@
 		if (isTop) {
 			const tx = lerp(card.tx, 200, stackT);
 			const rot = lerp(card.rot, card.rot + 15, stackT);
-			return `transform: rotate(${rot}deg) translate(${tx}%, ${card.ty}%); transition: ${transition}; opacity: ${opacity}`;
+			const widthStr = topWidth ? `width: ${topWidth}px; max-width: none; ` : '';
+			return `${widthStr}transform: rotate(${rot}deg) translate(${tx}%, ${card.ty}%); transition: ${transition}; opacity: ${opacity}`;
 		} else if (isSecond) {
 			const tx = lerp(card.tx, -270, heroT);
 			const rot = lerp(card.rot, card.rot + 0, heroT);
@@ -436,13 +442,15 @@
 			const sign = isHeroLeft ? -1 : 1;
 			// Desktop: side by side; mobile: stacked vertically
 			const targetTx = isDesktop ? sign * 50 : 0;
-			const targetTy = isDesktop ? 0 : sign * 60;
+			const targetTy = isDesktop ? 0 : isHeroRight ? -20 : sign * 60;
 			const exitTx = isDesktop ? sign * 150 : 0;
 			const exitTy = isDesktop ? 0 : sign * 150;
 			const tx = lerp(lerp(card.tx, targetTx, heroT), exitTx, heroExitT);
 			const ty = lerp(lerp(card.ty, targetTy, heroT), exitTy, heroExitT);
 			const rot = lerp(card.rot, 0, heroT);
-			const widthStr = isHeroRight && heroRightWidth ? `width: ${heroRightWidth}px; max-width: none; ` : '';
+			const widthStr = isHeroRight && heroRightWidth ? `width: ${heroRightWidth}px; max-width: none; `
+				: isHeroLeft && heroLeftWidth ? `width: ${heroLeftWidth}px; max-width: none; `
+				: '';
 			return `${widthStr}transform: rotate(${rot}deg) translate(${tx}%, ${ty}%); transition: ${transition}; opacity: ${opacity}`;
 		} else {
 			return `transform: rotate(${card.rot}deg) translate(${card.tx}%, ${card.ty}%); opacity: ${opacity}`;
@@ -538,6 +546,7 @@
 
 	// Compute fit-height xform (common starting point for all soup slides).
 	function fitHeightXform(vw, vh, nw, nh) {
+		if (layout === 'center') return { tx: 0, ty: 0, s: 1 };
 		const s  = vh / (vw * nh / nw);
 		const tx = layout === 'right' ? vw - vw * s - 20 : (vw - vw * s) / 2;
 		return { tx, ty: 0, s };
@@ -548,13 +557,13 @@
 	function soupSlideXform(slide, vw, vh, nw, nh, zp = 1) {
 		if (!nw || !nh) return { tx: 0, ty: 0, s: 1 };
 		const fh = fitHeightXform(vw, vh, nw, nh);
-		if (slide?.layout === 'fit-height') return fh;
+		if (slide?.layout === 'fit-height') return layout === 'center' ? { tx: 0, ty: 0, s: 1 } : fh;
 		// Focal zoom target
 		const pf  = (v, d) => parseFloat(v ?? d);
-		const s   = pf(slide?.bgZoom, 1);
+		const s   = pf(slide?.bgZoom, 1) * (layout === 'center' ? 2 : 1);
 		const px  = pf(slide?.focalX, 0) * (vw / nw);
 		const py  = pf(slide?.focalY, 0) * (vw / nw);
-		const ax  = pf(slide?.anchorX, 0.5) * vw;
+		const ax  = (layout === 'center' ? 0.5 : pf(slide?.anchorX, 0.5)) * vw;
 		const ay  = pf(slide?.anchorY, 0.5) * vh;
 		const focal = { tx: ax - px * s, ty: ay - py * s, s };
 		// Blend from fit-height → focal using zp
@@ -942,12 +951,12 @@
 	});
 </script>
 
-<section class="story">
+<section class="story layout-{layout ? layout : ''}">
 	<!-- ── Fixed background ── -->
 	<div class="story-bg" aria-hidden="true">
 		<div
 			class="intro-bg"
-			style="opacity: {introBgOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translateX({introBgSlideX}%) rotate(-2deg); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
+			style="opacity: {introBgOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate({introBgSlideX}%,{layout == "center" ? 20 : 0}%) rotate(-2deg) scale({layout == "center" ? .7 : 1}); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
 		></div>
 
 		<!-- Zoomed photo background (visible from slide 1 onward) -->
@@ -1014,18 +1023,20 @@
 			</div>
 		{/if}
 
-		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate3d(0%, {-tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
+		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate3d(0%, {layout == "center" ? 0 : -tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
 			{#each STACK as card, i}
 				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
 						if (card.fitViewportHeight) {
-							e.currentTarget.style.height = '100%';
+							e.currentTarget.style.height = layout === 'center' ? '70%' : '100%';
 							e.currentTarget.style.width = 'auto';
 							e.currentTarget.style.maxWidth = 'none';
 							return;
 						}
 						const w = e.currentTarget.naturalWidth * (card.widthPct / 100);
 						if (card.role === 'heroRight') heroRightWidth = w;
+						else if (card.role === 'heroLeft') heroLeftWidth = dims.width * (card.widthPct / 100);
 						else if (card.role === 'second') secondWidth = w;
+						else if (card.role === 'top') topWidth = w;
 						else e.currentTarget.style.width = w + 'px';
 					}} />
 			{/each}
@@ -1063,7 +1074,7 @@
 		<div class="swiper-wrapper">
 			{#each slides as slide, i}
 				{@const firstSlide = i === 0}
-				<div class="swiper-slide" class:is-zoom-slide={slide.zoomSlide}>
+				<div style="z-index: {slide.id == "illustration" ? 100 : 'auto'};" class="swiper-slide" class:is-zoom-slide={slide.zoomSlide}>
 					{#if !slide.image}
 						<div class="slide-inner {layout === 'right' ? 'right-align' : ''}"
 							class:is-active={activeIndex === i}
@@ -1081,7 +1092,11 @@
 											</div>
 											{#if hasSoupBg(slide) && soupBgReadySrc}
 												<button onclick={() => enterPanZoom(slide.bgSrc)} aria-label="Explore image" class="">
-													<span>VIEW FULL MENU -&gt;</span>
+													{#if layout === 'center'}
+														<span>VIEW MENU</span>
+													{:else}
+														<span>VIEW FULL MENU -&gt;</span>
+													{/if}
 												</button>
 											{/if}
 											
@@ -1104,15 +1119,16 @@
 											</div>
 										{/if}
 									{/if}
+
 									<div
 										class="slide-body-wrapper {slide.image ? 'has-image' : ''} {firstSlide ? 'first-slide' : ''} {slide.layout === 'no-image' ? 'no-image' : ''} {isAutoTypeSlide(slide) ? 'is-auto-type' : ''}"
 										bind:this={wrapperEl}
 										bind:clientHeight={wrapperClientHeights[i]}
 										style={slide.layout === 'no-image'
-											? `font-size: ${slide.id === 'new-slide' ? 36 : bodyFontSizes[i]}px; line-height: ${slide.id === 'new-slide' ? "1" : bodyLineHeights[i]}; ${(slide.id === 'new-slide' || bodyFontSizes[i] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
+											? `font-size: ${slide.id === 'new-slide' ? newSlideFontSize : bodyFontSizes[i]}px; line-height: ${slide.id === 'new-slide' ? "1" : bodyLineHeights[i]}; ${(bodyFontSizes[i] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
 											: slide.id === 'new-slide'
-												? 'font-size: 36px; line-height: 1; -webkit-font-smoothing: antialiased;'
-												: `font-size: ${bodyFontSizes[i]}px; line-height: ${bodyLineHeights[i]}; ${wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : ''} ${bodyFontSizes[i] > 36 ? '-webkit-font-smoothing: antialiased;' : ''}`}
+												? `font-size: ${newSlideFontSize}px; line-height: 1;`
+												: `font-size: ${bodyFontSizes[i]}px; line-height: ${bodyLineHeights[i]}; ${wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : bodyFontSizes[i] >= MAX_FIT_FONT ? `height: auto; padding-top: 10px; padding-bottom: 10px;` : `height: ${height * 0.3}px;`} ${bodyFontSizes[i] > 36 ? '-webkit-font-smoothing: antialiased;' : ''}`}
 									>
 										<div class="slide-body-text" bind:clientWidth={textWidths[i]}>
 											{#each slide.body as line}
@@ -1132,7 +1148,7 @@
 										
 										</div>
 									{/if}
-														{#if soupInfoLabel && !soupPanZoom}
+					{#if soupInfoLabel && !soupPanZoom && layout !== 'center'}
 						<details class="">
 							<summary>Fun Fact</summary>
 							<p>{@html soupInfoLabel}</p>
@@ -1148,11 +1164,21 @@
 							</div>
 						</div>
 					{:else}
-						<div class="slide-inline-image">
+						<div class="slide-inline-image"
+							style="justify-content: {slide.image === 'assets/menus/title.png' && layout === 'center' ? 'flex-end' : slide.image === 'assets/menus/section.png' && layout === 'center' ? 'flex-start' : 'center'};"
+						>
 							<div class="slide-inline-image-frame"
-								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '-.2deg' : '0deg'});"
+								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '0deg' : '0deg'});"
 							>
-								<img src={slide.image} alt={slide.imageAlt ?? ''} class={slide.class ? slide.class : ''} />
+								<img
+									src={layout === 'center' && slide.image === 'assets/menus/title.png' ? 'assets/menus/title-mobile.png' : slide.image}
+									alt={slide.imageAlt ?? ''}
+									class={slide.class ? slide.class : ''}
+									class:title-slide={slide.image === 'assets/menus/title.png'}
+								/>
+								{#if slide.image === 'assets/menus/section.png'}
+									{@html sectionSvg}
+								{/if}
 								{#if slide.image === 'assets/menus/title.png'}
 									<div class="byline">
 										<p><a href="https://pudding.cool/author/stephen-lurie/" target="_blank">By Stephen Lurie</a></p>
@@ -1312,7 +1338,7 @@
 		position: absolute;
 		/* width: 60vmin; */
 		height: auto;
-		max-width: 60vmin;
+		max-width: 600px;
 		width: auto;
 		will-change: transform, opacity;
 		transform-origin: center bottom;
@@ -1404,8 +1430,28 @@
 		margin-left: auto;
 		margin-right: auto;
 		max-width: 800px;
-		width: calc(100% - 50px);
+		width: calc(100% - 20px);
 	}
+
+
+	.layout-center .slide-inner {
+		padding-bottom: 10px;
+	}
+	.layout-center .slide-body-wrapper {
+		padding: 5px 20px;
+	}
+
+
+	.layout-center .desktop-keyboard {
+		display: none;
+	}
+
+	.layout-center .swipe-right .swipe-right-note {
+		margin-top: 10px;
+		padding: 7px;
+	}
+
+	
 
 
 
@@ -1447,7 +1493,6 @@
 	}
 
 	.slide-body-wrapper {
-		height: 30vh;
 		/* flex-direction: column; */
 		padding: 15px 20px;
 		/* justify-content: flex-end; */
@@ -1491,11 +1536,23 @@
 		flex-direction: column;
 	}
 
+	:global(.slide-inline-image-frame svg) {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		transform: translate(0,-50%);
+	}
+
 	.slide-inline-image img {
 		width: auto;
 		max-width: 100%;
 		display: block;
 		height: 100%;
+	}
+
+	.layout-center .slide-inline-image img {
+		width: 100%;
+		height: auto;
 	}
 
 	.slide-content.food-item {
@@ -1525,15 +1582,26 @@
 		font-size: 14px;
 	}
 
+	.layout-center .slide-tab {
+		right: 120px;
+		max-width: calc(100% - 160px);
+	}
+
 	.slide-tab.slide-tab-small {
 		font-size: 12px;
 	}
+
+
 	.slide-tab-explore {
 		background: #eee4be;
 		top: -1px;
 	}
 	.slide-tab-explore {
 		padding-left: 0;
+	}
+
+	.layout-center .slide-tab-explore button {
+		transform: translate(3px, 0);
 	}
 	:global(.slide-tab-explore path) {
 		fill: #eee4be;
@@ -1563,6 +1631,13 @@
 		MARGIN-TOP: 6PX;
 		min-width: 30px;
 	}
+
+	.layout-center .slide-tab p {
+		line-height: .8;
+		font-size: 13px;
+		letter-spacing: -0.9px;
+	}
+
 	.slide-tab-explore p {
 		text-decoration: underline;
 		padding-left: 10px;
@@ -1619,18 +1694,20 @@
 	.swipe-right span u {
 		text-decoration-thickness: 1px;
 	}
+
+	.layout-center .first-slide {
+		padding-bottom: 10px;
+	}
 	
-	.first-slide {
+	.slide-inner .slide-body-wrapper.first-slide {
 		height: auto;
-		padding-top: 2rem;
+		padding-top: 1rem;
 		padding-bottom: 2rem;
+		min-height: auto;
 		/* height: calc(35vh - 100px); */
 	}
 
 	@media (max-width: 640px) {
-		.slide-body-wrapper {
-			padding: 10px 17.5px;
-		}
 		.soup-top-label {
 			font-size:12px;
 			min-width: auto;
@@ -1962,6 +2039,10 @@
 		font-weight: 900;
 	}
 
+	.layout-center .soup-slide-index-label {
+		font-size: 16px;
+	}
+
 	.soup-slide-index-label.guide-open {
 		right: 90px;
 	}
@@ -2275,7 +2356,8 @@
 
 
 	.chapter {
-		max-height: calc(100% - 40px);
+		max-height: calc(100% - 10px);
+		object-fit: contain;
 	}
 
 	.key {
@@ -2290,9 +2372,9 @@
 		position: absolute;
 		top: 20px;
 		bottom: 0;
-		left: 20%;
+		left: 0%;
 		right: 0;
-		margin: 0 auto;
+		margin: 0;
 		width: 80%;
 		display: flex;
 		flex-direction: column;
@@ -2302,17 +2384,6 @@
 		min-height: 0;
 		overflow: hidden;
 		height: calc(100% - 40px);
-	}
-	p.course-name {
-		flex: 0 0 auto;
-		font-size: 30px;
-		max-width: 80%;
-		margin: 0 auto;
-		-webkit-font-smoothing: antialiased;
-		line-height: 1.05;
-		text-wrap: balance;
-		color: rgba(0, 0, 0, .85);
-		margin-top: 10px;
 	}
 	.section-text p {
 		text-align: center;
@@ -2329,11 +2400,26 @@
 	p.course-description {
 		flex: 0 0 auto;
 		max-width: 80%;
-		font-size: 1rem;
+		font-size: 26px;
 		line-height: 1.2;
 		text-wrap: balance;
 		margin-top: 10px;
+		color: rgba(0, 0, 0, .85);
+		text-transform: uppercase;
 	}
+	p.course-name {
+		flex: 0 0 auto;
+		font-size: 48px;
+		max-width: 80%;
+		margin: 0 auto;
+		-webkit-font-smoothing: antialiased;
+		line-height: .9;
+		text-wrap: balance;
+		color: rgba(0, 0, 0, .85);
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
 	.section-text img {
 		flex: 0 1 auto;
 		max-height: 42%;
@@ -2363,6 +2449,15 @@
 		padding-left: 4px;
 	}
 
+	.layout-center .byline {
+		left: 1rem ;
+		right: auto;
+		margin: 0 auto;
+		width: 150px;
+		min-width: auto;
+		bottom: 1.5rem;
+	}
+
 	.byline p {
 		margin: 0;
 		font-family: "Courier Prime", monospace;
@@ -2375,6 +2470,13 @@
 		text-decoration: underline;
 		text-decoration-thickness: .8px;
 		text-underline-offset: 1px;
+	}
+
+	.title-slide {
+		/* object-fit: contain; */
+		object-fit: contain;
+		max-height: calc(100% - 10px);
+		/* transform: scale(1.5); */
 	}
 
 
