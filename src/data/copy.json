@@ -150,11 +150,11 @@
       "body": [
         {
           "type": "text",
-          "value": "After finishing your soup, feel free to reach out for a stalk of celery in a crystal celery vase. Celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. In fact, it’s the fourth most common item among the Buttolph Collection menus, after only coffee, tea, and olives."
+          "value": "Don’t be shy; reach out for a stalk of celery in that crystal celery vase. Celery was one of many “relishes” with a key function on the aristocratic table. In fact, it’s the fourth most common item among the Buttolph Collection menus, after coffee, tea, and olives."
         },
         {
           "type": "text",
-          "value": "Alongside sorbets and punches inserted later in the meal as palate cleansers, celery functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as concerned more with the aesthetic than the practical."
+          "value": "Alongside sorbets and punches—used later in the meal as palate cleansers—celery functioned as a step in the intricate order of a meal concerned more with the sensual than the practical."
         }
       ]
     },
@@ -187,11 +187,11 @@
       "body": [
         {
           "type": "text",
-          "value": "Restaurant dining was one way the post-Civil War elite <b>symbolically distinguished themselves from the masses.</b> French was one aspect of gatekeeping—luxury was another."
+          "value": "Restaurant dining was one way the post-Civil War elite <b> distinguished themselves from the masses.</b> French was one aspect of gatekeeping—luxury was another."
         },
         {
           "type": "text",
-          "value": "In this menu from the Hotel Brunswick, celery appears as an hors d’oeurve and alongside canvasback duck. The canvasback was among the most sought after game in this period, partially because the duck’s favorite food was supposed to make it more delicious. That diet? Wild celery. Luxury upon luxury."
+          "value": "In this menu, celery appears as an hors d’oeurve and alongside canvasback duck, a coveted  game in this period.The duck’s favorite food supposedly made it more delicious. That diet? Wild celery. Luxury upon luxury."
         }
       ]
     },
@@ -207,9 +207,10 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000008419.png",
+      "bgSrc": "assets/menus/4000003649.png",
       "layout": "fit-height",
-      "topLabel": "Delmonico’s, NYC, 1900",
+      "topLabel": "Hotel Bellevue, 1896, 9th Annual Honor of Crow Charlton",
+      "topLabelSmall": "true",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -224,16 +225,9 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000003649.png",
-      "topLabel": "Hotel Bellevue, 1896, 9th Annual Honor of Crow Charlton",
-      "topLabelSmall": "true",
-      "bgZoom": "1",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "344",
-      "annotationY": "405",
+      "bgSrc": "assets/menus/470278.png",
+      "layout": "fit-height",
+      "topLabel": "St. Nicholas Hotel, Cincinnati, 1895",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -244,10 +238,10 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/470278.png",
+      "bgSrc": "assets/menus/4046090.png",
       "bgZoom": "1",
       "layout": "fit-height",
-      "topLabel": "St. Nicholas Hotel, Cincinnati, 1895",
+      "topLabel": "Hotel Colorado, Glenwood Springs, CO, 1915",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -375,9 +369,9 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/475432.png",
+      "bgSrc": "assets/menus/4000009031.png",
       "layout": "fit-height",
-      "topLabel": "Putnam House Hotel, NYC, 1900",
+      "topLabel": "Hamblen’s Restaurant, NYC, 1900",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
@@ -399,7 +393,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Into the early 20th century, industrialization produced a working middle class   who desired more than old taverns and dives."
+          "value": "Into the early 20th century, industrialization produced a working middle class who desired more than old taverns and dives."
         },
         {
           "type": "text",
@@ -506,7 +500,13 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
-      "layout": "fit-height",
+      "bgZoom": ".7",
+      "focalX": "300",
+      "focalY": "600",
+      "anchorX": "0.7",
+      "anchorY": "0.2",
+      "annotationX": "270",
+      "annotationY": "660",
       "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Café, NYC, 1914",
       "body": [
@@ -523,7 +523,13 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
-      "layout": "fit-height",
+      "bgZoom": ".7",
+      "focalX": "300",
+      "focalY": "100",
+      "anchorX": "0.7",
+      "anchorY": "0.2",
+      "annotationX": "80",
+      "annotationY": "50",
       "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Café, NYC, 1914",
       "body": [
@@ -700,6 +706,7 @@
       "bgSrc": "assets/menus/4025914.png",
       "layout": "fit-height",
       "course": "9 <i>of</i> 10&colon; Potatoes O’Brien Au Gratin",
+      "topLabelSmall": "true",
       "topLabel": "Dinner to the Directors of Metropolitan Life Insurance, Metropolitan Club, NYC, 1921",
       "body": [
         {
@@ -787,11 +794,8 @@
       ]
     },
     {
-      "id": "soup",
-      "bgSrc": "assets/menus/4036998.png",
-      "layout": "fit-height",
-      "course": "10 <i>of</i> 10&colon; Baked Alaska",
-      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "id": "video",
+      "state": "1",
       "body": [
         {
           "type": "text",
@@ -800,19 +804,12 @@
       ]
     },
     {
-      "id": "soup",
-      "bgSrc": "assets/menus/4036998.png",
-      "layout": "fit-height",
-      "course": "10 <i>of</i> 10&colon; Baked Alaska",
-      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "id": "video",
+      "state": "2",
       "body": [
         {
           "type": "text",
-          "value": "And that was before the rise of fast food a few decades later, revolutionizing American dining yet again."
-        },
-        {
-          "type": "text",
-          "value": "But the fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve collected 5000 menus for you. Right this way:"
+          "value": "But the fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve curated 5,000 menus for you."
         }
       ]
     }

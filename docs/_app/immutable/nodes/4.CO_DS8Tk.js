@@ -1,4 +1,4 @@
-import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,an as D,W as G,ac as j,Y as V,a9 as ee,J as P,aE as fe,am as q,ba as ge,I as ye}from"../chunks/C5V18K91.js";import{b as l,f as y,c as A,t as ve}from"../chunks/DAo7DBt3.js";import{b as S,g as be,f as se}from"../chunks/DJ561LLY.js";import{e as B,i as R,b as we,s as re,c as xe,d as ke}from"../chunks/CE9KbBQ4.js";import{e as K}from"../chunks/CowkXnMh.js";import{c as Q}from"../chunks/g_MYWaHd.js";import{s as $,p as F}from"../chunks/BhdR-ak8.js";import{s as ie}from"../chunks/BNF7Qlk4.js";import{b as Ce,i as U}from"../chunks/qQMnHyvT.js";import{h as W,c as Se,a as _e}from"../chunks/DNZqVAHv.js";import{b as Ae}from"../chunks/C4dHK3B-.js";import"../chunks/DlOzM7pa.js";var Ne=y('<section id="demo-link"><h2>Link</h2> <p><a href="elements">Default element styles demo</a></p> <p><a href="fonts">Pudding-hosted font previews</a></p> <p><a href="ui">BitsUI styled components</a></p></section>');function Le(c){var e=Ne();l(c,e)}var Ye=y('<section id="demo-image"><h2>Image</h2> <p>img tag</p> <img src="../assets/demo/test.jpg" alt="cat" class="svelte-b56t42"/> <p>background image</p> <div class="svelte-b56t42"></div></section>');function Te(c){var e=Ye();l(c,e)}var Ie=y('<section id="demo-element"><h2>Dynamic Svelte Element</h2> <!></section>');function Fe(c){const e=[{tag:"h3",text:"I am a h3 tag."},{tag:"p",text:"I am p tag."}];var t=Ie(),n=g(p(t),2);B(n,17,()=>e,R,(s,a)=>{let h=()=>o(a).tag,m=()=>o(a).text;var f=A(),i=C(f);K(i,h,!1,(r,d)=>{var v=ve();N(()=>S(v,m())),l(d,v)}),l(s,f)}),u(t),l(c,t)}var De=y("<p> </p>");function Pe(c,e){var t=De(),n=p(t);u(t),N(()=>S(n,`I am component A and my favorite number is ${e.number??""}.`)),l(c,t)}var Be=y("<p> </p>");function Re(c,e){var t=Be(),n=p(t);u(t),N(()=>S(n,`I am component B and my name is ${e.name??""}.`)),l(c,t)}var He=y('<section id="demo-component"><h2>Dynamic Svelte Component</h2> <!></section>');function Me(c){const e={A:Pe,B:Re},t=[{component:"A",number:42},{component:"B",name:"Russell"}];var n=He(),s=g(p(n),2);B(s,17,()=>t,R,(a,h)=>{const m=D(()=>e[o(h).component]);var f=A(),i=C(f);Q(i,()=>o(m),(r,d)=>{d(r,$(()=>o(h)))}),l(a,f)}),u(n),l(c,n)}var qe=y("<div><!></div>");function Ee(c,e){G(e,!0);let t=F(e,"root",3,null),n=F(e,"top",3,0),s=F(e,"bottom",3,0),a=F(e,"increments",3,100),h=F(e,"value",15,void 0),m=[],f=[],i=[],r=[],d;function v(){let b=0,w=0;for(let _=0;_<m.length;_++)m[_]>b&&(b=m[_],w=_);b>0?h(w):h(void 0)}function k(b,w){const _=M=>{M[0].isIntersecting;const z=M[0].intersectionRatio;m[w]=z,v()},E=n()?n()*-1:0,O=s()?s()*-1:0,ne=`${E}px 0px ${O}px 0px`,te={root:t(),rootMargin:ne,threshold:f};r[w]&&r[w].disconnect();const H=new IntersectionObserver(_,te);H.observe(b),r[w]=H}function L(){i.length&&i.forEach(k)}j(()=>{for(let b=0;b<a()+1;b++)f.push(b/a());i=d.querySelectorAll(":scope > *:not(iframe)"),L()}),j(()=>{n(),s(),L()});var x=qe(),Y=p(x);ie(Y,()=>e.children??ee),u(x),Ce(x,b=>d=b,()=>d),l(c,x),V()}var We=y('<div><p class="svelte-1sxgmm9"> </p></div>'),Oe=y('<section id="scrolly"><h2 class="svelte-1sxgmm9">Scrolly <span> </span></h2> <div class="spacer svelte-1sxgmm9"></div> <!> <div class="spacer svelte-1sxgmm9"></div></section>');function Xe(c){let e=q(void 0);var t=Oe(),n=p(t),s=g(p(n)),a=p(s,!0);u(s),u(n);var h=g(n,4);Ee(h,{get value(){return o(e)},set value(m){P(e,m,!0)},children:(m,f)=>{var i=A(),r=C(i);B(r,16,()=>[0,1,2,3,4],R,(d,v,k)=>{const L=D(()=>o(e)===k);var x=We();let Y;var b=p(x),w=p(b,!0);u(b),u(x),N(()=>{Y=we(x,1,"step svelte-1sxgmm9",null,Y,{active:o(L)}),S(w,v)}),l(d,x)}),l(m,i)},$$slots:{default:!0}}),fe(2),u(t),N(()=>S(a,o(e)||"-")),l(c,t)}const je=`{
+import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,an as F,W as G,ac as j,Y as V,a9 as ee,J as P,aE as fe,am as X,ba as ge,I as ve}from"../chunks/C5V18K91.js";import{b as l,f as v,c as A,t as ye}from"../chunks/DAo7DBt3.js";import{b as S,g as be,f as se}from"../chunks/DJ561LLY.js";import{e as B,i as H,b as we,s as re,c as xe,d as ke}from"../chunks/CE9KbBQ4.js";import{e as K}from"../chunks/CowkXnMh.js";import{c as Q}from"../chunks/g_MYWaHd.js";import{s as $,p as D}from"../chunks/BhdR-ak8.js";import{s as ie}from"../chunks/BNF7Qlk4.js";import{b as Ce,i as U}from"../chunks/qQMnHyvT.js";import{h as E,c as Se,a as _e}from"../chunks/DUXbKtf0.js";import{b as Ae}from"../chunks/DC4A4O5_.js";import"../chunks/DlOzM7pa.js";var Ne=v('<section id="demo-link"><h2>Link</h2> <p><a href="elements">Default element styles demo</a></p> <p><a href="fonts">Pudding-hosted font previews</a></p> <p><a href="ui">BitsUI styled components</a></p></section>');function Le(c){var e=Ne();l(c,e)}var Ye=v('<section id="demo-image"><h2>Image</h2> <p>img tag</p> <img src="../assets/demo/test.jpg" alt="cat" class="svelte-b56t42"/> <p>background image</p> <div class="svelte-b56t42"></div></section>');function Te(c){var e=Ye();l(c,e)}var Ie=v('<section id="demo-element"><h2>Dynamic Svelte Element</h2> <!></section>');function De(c){const e=[{tag:"h3",text:"I am a h3 tag."},{tag:"p",text:"I am p tag."}];var t=Ie(),n=g(p(t),2);B(n,17,()=>e,H,(s,a)=>{let h=()=>o(a).tag,m=()=>o(a).text;var f=A(),i=C(f);K(i,h,!1,(r,d)=>{var y=ye();N(()=>S(y,m())),l(d,y)}),l(s,f)}),u(t),l(c,t)}var Fe=v("<p> </p>");function Pe(c,e){var t=Fe(),n=p(t);u(t),N(()=>S(n,`I am component A and my favorite number is ${e.number??""}.`)),l(c,t)}var Be=v("<p> </p>");function He(c,e){var t=Be(),n=p(t);u(t),N(()=>S(n,`I am component B and my name is ${e.name??""}.`)),l(c,t)}var Re=v('<section id="demo-component"><h2>Dynamic Svelte Component</h2> <!></section>');function Me(c){const e={A:Pe,B:He},t=[{component:"A",number:42},{component:"B",name:"Russell"}];var n=Re(),s=g(p(n),2);B(s,17,()=>t,H,(a,h)=>{const m=F(()=>e[o(h).component]);var f=A(),i=C(f);Q(i,()=>o(m),(r,d)=>{d(r,$(()=>o(h)))}),l(a,f)}),u(n),l(c,n)}var Xe=v("<div><!></div>");function qe(c,e){G(e,!0);let t=D(e,"root",3,null),n=D(e,"top",3,0),s=D(e,"bottom",3,0),a=D(e,"increments",3,100),h=D(e,"value",15,void 0),m=[],f=[],i=[],r=[],d;function y(){let b=0,w=0;for(let _=0;_<m.length;_++)m[_]>b&&(b=m[_],w=_);b>0?h(w):h(void 0)}function k(b,w){const _=M=>{M[0].isIntersecting;const Z=M[0].intersectionRatio;m[w]=Z,y()},q=n()?n()*-1:0,O=s()?s()*-1:0,ne=`${q}px 0px ${O}px 0px`,te={root:t(),rootMargin:ne,threshold:f};r[w]&&r[w].disconnect();const R=new IntersectionObserver(_,te);R.observe(b),r[w]=R}function L(){i.length&&i.forEach(k)}j(()=>{for(let b=0;b<a()+1;b++)f.push(b/a());i=d.querySelectorAll(":scope > *:not(iframe)"),L()}),j(()=>{n(),s(),L()});var x=Xe(),Y=p(x);ie(Y,()=>e.children??ee),u(x),Ce(x,b=>d=b,()=>d),l(c,x),V()}var Ee=v('<div><p class="svelte-1sxgmm9"> </p></div>'),Oe=v('<section id="scrolly"><h2 class="svelte-1sxgmm9">Scrolly <span> </span></h2> <div class="spacer svelte-1sxgmm9"></div> <!> <div class="spacer svelte-1sxgmm9"></div></section>');function We(c){let e=X(void 0);var t=Oe(),n=p(t),s=g(p(n)),a=p(s,!0);u(s),u(n);var h=g(n,4);qe(h,{get value(){return o(e)},set value(m){P(e,m,!0)},children:(m,f)=>{var i=A(),r=C(i);B(r,16,()=>[0,1,2,3,4],H,(d,y,k)=>{const L=F(()=>o(e)===k);var x=Ee();let Y;var b=p(x),w=p(b,!0);u(b),u(x),N(()=>{Y=we(x,1,"step svelte-1sxgmm9",null,Y,{active:o(L)}),S(w,y)}),l(d,x)}),l(m,i)},$$slots:{default:!0}}),fe(2),u(t),N(()=>S(a,o(e)||"-")),l(c,t)}const je=`{
   "ignore": [],
   "slides": [
     {
@@ -150,11 +150,11 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "After finishing your soup, feel free to reach out for a stalk of celery in a crystal celery vase. Celery was among a number of “relishes” that took a pride of place in the aristocratic menu and on the aristocratic table. In fact, it’s the fourth most common item among the Buttolph Collection menus, after only coffee, tea, and olives."
+          "value": "Don’t be shy; reach out for a stalk of celery in that crystal celery vase. Celery was one of many “relishes” with a key function on the aristocratic table. In fact, it’s the fourth most common item among the Buttolph Collection menus, after coffee, tea, and olives."
         },
         {
           "type": "text",
-          "value": "Alongside sorbets and punches inserted later in the meal as palate cleansers, celery functioned as part of an intricately ordered meal that distinguished the aristocratic restaurant as concerned more with the aesthetic than the practical."
+          "value": "Alongside sorbets and punches—used later in the meal as palate cleansers—celery functioned as a step in the intricate order of a meal concerned more with the sensual than the practical."
         }
       ]
     },
@@ -187,11 +187,11 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "Restaurant dining was one way the post-Civil War elite <b>symbolically distinguished themselves from the masses.</b> French was one aspect of gatekeeping—luxury was another."
+          "value": "Restaurant dining was one way the post-Civil War elite <b> distinguished themselves from the masses.</b> French was one aspect of gatekeeping—luxury was another."
         },
         {
           "type": "text",
-          "value": "In this menu from the Hotel Brunswick, celery appears as an hors d’oeurve and alongside canvasback duck. The canvasback was among the most sought after game in this period, partially because the duck’s favorite food was supposed to make it more delicious. That diet? Wild celery. Luxury upon luxury."
+          "value": "In this menu, celery appears as an hors d’oeurve and alongside canvasback duck, a coveted  game in this period.The duck’s favorite food supposedly made it more delicious. That diet? Wild celery. Luxury upon luxury."
         }
       ]
     },
@@ -207,9 +207,10 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000008419.png",
+      "bgSrc": "assets/menus/4000003649.png",
       "layout": "fit-height",
-      "topLabel": "Delmonico’s, NYC, 1900",
+      "topLabel": "Hotel Bellevue, 1896, 9th Annual Honor of Crow Charlton",
+      "topLabelSmall": "true",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -224,16 +225,9 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000003649.png",
-      "topLabel": "Hotel Bellevue, 1896, 9th Annual Honor of Crow Charlton",
-      "topLabelSmall": "true",
-      "bgZoom": "1",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "344",
-      "annotationY": "405",
+      "bgSrc": "assets/menus/470278.png",
+      "layout": "fit-height",
+      "topLabel": "St. Nicholas Hotel, Cincinnati, 1895",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -244,10 +238,10 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/470278.png",
+      "bgSrc": "assets/menus/4046090.png",
       "bgZoom": "1",
       "layout": "fit-height",
-      "topLabel": "St. Nicholas Hotel, Cincinnati, 1895",
+      "topLabel": "Hotel Colorado, Glenwood Springs, CO, 1915",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -375,9 +369,9 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/475432.png",
+      "bgSrc": "assets/menus/4000009031.png",
       "layout": "fit-height",
-      "topLabel": "Putnam House Hotel, NYC, 1900",
+      "topLabel": "Hamblen’s Restaurant, NYC, 1900",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
@@ -399,7 +393,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "Into the early 20th century, industrialization produced a working middle class   who desired more than old taverns and dives."
+          "value": "Into the early 20th century, industrialization produced a working middle class who desired more than old taverns and dives."
         },
         {
           "type": "text",
@@ -506,7 +500,13 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
-      "layout": "fit-height",
+      "bgZoom": ".7",
+      "focalX": "300",
+      "focalY": "600",
+      "anchorX": "0.7",
+      "anchorY": "0.2",
+      "annotationX": "270",
+      "annotationY": "660",
       "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Café, NYC, 1914",
       "body": [
@@ -523,7 +523,13 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
-      "layout": "fit-height",
+      "bgZoom": ".7",
+      "focalX": "300",
+      "focalY": "100",
+      "anchorX": "0.7",
+      "anchorY": "0.2",
+      "annotationX": "80",
+      "annotationY": "50",
       "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Café, NYC, 1914",
       "body": [
@@ -700,6 +706,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "bgSrc": "assets/menus/4025914.png",
       "layout": "fit-height",
       "course": "9 <i>of</i> 10&colon; Potatoes O’Brien Au Gratin",
+      "topLabelSmall": "true",
       "topLabel": "Dinner to the Directors of Metropolitan Life Insurance, Metropolitan Club, NYC, 1921",
       "body": [
         {
@@ -787,11 +794,8 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       ]
     },
     {
-      "id": "soup",
-      "bgSrc": "assets/menus/4036998.png",
-      "layout": "fit-height",
-      "course": "10 <i>of</i> 10&colon; Baked Alaska",
-      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "id": "video",
+      "state": "1",
       "body": [
         {
           "type": "text",
@@ -800,21 +804,14 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       ]
     },
     {
-      "id": "soup",
-      "bgSrc": "assets/menus/4036998.png",
-      "layout": "fit-height",
-      "course": "10 <i>of</i> 10&colon; Baked Alaska",
-      "topLabel": "Fleischmann's Vienna Restaurant, NYC, 1917",
+      "id": "video",
+      "state": "2",
       "body": [
         {
           "type": "text",
-          "value": "And that was before the rise of fast food a few decades later, revolutionizing American dining yet again."
-        },
-        {
-          "type": "text",
-          "value": "But the fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve collected 5000 menus for you. Right this way:"
+          "value": "But the fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve curated 5,000 menus for you."
         }
       ]
     }
   ]
-}`;var Ge=y("<p></p>"),Ve=y('<details><summary></summary> <div class="content"><!></div></details>');function ze(c,e){let t=D(()=>typeof e.content=="string"),n=D(()=>e.open==="true");var s=Ve(),a=p(s);W(a,()=>e.summary,!0),u(a);var h=g(a,2),m=p(h);{var f=r=>{var d=A(),v=C(d);W(v,()=>e.content),l(r,d)},i=r=>{var d=A(),v=C(d);B(v,17,()=>e.content,R,(k,L)=>{let x=()=>o(L).value;var Y=Ge();W(Y,x,!0),u(Y),l(k,Y)}),l(r,d)};U(m,r=>{o(t)?r(f):r(i,-1)})}u(h),u(s),N(()=>{s.open=o(n),re(s,"name",e.name)}),l(c,s)}var Ze=y("<li></li>"),Je=y("<ul></ul>");function Ue(c,e){var t=Je();B(t,21,()=>e.li,R,(n,s)=>{var a=Ze();W(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var Ke=y("<li></li>"),Qe=y("<ol></ol>");function $e(c,e){var t=Qe();B(t,21,()=>e.li,R,(n,s)=>{var a=Ke();W(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var en=y("<p></p>"),nn=y("<section><!></section>");function tn(c,e){G(e,!0);const t={details:ze,ul:Ue,ol:$e};let n=F(e,"components",19,()=>({})),s=F(e,"body",19,()=>[]);var a=A(),h=C(a);B(h,17,s,R,(m,f)=>{let i=()=>o(f).section,r=()=>o(f).content;const d=D(()=>i().toLowerCase().replace(/[^a-z0-9]/g,"")),v=D(()=>n()[i()]);var k=nn(),L=p(k);{var x=b=>{var w=A(),_=C(w);Q(_,()=>o(v),(E,O)=>{O(E,$(r))}),l(b,w)},Y=b=>{var w=A(),_=C(w);B(_,17,r,R,(E,O,ne,te)=>{let H=()=>o(O).type,M=()=>o(O).value;const z=D(()=>n()[H()]||t[H()]),le=D(()=>typeof M()=="string");var ae=A(),ce=C(ae);{var ue=T=>{var I=A(),X=C(I);Q(X,()=>o(z),(Z,J)=>{J(Z,$(M))}),l(T,I)},de=T=>{var I=en();W(I,M,!0),u(I),l(T,I)},he=T=>{var I=A(),X=C(I);K(X,H,!1,(Z,J)=>{var oe=A(),pe=C(oe);W(pe,M),l(J,oe)}),l(T,I)},me=T=>{var I=A(),X=C(I);K(X,H,!1,(Z,J)=>{xe(Z,()=>({...M()}))}),l(T,I)};U(ce,T=>{o(z)?T(ue):H()==="text"?T(de,1):o(le)?T(he,2):T(me,-1)})}l(E,ae)}),l(b,w)};U(L,b=>{o(v)?b(x):b(Y,-1)})}u(k),N(()=>re(k,"id",o(d))),l(m,k)}),l(c,a),V()}var an=y('<p> </p> <progress max="100"></progress>',1);function on(c,e){let t=F(e,"label",3,"A"),n=F(e,"value",3,0);var s=an(),a=C(s),h=p(a,!0);u(a);var m=g(a,2);N(()=>{S(h,t()),ke(m,n())}),l(c,s)}var sn=y('<section id="cms"><h2>MicroCMS</h2> <code><pre> </pre></code> <!></section>');function rn(c,e){G(e,!0);const{body:t}=Se,n={Test:on};var s=sn(),a=g(p(s),2),h=p(a),m=p(h,!0);u(h),u(a);var f=g(a,2);tn(f,{get components(){return n},get body(){return t}}),u(s),N(i=>S(m,i),[()=>je.replace(/\t/g," ")]),l(c,s),V()}const ln=(c,e=ee)=>{var t=cn(),n=p(t),s=p(n,!0);u(n);var a=g(n,2),h=p(a,!0);u(a),u(t),N(()=>{S(s,e().name),S(h,e().age)}),l(c,t)};var cn=y('<div class="person svelte-q3gttf"><p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p></div>'),un=y('<h2>Svelte5</h2> <h3>Reactive variables 3 ways:</h3> <button class="svelte-q3gttf">count++</button> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <h3>Children (previously slots):</h3> <div class="children"><!></div> <h3>Dispatch Event</h3> <button class="svelte-q3gttf">Random</button>  <h3>Snippets</h3> <div class="people svelte-q3gttf"></div>',1);function dn(c,e){G(e,!0),F(e,"age",3,30);const t=[{name:"John",age:30},{name:"Jill",age:45}];let n=q(0),s=D(()=>o(n)*2),a=D(()=>o(n)*2),h=q(0);j(()=>{P(h,o(n)*2)});var m=un(),f=g(C(m),4),i=g(f,2),r=p(i);u(i);var d=g(i,2),v=p(d);u(d);var k=g(d,2),L=p(k);u(k);var x=g(k,4),Y=p(x);ie(Y,()=>e.children??ee),u(x);var b=g(x,4),w=g(b,4);B(w,21,()=>t,R,(_,E)=>{ln(_,()=>o(E))}),u(w),N(()=>{S(r,`${o(n)??""} doubled is ${o(s)??""} (derived)`),S(v,`${o(n)??""} doubled is ${o(a)??""} (derived by)`),S(L,`${o(n)??""} doubled is ${o(h)??""} ($effect)`)}),se("click",f,()=>ge(n)),se("click",b,()=>e.random(Math.floor(Math.random()*10))),l(c,m),V()}be(["click"]);const hn=(c,e)=>{let t=q(ye(c)),n=q(null),s=q(!0),a=q(void 0);const h=(i=!0)=>{P(s,i,!0),i===!0&&(P(a,null),P(n,null))},m=async()=>{try{const i=await fetch(o(t),e);if(!i.ok)throw new Error(`Unexpected error occurred (status ${i.status})`);let r;if(o(t).includes(".csv")){const d=await i.text();r=_e(d)}else r=await i.json();return[null,r]}catch(i){const{errorMessage:r="Unexpected error eccurred"}=i;return[r,null]}},f=async i=>{h(!0);const[r,d]=await m();if(i===o(t)){if(r){h(!1),P(a,r,!0);return}h(!1),P(n,d,!0)}};return j(()=>{f(o(t))}),{get data(){return o(n)},get loading(){return o(s)},get error(){return o(a)},get url(){return o(t)},set url(i){o(t)!==i&&P(t,i,!0)}}};var mn=y("<p>loading data...</p>"),pn=y("<p> </p>"),fn=y("<p>data loaded</p> <pre> </pre>",1),gn=y('<div class="c"><h2>Load Data</h2> <div class="response"><!></div></div>');function yn(c,e){G(e,!0);const t=`${Ae}/assets/demo/test.csv`,n=hn(t);j(()=>{});var s=gn(),a=g(p(s),2),h=p(a);{var m=r=>{var d=mn();l(r,d)},f=r=>{var d=pn(),v=p(d);u(d),N(()=>S(v,`error: ${n.error??""}`)),l(r,d)},i=r=>{var d=fn(),v=g(C(d),2),k=p(v,!0);u(v),N(L=>S(k,L),[()=>JSON.stringify(n.data,null,2)]),l(r,d)};U(h,r=>{n.loading?r(m):n.error?r(f,1):r(i,-1)})}u(a),u(s),l(c,s),V()}var vn=y('<div id="demo" class="svelte-15aotx7"><h1>Demo</h1> <!> <!> <!> <!> <!> <!> <!> <!></div>');function bn(c){let e=q(0);function t(v){console.log(v)}var n=vn(),s=g(p(n),2);Le(s);var a=g(s,2);Te(a);var h=g(a,2);Fe(h);var m=g(h,2);Me(m);var f=g(m,2);rn(f,{});var i=g(f,2);yn(i,{});var r=g(i,2);Xe(r);var d=g(r,2);dn(d,{random:t,get value(){return o(e)},set value(v){P(e,v,!0)}}),u(n),l(c,n)}function Dn(c){bn(c)}export{Dn as component};
+}`;var Ge=v("<p></p>"),Ve=v('<details><summary></summary> <div class="content"><!></div></details>');function Ze(c,e){let t=F(()=>typeof e.content=="string"),n=F(()=>e.open==="true");var s=Ve(),a=p(s);E(a,()=>e.summary,!0),u(a);var h=g(a,2),m=p(h);{var f=r=>{var d=A(),y=C(d);E(y,()=>e.content),l(r,d)},i=r=>{var d=A(),y=C(d);B(y,17,()=>e.content,H,(k,L)=>{let x=()=>o(L).value;var Y=Ge();E(Y,x,!0),u(Y),l(k,Y)}),l(r,d)};U(m,r=>{o(t)?r(f):r(i,-1)})}u(h),u(s),N(()=>{s.open=o(n),re(s,"name",e.name)}),l(c,s)}var ze=v("<li></li>"),Je=v("<ul></ul>");function Ue(c,e){var t=Je();B(t,21,()=>e.li,H,(n,s)=>{var a=ze();E(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var Ke=v("<li></li>"),Qe=v("<ol></ol>");function $e(c,e){var t=Qe();B(t,21,()=>e.li,H,(n,s)=>{var a=Ke();E(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var en=v("<p></p>"),nn=v("<section><!></section>");function tn(c,e){G(e,!0);const t={details:Ze,ul:Ue,ol:$e};let n=D(e,"components",19,()=>({})),s=D(e,"body",19,()=>[]);var a=A(),h=C(a);B(h,17,s,H,(m,f)=>{let i=()=>o(f).section,r=()=>o(f).content;const d=F(()=>i().toLowerCase().replace(/[^a-z0-9]/g,"")),y=F(()=>n()[i()]);var k=nn(),L=p(k);{var x=b=>{var w=A(),_=C(w);Q(_,()=>o(y),(q,O)=>{O(q,$(r))}),l(b,w)},Y=b=>{var w=A(),_=C(w);B(_,17,r,H,(q,O,ne,te)=>{let R=()=>o(O).type,M=()=>o(O).value;const Z=F(()=>n()[R()]||t[R()]),le=F(()=>typeof M()=="string");var ae=A(),ce=C(ae);{var ue=T=>{var I=A(),W=C(I);Q(W,()=>o(Z),(z,J)=>{J(z,$(M))}),l(T,I)},de=T=>{var I=en();E(I,M,!0),u(I),l(T,I)},he=T=>{var I=A(),W=C(I);K(W,R,!1,(z,J)=>{var oe=A(),pe=C(oe);E(pe,M),l(J,oe)}),l(T,I)},me=T=>{var I=A(),W=C(I);K(W,R,!1,(z,J)=>{xe(z,()=>({...M()}))}),l(T,I)};U(ce,T=>{o(Z)?T(ue):R()==="text"?T(de,1):o(le)?T(he,2):T(me,-1)})}l(q,ae)}),l(b,w)};U(L,b=>{o(y)?b(x):b(Y,-1)})}u(k),N(()=>re(k,"id",o(d))),l(m,k)}),l(c,a),V()}var an=v('<p> </p> <progress max="100"></progress>',1);function on(c,e){let t=D(e,"label",3,"A"),n=D(e,"value",3,0);var s=an(),a=C(s),h=p(a,!0);u(a);var m=g(a,2);N(()=>{S(h,t()),ke(m,n())}),l(c,s)}var sn=v('<section id="cms"><h2>MicroCMS</h2> <code><pre> </pre></code> <!></section>');function rn(c,e){G(e,!0);const{body:t}=Se,n={Test:on};var s=sn(),a=g(p(s),2),h=p(a),m=p(h,!0);u(h),u(a);var f=g(a,2);tn(f,{get components(){return n},get body(){return t}}),u(s),N(i=>S(m,i),[()=>je.replace(/\t/g," ")]),l(c,s),V()}const ln=(c,e=ee)=>{var t=cn(),n=p(t),s=p(n,!0);u(n);var a=g(n,2),h=p(a,!0);u(a),u(t),N(()=>{S(s,e().name),S(h,e().age)}),l(c,t)};var cn=v('<div class="person svelte-q3gttf"><p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p></div>'),un=v('<h2>Svelte5</h2> <h3>Reactive variables 3 ways:</h3> <button class="svelte-q3gttf">count++</button> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <h3>Children (previously slots):</h3> <div class="children"><!></div> <h3>Dispatch Event</h3> <button class="svelte-q3gttf">Random</button>  <h3>Snippets</h3> <div class="people svelte-q3gttf"></div>',1);function dn(c,e){G(e,!0),D(e,"age",3,30);const t=[{name:"John",age:30},{name:"Jill",age:45}];let n=X(0),s=F(()=>o(n)*2),a=F(()=>o(n)*2),h=X(0);j(()=>{P(h,o(n)*2)});var m=un(),f=g(C(m),4),i=g(f,2),r=p(i);u(i);var d=g(i,2),y=p(d);u(d);var k=g(d,2),L=p(k);u(k);var x=g(k,4),Y=p(x);ie(Y,()=>e.children??ee),u(x);var b=g(x,4),w=g(b,4);B(w,21,()=>t,H,(_,q)=>{ln(_,()=>o(q))}),u(w),N(()=>{S(r,`${o(n)??""} doubled is ${o(s)??""} (derived)`),S(y,`${o(n)??""} doubled is ${o(a)??""} (derived by)`),S(L,`${o(n)??""} doubled is ${o(h)??""} ($effect)`)}),se("click",f,()=>ge(n)),se("click",b,()=>e.random(Math.floor(Math.random()*10))),l(c,m),V()}be(["click"]);const hn=(c,e)=>{let t=X(ve(c)),n=X(null),s=X(!0),a=X(void 0);const h=(i=!0)=>{P(s,i,!0),i===!0&&(P(a,null),P(n,null))},m=async()=>{try{const i=await fetch(o(t),e);if(!i.ok)throw new Error(`Unexpected error occurred (status ${i.status})`);let r;if(o(t).includes(".csv")){const d=await i.text();r=_e(d)}else r=await i.json();return[null,r]}catch(i){const{errorMessage:r="Unexpected error eccurred"}=i;return[r,null]}},f=async i=>{h(!0);const[r,d]=await m();if(i===o(t)){if(r){h(!1),P(a,r,!0);return}h(!1),P(n,d,!0)}};return j(()=>{f(o(t))}),{get data(){return o(n)},get loading(){return o(s)},get error(){return o(a)},get url(){return o(t)},set url(i){o(t)!==i&&P(t,i,!0)}}};var mn=v("<p>loading data...</p>"),pn=v("<p> </p>"),fn=v("<p>data loaded</p> <pre> </pre>",1),gn=v('<div class="c"><h2>Load Data</h2> <div class="response"><!></div></div>');function vn(c,e){G(e,!0);const t=`${Ae}/assets/demo/test.csv`,n=hn(t);j(()=>{});var s=gn(),a=g(p(s),2),h=p(a);{var m=r=>{var d=mn();l(r,d)},f=r=>{var d=pn(),y=p(d);u(d),N(()=>S(y,`error: ${n.error??""}`)),l(r,d)},i=r=>{var d=fn(),y=g(C(d),2),k=p(y,!0);u(y),N(L=>S(k,L),[()=>JSON.stringify(n.data,null,2)]),l(r,d)};U(h,r=>{n.loading?r(m):n.error?r(f,1):r(i,-1)})}u(a),u(s),l(c,s),V()}var yn=v('<div id="demo" class="svelte-15aotx7"><h1>Demo</h1> <!> <!> <!> <!> <!> <!> <!> <!></div>');function bn(c){let e=X(0);function t(y){console.log(y)}var n=yn(),s=g(p(n),2);Le(s);var a=g(s,2);Te(a);var h=g(a,2);De(h);var m=g(h,2);Me(m);var f=g(m,2);rn(f,{});var i=g(f,2);vn(i,{});var r=g(i,2);We(r);var d=g(r,2);dn(d,{random:t,get value(){return o(e)},set value(y){P(e,y,!0)}}),u(n),l(c,n)}function Fn(c){bn(c)}export{Fn as component};

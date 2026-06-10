@@ -481,6 +481,17 @@
 		soupDragLocked ? soupDragDelta * dims.width * -dragMultiplier : 0
 	);
 
+
+	// 	let soupDragParallaxX = $derived(() => {
+	// 	if (!soupDragLocked) return 0;
+	// 	const activeBgSrc = slides[activeIndex]?.bgSrc;
+	// 	const prevBgSrc = slides[activeIndex - 1]?.bgSrc;
+	// 	const nextBgSrc = slides[activeIndex + 1]?.bgSrc;
+	// 	if (prevBgSrc === activeBgSrc || nextBgSrc === activeBgSrc) return 0;
+	// 	return soupDragDelta * dims.width * -dragMultiplier;
+	// });
+
+
 	// Soup background — preload all bgSrc images up front so the img tag always gets
 	// pixel data that's already in memory, making in:fade play against a visible image.
 	let preloadedImages = $state(/** @type {Map<string, HTMLImageElement>} */ (new Map()));
@@ -506,6 +517,28 @@
 	// Only expose src to the template once it's preloaded — prevents assigning a src the browser hasn't fetched yet
 	let soupBgReadySrc = $derived(soupBgRenderSrc && preloadedImages.has(soupBgRenderSrc) ? soupBgRenderSrc : null);
 	let soupBgMounted = $state(false);
+	let videoEl = $state(null);
+	let isVideoBgActive = $derived(slides[activeIndex]?.id === 'video');
+	$effect(() => {
+		const slide = slides[activeIndex];
+		if (!videoEl || slide?.id !== 'video') return;
+		const state = Number(slide.state);
+		if (state === 1) {
+			videoEl.currentTime = 0;
+			videoEl.play().catch(() => {});
+			const onTimeUpdate = () => {
+				if (videoEl.currentTime >= 3) {
+					videoEl.pause();
+					videoEl.removeEventListener('timeupdate', onTimeUpdate);
+				}
+			};
+			videoEl.addEventListener('timeupdate', onTimeUpdate);
+			return () => videoEl.removeEventListener('timeupdate', onTimeUpdate);
+		} else if (state === 2) {
+			videoEl.currentTime = 2;
+			videoEl.play().catch(() => {});
+		}
+	});
 	let soupBgIntroDelay = $derived(soupBgMounted && !justLeftNoImage ? 400 : 0);
 	let soupBgOutroDelay = $derived(justLeftNoImage ? 0 : 100);
 	let soupBgOutroDuration = $derived(justLeftNoImage ? 0 : 200);
@@ -585,9 +618,11 @@
 		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, fromIsZoom ? zoomProgress : 1);
 		const b = soupSlideXform(toIsSoup   ? to   : from, vw, vh, nw, nh, 0);
 		const t = smoothstep(soupRefBlendT);
+		const activeBgSrc = slides[activeIndex]?.bgSrc;
+		const neighborSharesBg = slides[activeIndex - 1]?.bgSrc === activeBgSrc || slides[activeIndex + 1]?.bgSrc === activeBgSrc;
 		return {
 			s: lerp(a.s, b.s, t),
-			tx: lerp(a.tx, b.tx, t) + soupDragParallaxX,
+			tx: lerp(a.tx, b.tx, t) + (neighborSharesBg ? 0 : soupDragParallaxX),
 			ty: lerp(a.ty, b.ty, t),
 		};
 	});
@@ -1023,6 +1058,17 @@
 			</div>
 		{/if}
 
+		{#if isVideoBgActive}
+			<div class="video-bg" aria-hidden="true">
+				<video
+					bind:this={videoEl}
+					src="assets/menus/menu-explorer-video.mp4"
+					muted
+					playsinline
+				></video>
+			</div>
+		{/if}
+
 		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate3d(0%, {layout == "center" ? 0 : -tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
 			{#each STACK as card, i}
 				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
@@ -1084,7 +1130,7 @@
 							style="justify-content: {slide.id == "title" ? 'center' : ''}"
 						>							
 							{#if slide.body && slide.id !== 'title'}
-								<div class="slide-content {slide.image ? "food-item" : ''}" style="flex-direction: {slide.image ? 'row' : ''};">
+								<div class="{slide.id === "video" ? 'video-slide' : ''} slide-content {slide.image ? "food-item" : ''}" style="flex-direction: {slide.image ? 'row' : ''};">
 									{#if slide.id === 'soup' && !slide.image}
 										<div class="slide-tab slide-tab-explore" style="right: 30px;">
 											<div class="slide-curve">
@@ -1148,12 +1194,25 @@
 										
 										</div>
 									{/if}
-					{#if soupInfoLabel && !soupPanZoom && layout !== 'center'}
-						<details class="">
-							<summary>Fun Fact</summary>
-							<p>{@html soupInfoLabel}</p>
-						</details>
-					{/if}
+									{#if soupInfoLabel && !soupPanZoom && layout !== 'center'}
+										<details class="">
+											<summary>Fun Fact</summary>
+											<p>{@html soupInfoLabel}</p>
+										</details>
+									{/if}
+									{#if slide.id === 'video' && slide?.state == '2'}
+										<div class="explore">
+											<a
+												style="font-size: ${bodyFontSizes[i]}px;"
+												href="https://pudding.cool/2026/06/menu-collection/" blank="_blank">
+												Explore the Interactive Map »
+											</a>
+											<a href="https://pudding.cool/2026/06/menu-collection/" blank="_blank">
+												<img src="assets/menus/map-preview.jpg" alt="Preview of the interactive map" />
+											</a>
+
+										</div>
+									{/if}
 								</div>
 							{/if}
 							
@@ -1272,6 +1331,22 @@
 		<span class="counter-sep">/</span>
 		<span class="counter-total">{String(slides.length).padStart(2, "0")}</span>
 	</div>
+	{#if layout == "right" && !soupGuideOpen && !soupPanZoom}
+		<div class="slide-nav" aria-hidden="true">
+			{#if activeIndex > 0}
+				<button class="slide-nav-btn slide-nav-prev" onclick={() => swiper?.slidePrev()} tabindex="-1">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1em; height: 1em;"><g><polyline points="15 18 9 12 15 6"></polyline></g></svg>
+				</button>
+			{:else}
+				<div></div>
+			{/if}
+			{#if activeIndex < slides.length - 1}
+				<button class="slide-nav-btn slide-nav-next" onclick={() => swiper?.slideNext()} tabindex="-1">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1em; height: 1em;"><g><polyline points="9 18 15 12 9 6"></polyline></g></svg>
+				</button>
+			{/if}
+		</div>
+	{/if}
 </section>
 
 <!-- ── Lightbox ── -->
@@ -1924,6 +1999,22 @@
 		pointer-events: none;
 	}
 
+	.video-bg {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.video-bg video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	.soup-bg img {
 		position: absolute;
 		top: 0;
@@ -2479,6 +2570,36 @@
 		/* transform: scale(1.5); */
 	}
 
+	:global(a){
+		text-decoration-thickness: 1.5px;
+	}
+
+	:gloabl(details i) {
+		font-weight: 500;
+	}
+
+	.video-slide {
+		background: white;
+	}
+
+	.explore {
+		padding: 15px 20px;
+		padding-top: 0;
+	}
+
+	.explore a {
+		margin-top: 0;
+		margin-bottom: 1rem;
+		font-size: 24px;
+		display: block;
+	}
+
+	.explore img {
+		box-shadow: 4px 4px 5px 1px rgba(0,0,0,.1);
+		border: 1px solid rgba(0,0,0,.25);
+		border-radius: 2px;
+	}
+
 
 	@keyframes hint-pulse {
 		0%,
@@ -2490,5 +2611,32 @@
 			opacity: 0.8;
 			transform: translateX(-50%) translateX(4px);
 		}
+	}
+
+	.slide-nav {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+		z-index: 2000;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 5px;
+	}
+
+	.slide-nav-btn {
+		pointer-events: auto;
+		background: rgba(0, 0, 0, 0.85);
+		border: none;
+		font-size: 18px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0;
+	}
+
+	.slide-nav-btn svg {
+		stroke: white;
 	}
 </style>
