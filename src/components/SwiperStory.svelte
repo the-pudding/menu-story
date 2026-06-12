@@ -4,9 +4,10 @@
 	import { cubicOut } from "svelte/easing";
 	import { fade, fly } from "svelte/transition";
 	import Swiper from "swiper";
-	import { Zoom, Keyboard } from "swiper/modules";
+	import { Zoom, Virtual, Keyboard } from "swiper/modules";
 	import "swiper/css";
 	import "swiper/css/zoom";
+	import "swiper/css/virtual";
 	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
 	import curve from "$svg/curve.svg";
 	import arrowRight from "$svg/arrow-right.svg";
@@ -14,7 +15,7 @@
 	import minus from "$svg/minus.svg";
 	import guide from "$svg/guide-text.svg";
 	import sectionSvg from "$svg/section.svg";
-
+	import Footer from "./Footer.svelte";
 
 	[]
 
@@ -34,6 +35,7 @@
 	// Floating-point slide position (0 = slide 0, 1.5 = halfway between 1 and 2)
 	let slidePosition = $state(0);
 	let activeIndex = $state(0);
+	let virtualData = $state({ slides: [], offset: 0 });
 	let swipeDirection = $state(1); // 1 = moving to next slide, -1 = moving to previous
 	let isDragging = $state(false);
 	let justLeftNoImage = $state(false);
@@ -60,6 +62,8 @@
 	let ptPrepare = $state(null);
 	let ptLayout = $state(null);
 	let dims = new useWindowDimensions();
+	
+	//turned off
 	let layout = $derived((dims.width ?? 0) < 500 ? 'center' : 'right');
 	let newSlideFontSize = $derived(layout === 'center' ? 24 : 36);
 	const BODY_CHAPTER_BG_CLASS = 'story-chapter-active';
@@ -142,11 +146,29 @@
 		return true;
 	}
 
+	function bindSectionClicks(node) {
+		const cleanupFns = [];
+		Array.from(node.querySelectorAll('svg g[id]')).forEach((group) => {
+			const idAttr = group.getAttribute('id') ?? '';
+			const idNum = Number.parseInt(idAttr, 10);
+			if (!Number.isInteger(idNum) || idNum < 1 || idNum > 10) return;
+			group.style.cursor = 'pointer';
+			const handler = (event) => {
+				event.preventDefault();
+				event.stopPropagation();
+				goToGuideSlide(idAttr);
+			};
+			group.addEventListener('click', handler);
+			cleanupFns.push(() => group.removeEventListener('click', handler));
+		});
+		return { destroy() { cleanupFns.forEach(fn => fn()); } };
+	}
+
 	function onGuideOverlayClick(event) {
 		// Fallback: clicking outside bound guide targets closes the overlay.
 		soupGuideOpen = false;
 	}
-
+	// turned off
 	$effect(() => {
 		if (!soupGuideOpen || !guideOverlayEl) return;
 		const groups = Array.from(guideOverlayEl.querySelectorAll('svg g[id]'));
@@ -171,13 +193,13 @@
 			cleanupFns.forEach((fn) => fn());
 		};
 	});
-	// Both measured from the DOM — CSS padding changes are reflected automatically
+
 	let textWidths = $state([]); // per-slide text width, updated via bind:clientWidth
 	let wrapperClientHeights = $state([]); // per-slide, updated via bind:clientHeight
 	let wrapperPadV = $state(0); // vertical padding of .slide-body-wrapper, stored separately
 
-	// Any wrapper element is sufficient — all share the same CSS, last bind:this write wins
 	let wrapperEl = $state(null);
+
 
 	$effect(() => {
 		const body = document?.body;
@@ -188,7 +210,7 @@
 			body.classList.remove(BODY_CHAPTER_BG_CLASS);
 		};
 	});
-
+	
 	$effect(() => {
 		const el = wrapperEl;
 		if (!el) return;
@@ -198,20 +220,18 @@
 		const bodyEl = el.querySelector(".slide-body");
 		if (bodyEl) fontFamily = getComputedStyle(bodyEl).fontFamily;
 	});
-
 	$effect(() => {
 		if (soupPanZoom || !slides[activeIndex]?.course) {
 			soupGuideOpen = false;
 		}
 	});
 
-	// Per-slide chrome (kicker + title + rule) heights — bound from DOM
-	let chromeHeights = $state(Array.from({ length: untrack(() => slides.length) }, () => 0));
-
-	const MIN_FONT = 14;
+	const MIN_FONT = 18;
 	const MAX_FIT_FONT = 24;
 	const RIGHT_LAYOUT_BODY_MAX_VH = 0.8;
+	const CENTER_LAYOUT_BODY_MAX_VH = 0.35;
 	const AUTO_BODY_FONT_SIZE = 24;
+	let fontSizeAdjustEnabled = $state(true);
 
 	function isAutoTypeSlide(slide) {
 		if(layout == "center") return null; // type:auto only applies to right layout
@@ -254,35 +274,80 @@
 	}
 
 	// Per-slide layout: font size + optional wrapper height override when text hits MIN_FONT.
-	let bodyLayouts = $derived(
-		slides.map((slide, idx) => {
-			if (isAutoTypeSlide(slide)) {
-				// type:auto opts out of measured fitting and keeps a fixed body size.
-				return { fontSize: AUTO_BODY_FONT_SIZE, wrapperMinH: null };
-			}
-			const clientH = wrapperClientHeights[idx] ?? 0;
-			const textWidth = textWidths[idx] ?? 0;
-			const rightLayoutAvailH = dims.height * RIGHT_LAYOUT_BODY_MAX_VH - wrapperPadV;
-			const slideAvailH = layout === 'right' ? rightLayoutAvailH
-				: slide.layout === 'no-image' ? height * 0.9 - wrapperPadV
-				: height * 0.3 - wrapperPadV;
-			if (!ptPrepare || !ptLayout || !slide.body?.length || textWidth <= 0 || slideAvailH <= 0) {
-				return { fontSize: REF_SIZE, wrapperMinH: null };
-			}
-			const paragraphs = slide.body.map((l) => stripHtml(l.value ?? l));
-			const fontSize = fitFontSize(paragraphs, slideAvailH - 8, textWidth);
-			let wrapperMinH = null;
-			if (fontSize <= MIN_FONT) {
-				// Text hit the floor — expand the box to fit rather than clip.
-				// Use the natural CSS height (not clientH which may already be expanded) as the threshold.
-				const naturalH = idx === 0 ? dims.height * 0.30 - 100 : dims.height * 0.30;
-				const needed = textHeightAt(paragraphs, MIN_FONT, textWidth) + 8 + wrapperPadV;
-				if (needed > naturalH) wrapperMinH = Math.ceil(needed);
-			}
-			return { fontSize, wrapperMinH };
-		})
-	);
+	// Spread across multiple rAF frames (CHUNK slides per frame) so no single frame is blocked
+	// by canvas text measurement for all slides at once. Active slide is computed first.
+	const BODY_LAYOUT_CHUNK = 4;
+	let bodyLayouts = $state([]);
 
+	function computeOneBodyLayout(slide, idx, textWidth, _ptPrepare, _ptLayout, _layout, _height, _wrapperPadV, _dims) {
+		if (isAutoTypeSlide(slide)) return { fontSize: AUTO_BODY_FONT_SIZE, wrapperMinH: null };
+		const rightLayoutAvailH = _dims.height * RIGHT_LAYOUT_BODY_MAX_VH - _wrapperPadV;
+		const centerLayoutAvailH = _dims.height * CENTER_LAYOUT_BODY_MAX_VH - _wrapperPadV;
+		const slideAvailH = _layout === 'right' ? rightLayoutAvailH
+			: slide.layout === 'no-image' ? _height * 0.9 - _wrapperPadV
+			: centerLayoutAvailH;
+		if (!_ptPrepare || !_ptLayout || !slide.body?.length || textWidth <= 0 || slideAvailH <= 0) {
+			return { fontSize: REF_SIZE, wrapperMinH: null };
+		}
+		const paragraphs = slide.body.map((l) => stripHtml(l.value ?? l));
+		const fontSize = fitFontSize(paragraphs, slideAvailH - 8, textWidth);
+		let wrapperMinH = null;
+		if (fontSize <= MIN_FONT) {
+			const baseH = _layout === 'right' ? _dims.height * RIGHT_LAYOUT_BODY_MAX_VH : _dims.height * CENTER_LAYOUT_BODY_MAX_VH;
+			const naturalH = idx === 0 ? baseH - 100 : baseH;
+			const needed = textHeightAt(paragraphs, MIN_FONT, textWidth) + 8 + _wrapperPadV;
+			if (needed > naturalH) wrapperMinH = Math.ceil(needed);
+		}
+		return { fontSize, wrapperMinH };
+	}
+
+	$effect(() => {
+		void fontFamily; // track as dependency
+		if (!fontSizeAdjustEnabled) return;
+		const _slides = slides, _textWidths = textWidths, _dims = dims,
+			_wrapperPadV = wrapperPadV, _layout = layout, _height = height,
+			_ptPrepare = ptPrepare, _ptLayout = ptLayout;
+
+		const _activeIndex = untrack(() => activeIndex);
+		const order = [
+			_activeIndex,
+			..._slides.map((_, i) => i).filter(i => i !== _activeIndex),
+		];
+
+		// Seed with current layouts so uncomputed slides keep their existing value
+		const working = untrack(() => bodyLayouts).slice();
+		while (working.length < _slides.length) working.push({ fontSize: REF_SIZE, wrapperMinH: null });
+
+		let cursor = 0;
+		let rafHandle;
+
+		// Fallback text width for slides not yet in the virtual window (no measured width).
+		// Center: slide-inner = min(vw-20, 800px), wrapper adds 20px pad each side → min(vw,820)-60.
+		// Right:  slide-inner.right-align = min(50vw, 500px), same padding → min(0.5vw,500)-40.
+		const fallbackTextWidth = _layout === 'right'
+			? Math.max(0, Math.min(_dims.width * 0.5, 500) - 40)
+			: Math.max(0, Math.min(_dims.width, 820) - 60);
+
+		function processChunk() {
+			if (isDragging) { rafHandle = requestAnimationFrame(processChunk); return; }
+			const end = Math.min(cursor + BODY_LAYOUT_CHUNK, order.length);
+			for (; cursor < end; cursor++) {
+				const idx = order[cursor];
+				const measuredWidth = _textWidths[idx] ?? 0;
+				const textWidth = measuredWidth > 0 ? measuredWidth : fallbackTextWidth;
+				working[idx] = computeOneBodyLayout(
+					_slides[idx], idx, textWidth,
+					_ptPrepare, _ptLayout, _layout, _height, _wrapperPadV, _dims
+				);
+			}
+			bodyLayouts = working.slice(); // shallow copy to trigger reactivity
+			if (cursor < order.length) rafHandle = requestAnimationFrame(processChunk);
+		}
+
+		rafHandle = requestAnimationFrame(processChunk);
+		return () => cancelAnimationFrame(rafHandle);
+	});
+	
 	let bodyFontSizes = $derived(bodyLayouts.map(l => l.fontSize));
 	let bodyLineHeights = $derived(bodyFontSizes.map(lineHeightFor));
 	let wrapperMinHeights = $derived(bodyLayouts.map(l => l.wrapperMinH));
@@ -298,11 +363,6 @@
 		return t * t * (3 - 2 * t);
 	}
 
-	// ─── Stack cards ─────────────────────────────────────────────────────────────
-
-	// Static resting rotations/offsets for each card in the stack (bottom → top).
-	// Wide fan spread — cards fill and overflow the screen at various angles.
-	// tx/ty are percentages of card width/height.
 	const IMG_BASE = 'https://s3.us-east-1.amazonaws.com/pudding.cool/projects/menu-images/';
 	let buttolphPos = {
 		rot: 8, tx: 0, ty: -20, widthPct: 50
@@ -336,21 +396,16 @@
 	const buttolphIdx = untrack(() => slides.findIndex((s) => s.id === 'buttolph'));
 	const sideIdx = untrack(() => slides.findIndex((s) => s.id === 'side'));
 	const illustrationIdx = untrack(() => slides.findIndex((s) => s.id === 'illustration'));
-
-	// Top-card fly off stays aligned to cold -> buttolph transition.
 	let stackT = $derived(phaseProgress(coldNarrativeIdx, buttolphIdx >= 0 ? buttolphIdx : coldNarrativeIdx + 1));
 
-	// Non-hero fade + hero center move stay aligned to buttolph -> side transition.
 	let sideEntryT = $derived(phaseProgress(buttolphIdx, sideIdx >= 0 ? sideIdx : buttolphIdx + 1));
 	let stackOpacity = $derived(1 - sideEntryT);
-
-	// Entire stack fades out when entering the first soup slide
 	const titleIdx = untrack(() => slides.findIndex(s => s.id === 'soup'));
 	let stackTitleOpacity = $derived(titleIdx >= 0 ? 1 - smoothstep(Math.max(0, Math.min(1, slidePosition - (titleIdx - 1)))) : 1);
 
-	// Stack slides in from the right when reaching the 'cold' slide.
 	const coldIdx = untrack(() => slides.findIndex(s => s.id === 'cold'));
 	let stackSlideX = $derived(coldIdx >= 0 && activeIndex < coldIdx ? 100 : 0);
+	
 	const STACK_SLIDE_DURATION = 300;
 	const STACK_SLIDE_DELAY = 200;
 	let tweenedStackSlideX = $state(100);
@@ -390,13 +445,7 @@
 		};
 	});
 
-	const newSlideIdx = untrack(() => slides.findIndex(s => s.id === 'new-slide'));
 	let introBgSlideX = $derived(coldIdx >= 0 && slidePosition < coldIdx ? (layout === 'center' ? -30 : 0) : -100);
-	let introBgOpacity = $derived(
-		newSlideIdx >= 0
-			? (slidePosition >= newSlideIdx && (coldIdx < 0 || slidePosition < coldIdx + 0.35) ? 1 : 0)
-			: 0
-	);
 
 
 	// Widths of animated cards — set by onload, included in stackStyles so reactive updates don't wipe them
@@ -468,54 +517,68 @@
 		return slide?.id === 'soup' && slide?.layout !== 'no-image' && !!slide?.bgSrc;
 	}
 	let isNoImageSlideActive = $derived(slides[activeIndex]?.layout === 'no-image');
-	// While dragging on a soup slide, keep soup references pinned to the snapped active slide
-	// so bg/label/annotation don't switch to the next soup slide mid-drag.
+
 	let soupDragLocked = $derived(isDragging && hasSoupBg(slides[activeIndex]));
 	let soupRefFromIdx = $derived(soupDragLocked ? activeIndex : fromIdx);
 	let soupRefToIdx = $derived(soupDragLocked ? activeIndex : toIdx);
 	let soupRefBlendT = $derived(soupDragLocked ? 0 : blendT);
-	// While soup references are locked during drag, add a subtle live parallax offset
-	// so the soup background still responds to finger movement.
 	let soupDragDelta = $derived(Math.max(-1, Math.min(1, slidePosition - activeIndex)));
 	let soupDragParallaxX = $derived(
 		soupDragLocked ? soupDragDelta * dims.width * -dragMultiplier : 0
 	);
-
-
-	// 	let soupDragParallaxX = $derived(() => {
-	// 	if (!soupDragLocked) return 0;
-	// 	const activeBgSrc = slides[activeIndex]?.bgSrc;
-	// 	const prevBgSrc = slides[activeIndex - 1]?.bgSrc;
-	// 	const nextBgSrc = slides[activeIndex + 1]?.bgSrc;
-	// 	if (prevBgSrc === activeBgSrc || nextBgSrc === activeBgSrc) return 0;
-	// 	return soupDragDelta * dims.width * -dragMultiplier;
-	// });
-
 
 	// Soup background — preload all bgSrc images up front so the img tag always gets
 	// pixel data that's already in memory, making in:fade play against a visible image.
 	let preloadedImages = $state(/** @type {Map<string, HTMLImageElement>} */ (new Map()));
 	let lastSoupBgSrc = $state(null);
 
-	onMount(() => {
-		const srcs = [...new Set(slides.map(s => s.bgSrc).filter(Boolean))];
-		srcs.forEach(src => {
+	let loading = $state(true);
+
+	function preloadAllImages() {
+		const bgSrcs = new Set(slides.map(s => s.bgSrc).filter(Boolean));
+
+		const allSrcs = new Set([
+			...bgSrcs,
+			...slides.map(s => s.image).filter(Boolean),
+			'assets/menus/title-mobile.png',
+			...slides.filter(s => s.sectionCount).map(s => `assets/menus/${s.sectionCount}.png`),
+			...STACK.map(c => c.src).filter(Boolean),
+		]);
+
+		const promises = [...allSrcs].map(src => new Promise(resolve => {
 			const img = new Image();
-			img.onload = () => {
-				preloadedImages = new Map([...preloadedImages, [src, img]]);
+			img.onload = async () => {
+				if (bgSrcs.has(src)) {
+					// Wait for decode so the image is GPU-ready before it's needed at swap time.
+					// This prevents the browser from doing expensive decode/rasterize work
+					// in the middle of a slide transition, which causes long frames.
+					try { await img.decode(); } catch (e) {}
+					preloadedImages = new Map([...preloadedImages, [src, img]]);
+				}
+				resolve();
 			};
+			img.onerror = resolve;
 			img.src = src;
-		});
+		}));
+
+		return Promise.allSettled(promises);
+	}
+
+	onMount(async () => {
+		loading = false;
+		await preloadAllImages();
 	});
 
+	let soupBgReadySrc = $derived(soupBgRenderSrc && preloadedImages.has(soupBgRenderSrc) ? soupBgRenderSrc : null);
 	let soupBgRenderSrc = $derived(soupBg.src ?? (isNoImageSlideActive ? lastSoupBgSrc : null));
+
+
 	$effect(() => {
 		if (soupBg.src) lastSoupBgSrc = soupBg.src;
 	});
 	let soupBgNaturalW = $derived(preloadedImages.get(soupBgRenderSrc)?.naturalWidth ?? 0);
 	let soupBgNaturalH = $derived(preloadedImages.get(soupBgRenderSrc)?.naturalHeight ?? 0);
-	// Only expose src to the template once it's preloaded — prevents assigning a src the browser hasn't fetched yet
-	let soupBgReadySrc = $derived(soupBgRenderSrc && preloadedImages.has(soupBgRenderSrc) ? soupBgRenderSrc : null);
+	// // Only expose src to the template once it's preloaded — prevents assigning a src the browser hasn't fetched yet
 	let soupBgMounted = $state(false);
 	let videoEl = $state(null);
 	let isVideoBgActive = $derived(slides[activeIndex]?.id === 'video');
@@ -525,7 +588,6 @@
 		const state = Number(slide.state);
 		if (state === 1) {
 			videoEl.currentTime = 0;
-			videoEl.play().catch(() => {});
 			const onTimeUpdate = () => {
 				if (videoEl.currentTime >= 3) {
 					videoEl.pause();
@@ -533,15 +595,19 @@
 				}
 			};
 			videoEl.addEventListener('timeupdate', onTimeUpdate);
-			return () => videoEl.removeEventListener('timeupdate', onTimeUpdate);
+			const timeout = setTimeout(() => videoEl.play().catch(() => {}), 1000);
+			return () => {
+				clearTimeout(timeout);
+				videoEl?.removeEventListener('timeupdate', onTimeUpdate);
+			};
 		} else if (state === 2) {
-			videoEl.currentTime = 2;
 			videoEl.play().catch(() => {});
 		}
 	});
 	let soupBgIntroDelay = $derived(soupBgMounted && !justLeftNoImage ? 400 : 0);
 	let soupBgOutroDelay = $derived(justLeftNoImage ? 0 : 100);
 	let soupBgOutroDuration = $derived(justLeftNoImage ? 0 : 200);
+
 	let soupBgLayerOpacity = $derived(isNoImageSlideActive ? 0 : (soupGuideOpen ? 0.18 : 1));
 	let overlayLoadedIds = $state(new Set());
 	let currentSoupBgImageId = $derived(normalizeImageId(soupBgReadySrc));
@@ -581,7 +647,7 @@
 	function fitHeightXform(vw, vh, nw, nh) {
 		if (layout === 'center') return { tx: 0, ty: 0, s: 1 };
 		const s  = vh / (vw * nh / nw);
-		const tx = layout === 'right' ? vw - vw * s - 20 : (vw - vw * s) / 2;
+		const tx = layout === 'right' ? Math.min(vw, 1200) - vw * s - 20 : (vw - vw * s) / 2;
 		return { tx, ty: 0, s };
 	}
 
@@ -606,6 +672,7 @@
 	// Interpolate between the two soup slide transforms — exposes raw values for annotation positioning.
 	// The from slide uses live zoomProgress; the to slide always starts at zp=0 (fit-height)
 	// so each new zoom slide begins its animation fresh on arrival.
+
 	let soupBgXform = $derived.by(() => {
 		const vw = dims.width, vh = dims.height;
 		const nw = soupBgNaturalW, nh = soupBgNaturalH;
@@ -615,7 +682,10 @@
 		const toIsSoup   = hasSoupBg(to);
 		if (!fromIsSoup && !toIsSoup) return null;
 		const fromIsZoom = fromIsSoup && from?.layout !== 'fit-height';
-		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, fromIsZoom ? zoomProgress : 1);
+		const zpFrom = !fromIsZoom ? 0
+			: soupRefFromIdx === activeIndex ? zoomProgress
+			: 0;
+		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, zpFrom);
 		const b = soupSlideXform(toIsSoup   ? to   : from, vw, vh, nw, nh, 0);
 		const t = smoothstep(soupRefBlendT);
 		const activeBgSrc = slides[activeIndex]?.bgSrc;
@@ -626,11 +696,13 @@
 			ty: lerp(a.ty, b.ty, t),
 		};
 	});
+
 	let soupBgTransform = $derived(
 		soupBgXform
 			? `translate(${soupBgXform.tx}px, ${soupBgXform.ty}px) scale(${soupBgXform.s})`
 			: 'none'
 	);
+
 	const PANZOOM_PAGE_GAP = 18;
 	const PANZOOM_MOCK_PAGES = [
 		"assets/menus/4000000068.png",
@@ -692,8 +764,6 @@
 		if (!hasSoupBg(active)) return null;
 		return active?.topLabel ?? null;
 	});
-
-	// Optional contextual label rendered over the soup background image.
 	let soupInfoLabel = $derived.by(() => {
 		const active = slides[activeIndex];
 		if (!hasSoupBg(active)) return null;
@@ -714,16 +784,24 @@
 
 	onMount(() => {
 		swiper = new Swiper(containerEl, {
-			modules: [Zoom, Keyboard],
-			// grabCursor: true,
-			// resistanceRatio: 0.6,
+			modules: [Virtual, Keyboard],
+			keyboard: { enabled: true },
 			speed: 300,
 			// threshold: 5,
 			longSwipesRatio: 0.2,
 			// longSwipesMs: 300,
-			keyboard: { enabled: true },
-			zoom: { maxRatio: 4, minRatio: 1 }
+			// zoom: { maxRatio: 4, minRatio: 1 },
+
+			virtual: {
+				slides: slides.map((_, i) => i),
+				addSlidesAfter: 1,
+				addSlidesBefore: 1,
+				renderExternal(data) {
+					virtualData = data;
+				}
+			}
 		});
+
 
 		swiper.on("touchStart", () => {
 			isDragging = true;
@@ -733,19 +811,24 @@
 			isDragging = false;
 		});
 
+		let _pendingPos = null;
+		let _rafHandle = null;
+
 		swiper.on("setTranslate", (s, translate) => {
 			if (!s.width) return;
 			const raw = -translate / s.width;
-			slidePosition = Math.max(0, Math.min(raw, slides.length - 1));
+			_pendingPos = Math.max(0, Math.min(raw, slides.length - 1));
+			if (!_rafHandle) {
+				_rafHandle = requestAnimationFrame(() => {
+					slidePosition = _pendingPos;
+					_rafHandle = null;
+				});
+			}
 		});
 
 		swiper.on("activeIndexChange", (s) => {
-			const prevSlide = slides[activeIndex];
-			const nextSlide = slides[s.activeIndex];
-			justLeftNoImage = prevSlide?.layout === 'no-image' && nextSlide?.layout !== 'no-image';
 			swipeDirection = s.activeIndex >= activeIndex ? 1 : -1;
 			activeIndex = s.activeIndex;
-			soupGuideOpen = false;
 		});
 
 		return () => swiper?.destroy();
@@ -828,30 +911,43 @@
 	const SOUP_ZOOM_RESET_DURATION = 620;
 	const PZ_PAN_STEP = 60;
 	const PZ_ZOOM_STEP = 1.2;
+	const PZ_INITIAL_ZOOM_CENTER = 0.70;
 
 	const pzPointers = new Map();
 	let pzLastPinchDist = 0;
 	let pzResetTimer;
 	let soupZoomResetTimer;
 
+	// Default pz state: center layout starts slightly zoomed out and re-centered.
+	// Container has transform-origin: 0 0, so zoom < 1 without pan anchors at the
+	// top-left; offsetting by (1-z)/2 of the viewport dimensions recenters it.
+	function pzInitialState() {
+		if (layout === 'center') {
+			const z = PZ_INITIAL_ZOOM_CENTER;
+			return { zoom: z, panX: dims.width * (1 - z) / 2, panY: dims.height * (1 - z) / 2 };
+		}
+		return { zoom: 1, panX: 0, panY: 0 };
+	}
+
 	async function resetPanZoomView(animate = false) {
 		if (pzResetTimer) clearTimeout(pzResetTimer);
 		pzPointers.clear();
 		pzLastPinchDist = 0;
 		zoomProgress = 0;
+		const init = pzInitialState();
 		if (!animate) {
 			pzResetAnimating = false;
-			pzZoom = 1;
-			pzPanX = 0;
-			pzPanY = 0;
+			pzZoom = init.zoom;
+			pzPanX = init.panX;
+			pzPanY = init.panY;
 			return;
 		}
 		pzResetAnimating = true;
 		await tick();
 		requestAnimationFrame(() => {
-			pzZoom = 1;
-			pzPanX = 0;
-			pzPanY = 0;
+			pzZoom = init.zoom;
+			pzPanX = init.panX;
+			pzPanY = init.panY;
 			pzResetTimer = setTimeout(() => {
 				pzResetAnimating = false;
 				pzResetTimer = null;
@@ -913,8 +1009,14 @@
 		} else if (pzPointers.size === 2) {
 			const pts = [...pzPointers.values()];
 			const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+			const midX = (pts[0].x + pts[1].x) / 2;
+			const midY = (pts[0].y + pts[1].y) / 2;
 			if (pzLastPinchDist > 0) {
-				pzZoom = Math.max(0.5, Math.min(PZ_MAX_ZOOM, pzZoom * (dist / pzLastPinchDist)));
+				const newZoom = Math.max(0.5, Math.min(PZ_MAX_ZOOM, pzZoom * (dist / pzLastPinchDist)));
+				const k = newZoom / pzZoom;
+				pzPanX = midX * (1 - k) + pzPanX * k;
+				pzPanY = midY * (1 - k) + pzPanY * k;
+				pzZoom = newZoom;
 			}
 			pzLastPinchDist = dist;
 		}
@@ -986,25 +1088,17 @@
 	});
 </script>
 
-<section class="story layout-{layout ? layout : ''}">
-	<!-- ── Fixed background ── -->
+<section class="story layout-{layout ? layout : ''}"
+	style="height: {height}px;"
+>
 	<div class="story-bg" aria-hidden="true">
 		<div
 			class="intro-bg"
-			style="opacity: {introBgOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate({introBgSlideX}%,{layout == "center" ? 20 : 0}%) rotate(-2deg) scale({layout == "center" ? .7 : 1}); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
-		></div>
+			style="transform: translate({introBgSlideX}%,{layout == "center" ? 20 : 0}%) rotate(-2deg) scale({layout == "center" ? .7 : 1}); transition: transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 220ms ease;"
+		>
+		</div>
 
-		<!-- Zoomed photo background (visible from slide 1 onward) -->
-		<div
-			class="story-image"
-			style="transform: scale({zoomScale}) translate({zoomX}%, {zoomY}%);
-			       opacity: {Math.min(1, slidePosition) * (soupGuideOpen ? 0.18 : 1)};
-			       transition: {isDragging ? 'none' : 'transform 420ms ease-in'}"
-		></div>
-
-		<!-- Soup slide background image — zoomed and pinned to focal point -->
 		{#if soupBgReadySrc}
-			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<div class="soup-bg"
 				class:panzoom-active={soupPanZoom}
 				style="opacity: {soupBgLayerOpacity}; transition: opacity 320ms ease;"
@@ -1012,7 +1106,7 @@
 				onpointermove={soupPanZoom ? onPzPointerMove : undefined}
 				onpointerup={soupPanZoom ? onPzPointerUp : undefined}
 				onpointercancel={soupPanZoom ? onPzPointerUp : undefined}
-			onwheel={soupPanZoom ? onPzWheel : undefined}
+				onwheel={soupPanZoom ? onPzWheel : undefined}
 			>
 				<div class="soup-bg-pz" class:resetting={pzResetAnimating} style={soupPanZoom ? `transform: translate(${pzPanX}px, ${pzPanY}px) scale(${pzZoom})` : ''}>
 					{#key soupBgReadySrc}
@@ -1088,21 +1182,19 @@
 			{/each}
 		</div>
 
-		<div class="story-overlay"></div>
 	</div>
 
-	{#if soupGuideOpen}
-		<button
-			type="button"
-			bind:this={guideOverlayEl}
-			class="soup-guide-overlay"
-			onclick={onGuideOverlayClick}
-			aria-label="Close guide"
-		>
-			{@html guide}
-			<img src="/assets/menus/guide.png" alt="" />
-		</button>
-	{/if}
+	<button
+		type="button"
+		bind:this={guideOverlayEl}
+		class="soup-guide-overlay"
+		class:soup-guide-overlay--hidden={!soupGuideOpen}
+		onclick={onGuideOverlayClick}
+		aria-label="Close guide"
+	>
+		{@html guide}
+		<img src="/assets/menus/guide.png" alt="" />
+	</button>
 
 	{#if !soupPanZoom && slides[activeIndex]?.course}
 			<div
@@ -1118,17 +1210,27 @@
 	<!-- ── Swiper ── -->
 	<div class="swiper" bind:this={containerEl} style="pointer-events: {soupPanZoom ? 'none' : 'auto'}">
 		<div class="swiper-wrapper">
-			{#each slides as slide, i}
-				{@const firstSlide = i === 0}
-				<div style="z-index: {slide.id == "illustration" ? 100 : 'auto'};" class="swiper-slide" class:is-zoom-slide={slide.zoomSlide}>
-					{#if !slide.image}
+			{#each virtualData.slides as slideIndex, i (slideIndex)}
+				{@const slide = slides[slideIndex]}
+				{@const firstSlide = slideIndex === 0}
+				<div
+					data-swiper-slide-index={slideIndex}
+					style="left: {virtualData.offset}px; z-index: {slide?.id === 'illustration' ? 100 : 'auto'};"
+					class="swiper-slide"
+					class:image-title={slide?.image === 'assets/menus/title.png'}
+					class:image-section={slide?.image === 'assets/menus/section.png'}
+				>
+					{#if slide.id === 'footer'}
+						<Footer />
+					{/if}
+					{#if !slide.image && slide.id !== 'footer'}
 						<div class="slide-inner {layout === 'right' ? 'right-align' : ''}"
 							class:is-active={activeIndex === i}
 							class:center-align={slide.layout === 'no-image'}
 							class:first-slide={firstSlide}
 							class:hidden={soupPanZoom}
 							style="justify-content: {slide.id == "title" ? 'center' : ''}"
-						>							
+						>			
 							{#if slide.body && slide.id !== 'title'}
 								<div class="{slide.id === "video" ? 'video-slide' : ''} slide-content {slide.image ? "food-item" : ''}" style="flex-direction: {slide.image ? 'row' : ''};">
 									{#if slide.id === 'soup' && !slide.image}
@@ -1136,7 +1238,7 @@
 											<div class="slide-curve">
 												{@html curve}
 											</div>
-											{#if hasSoupBg(slide) && soupBgReadySrc}
+											<!-- {#if hasSoupBg(slide) && soupBgReadySrc} -->
 												<button onclick={() => enterPanZoom(slide.bgSrc)} aria-label="Explore image" class="">
 													{#if layout === 'center'}
 														<span>VIEW MENU</span>
@@ -1144,7 +1246,7 @@
 														<span>VIEW FULL MENU -&gt;</span>
 													{/if}
 												</button>
-											{/if}
+											<!-- {/if} -->
 											
 											<div class="slide-curve slide-curve-right">
 												{@html curve}
@@ -1169,14 +1271,16 @@
 									<div
 										class="slide-body-wrapper {slide.image ? 'has-image' : ''} {firstSlide ? 'first-slide' : ''} {slide.layout === 'no-image' ? 'no-image' : ''} {isAutoTypeSlide(slide) ? 'is-auto-type' : ''}"
 										bind:this={wrapperEl}
-										bind:clientHeight={wrapperClientHeights[i]}
-										style={slide.layout === 'no-image'
-											? `font-size: ${slide.id === 'new-slide' ? newSlideFontSize : bodyFontSizes[i]}px; line-height: ${slide.id === 'new-slide' ? "1" : bodyLineHeights[i]}; ${(bodyFontSizes[i] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
+										bind:clientHeight={wrapperClientHeights[slideIndex]}
+										style={slide.id === 'video' && layout === 'center'
+											? `font-size: 18px; line-height: ${bodyLineHeights[slideIndex]};`
+											: slide.layout === 'no-image'
+											? `font-size: ${slide.id === 'new-slide' ? newSlideFontSize : bodyFontSizes[slideIndex]}px; line-height: ${slide.id === 'new-slide' ? "1" : bodyLineHeights[slideIndex]}; ${(bodyFontSizes[slideIndex] > 36) ? '-webkit-font-smoothing: antialiased;' : ''}`
 											: slide.id === 'new-slide'
 												? `font-size: ${newSlideFontSize}px; line-height: 1;`
-												: `font-size: ${bodyFontSizes[i]}px; line-height: ${bodyLineHeights[i]}; ${wrapperMinHeights[i] != null ? `height: ${wrapperMinHeights[i]}px;` : bodyFontSizes[i] >= MAX_FIT_FONT ? `height: auto; padding-top: 10px; padding-bottom: 10px;` : `height: ${height * 0.3}px;`} ${bodyFontSizes[i] > 36 ? '-webkit-font-smoothing: antialiased;' : ''}`}
+												: `font-size: ${bodyFontSizes[slideIndex]}px; line-height: ${bodyLineHeights[slideIndex]}; ${wrapperMinHeights[slideIndex] != null ? `height: ${wrapperMinHeights[slideIndex]}px;` : `height: auto; padding-top: 10px; padding-bottom: 10px;`} ${bodyFontSizes[slideIndex] > 36 ? '-webkit-font-smoothing: antialiased;' : ''}`}
 									>
-										<div class="slide-body-text" bind:clientWidth={textWidths[i]}>
+										<div class="slide-body-text" bind:clientWidth={textWidths[slideIndex]}>
 											{#each slide.body as line}
 												<p class="slide-body">{@html line.value ?? line}</p>
 											{/each}
@@ -1203,11 +1307,11 @@
 									{#if slide.id === 'video' && slide?.state == '2'}
 										<div class="explore">
 											<a
-												style="font-size: ${bodyFontSizes[i]}px;"
-												href="https://pudding.cool/2026/06/menu-collection/" blank="_blank">
+												style="font-size: ${bodyFontSizes[slideIndex]}px;"
+												href="https://pudding.cool/2026/06/menu-collection/?tour=0" blank="_blank">
 												Explore the Interactive Map »
 											</a>
-											<a href="https://pudding.cool/2026/06/menu-collection/" blank="_blank">
+											<a href="https://pudding.cool/2026/06/menu-collection/?tour=0" blank="_blank">
 												<img src="assets/menus/map-preview.jpg" alt="Preview of the interactive map" />
 											</a>
 
@@ -1215,16 +1319,10 @@
 									{/if}
 								</div>
 							{/if}
-							
-							<div class="slide-chrome" bind:clientHeight={chromeHeights[i]}>
-								<span class="slide-kicker">{slide.kicker}</span>
-								<h2 class="slide-title">{slide.title}</h2>
-								<div class="slide-rule"></div>
-							</div>
+
 						</div>
 					{:else}
 						<div class="slide-inline-image"
-							style="justify-content: {slide.image === 'assets/menus/title.png' && layout === 'center' ? 'flex-end' : slide.image === 'assets/menus/section.png' && layout === 'center' ? 'flex-start' : 'center'};"
 						>
 							<div class="slide-inline-image-frame"
 								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '0deg' : '0deg'});"
@@ -1236,7 +1334,7 @@
 									class:title-slide={slide.image === 'assets/menus/title.png'}
 								/>
 								{#if slide.image === 'assets/menus/section.png'}
-									{@html sectionSvg}
+									<div use:bindSectionClicks>{@html sectionSvg}</div>
 								{/if}
 								{#if slide.image === 'assets/menus/title.png'}
 									<div class="byline">
@@ -1245,14 +1343,14 @@
 									</div>
 								{/if}
 								{#if slide.image === 'assets/menus/section.png'}
-								<div class="section-text">
-									{#if slide.sectionCount}
-										<p class="course-count">Course {slide.sectionCount}</p>
-										<img src={`assets/menus/${slide.sectionCount}.png`} alt="" />
-										<p class="course-name">{slide.courseName}</p>
-										<p class="course-description">{slide.courseDescription}</p>
-									{/if}
-								</div>
+									<div class="section-text">
+										{#if slide.sectionCount}
+											<p class="course-count">Course {slide.sectionCount}</p>
+											<img src={`assets/menus/${slide.sectionCount}.png`} alt="" />
+											<p class="course-name">{slide.courseName}</p>
+											<p class="course-description">{slide.courseDescription}</p>
+										{/if}
+									</div>
 								{/if}
 							</div>
 						</div>
@@ -1264,21 +1362,15 @@
 	</div>
 
 
-<!-- ── Swipe hint (first slide only) ── -->
-	{#if activeIndex === 0}
-		<div class="swipe-hint" aria-hidden="true">
-			<span>swipe</span>
-			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<polyline points="9 18 15 12 9 6" />
-			</svg>
-		</div>
-	{/if}
 
-	<!-- ── Pan/zoom button ── -->
 	{#if soupPanZoom}
 
 		<div class="soup-panzoom-controls" aria-label="Pan and zoom controls" role="group">
-			<p>pan/zoom with your mouse</p>
+			{#if layout === 'center'}
+				<p>pan/zoom by pinch/swipe</p>
+			{:else}
+				<p>pan/zoom with your mouse</p>
+			{/if}
 			<div class="soup-panzoom-controls-grid">
 				<button class="pz-btn pz-up" onclick={() => nudgePan(0, PZ_PAN_STEP)} aria-label="Pan up">
 					<div style="transform: rotate(-90deg);">
@@ -1306,7 +1398,6 @@
 				<button class="pz-btn" onclick={() => stepZoom(1 / PZ_ZOOM_STEP)} aria-label="Zoom out">{@html minus}</button>
 			</div>
 		</div>
-		<!-- <button class="soup-panzoom-reset" onclick={() => resetPanZoomView(true)} aria-label="Reset zoom">Reset</button> -->
 		<button class="soup-panzoom-exit soup-top-label" onclick={exitPanZoom} aria-label="Exit pan/zoom">
 			<span>
 				GO BACK
@@ -1318,19 +1409,6 @@
 
 	{/if}
 
-	<!-- ── Slide counter ── -->
-	<!-- {#if soupTopLabel}
-		<div class="soup-top-label" style="opacity: {soupBg.opacity}; transition: {isDragging ? 'none' : `opacity ${STACK_SPEED}ms ease`}">
-			<span>{soupTopLabel}</span>
-			<span class="blur">{soupTopLabel}</span>
-		</div>
-	{/if} -->
-
-	<div class="slide-counter" aria-live="polite">
-		<span class="counter-current">{String(activeIndex + 1).padStart(2, "0")}</span>
-		<span class="counter-sep">/</span>
-		<span class="counter-total">{String(slides.length).padStart(2, "0")}</span>
-	</div>
 	{#if layout == "right" && !soupGuideOpen && !soupPanZoom}
 		<div class="slide-nav" aria-hidden="true">
 			{#if activeIndex > 0}
@@ -1349,11 +1427,10 @@
 	{/if}
 </section>
 
-<!-- ── Lightbox ── -->
-{#if lightboxOpen}
+
+<!-- {#if lightboxOpen}
 	<div class="lightbox" role="dialog" aria-modal="true" aria-label="Menu explorer">
 		<button class="lightbox-back" onclick={closeLightbox}>← Back</button>
-		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<div
 			class="lightbox-stage"
 			onpointerdown={onLbPointerDown}
@@ -1370,6 +1447,12 @@
 			/>
 		</div>
 	</div>
+{/if} -->
+
+{#if loading}
+	<div class="loading-screen" out:fade={{ duration: 500 }}>
+		<span class="loading-text">Loading…</span>
+	</div>
 {/if}
 
 <style>
@@ -1381,16 +1464,31 @@
 		transition: background-color 500ms ease;
 	}
 
-	/* ── Layout ───────────────────────────────────────────────────── */
+
+	.loading-screen {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #faf4e1;
+	}
+
+	.loading-text {
+		font-family: "Courier Prime", monospace;
+		font-size: 14px;
+		letter-spacing: 0.05em;
+		color: rgba(0, 0, 0, 0.5);
+	}
 
 	.story {
 		position: relative;
 		width: 100%;
-		height: 100svh;
 		overflow: hidden;
+		height: 100%;
 	}
 
-	/* ── Background ───────────────────────────────────────────────── */
 
 	.story-bg {
 		position: fixed;
@@ -1398,7 +1496,6 @@
 		z-index: 0;
 	}
 
-	/* ── Photo stack ─────────────────────────────────────────────── */
 
 	.stack {
 		position: absolute;
@@ -1432,16 +1529,6 @@
 			8px 16px 32px rgba(0, 0, 0, 0.05); */
 	}
 
-	.story-image {
-		position: absolute;
-		inset: 0;
-		background-image: url('/assets/demo/test.jpg');
-		background-size: cover;
-		background-position: center;
-		will-change: transform;
-		display: none;
-	}
-
 	.intro-bg {
 		position: absolute;
 		inset: 0;
@@ -1457,11 +1544,6 @@
 		transform: rotate(2deg);
 	}
 
-	.story-overlay {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-	}
 
 	/* ── Swiper ───────────────────────────────────────────────────── */
 
@@ -1476,6 +1558,7 @@
 		display: flex;
 		/* padding: 0 clamp(1.5rem, 6vw, 5rem) clamp(5rem, 12vh, 8rem); */
 		box-sizing: border-box;
+		justify-content: center;
 	}
 
 	/* ── Slide content ────────────────────────────────────────────── */
@@ -1541,6 +1624,10 @@
 		padding-bottom: 20px;
 	}
 
+	.layout-center .slide-inner .slide-body-wrapper.first-slide {
+		padding-bottom: 10px;
+	}
+
 	.slide-inner.right-align .slide-body-wrapper {
 		height: auto;
 		max-height: 80vh;
@@ -1558,7 +1645,18 @@
 	.slide-content details {
 		padding: 15px 20px;
 		padding-top: 0;
-		font-family: "Courier Prime", monospace;
+		font-family: 'EB Garamond';
+	}
+
+	.slide-content details p {
+		font-size: inherit;
+		line-height: 1rem;
+		margin: 0;
+		margin-top: 10px;
+	}
+
+	.slide-content details summary {
+		font-family: 'EB Garamond';
 	}
 
 
@@ -1586,6 +1684,16 @@
 		justify-content: flex-start;
 	}
 
+	.layout-center .slide-body-wrapper.no-image {
+		/* height: calc(100svh - 40px); */
+		justify-content: center;
+	}
+
+	.layout-center .center-align {
+		justify-content: center;
+	}
+
+
 	.slide-body-wrapper.is-auto-type:not(.no-image) {
 		height: auto;
 	}
@@ -1594,12 +1702,23 @@
 		padding-left: 20px;
 	}
 	.slide-inline-image {
-		width: 100%;
+		/* width: 100%; */
+		width: auto;
 		height: 100%;
 		display: flex;
 		justify-content: center;
-		align-items: center;
-		transform: rotate(-0.2deg);
+		flex-direction:row;
+		
+		/* align-items: center; */
+		/* transform: rotate(-0.2deg); */
+	}
+
+	:global(.layout-center) .swiper-slide.image-title {
+		justify-content: flex-end;
+	}
+
+	:global(.layout-center) .swiper-slide.image-section {
+		justify-content: flex-start;
 	}
 
 	.slide-inline-image-frame {
@@ -1626,8 +1745,9 @@
 	}
 
 	.layout-center .slide-inline-image img {
-		width: 100%;
-		height: auto;
+		width: auto;
+		max-width: 100%;
+		/* height: 100%; */
 	}
 
 	.slide-content.food-item {
@@ -1823,10 +1943,15 @@
 		line-height: inherit;
 		margin-bottom: 0.75em;
 		color: inherit;
+		font-weight: 400;
 		margin-top: 0;
 		/* -webkit-font-smoothing: antialiased; */
 		color: rgba(0,0,0,.9);
 		/* -webkit-font-smoothing: antialiased; */
+	}
+
+	.layout-center .slide-body {
+		font-weight: 450;
 	}
 
 	:global(.slide-body b) {
@@ -1934,50 +2059,7 @@
 		transform: scale(1.5);
 	}
 
-	/* ── Slide counter ────────────────────────────────────────────── */
 
-	.slide-counter {
-		position: fixed;
-		bottom: clamp(1.5rem, 4vh, 2.5rem);
-		right: clamp(1rem, 3vw, 2rem);
-		z-index: 10;
-		font-family: var(--font-sans);
-		font-size: var(--12px, 0.75rem);
-		color: rgba(255 255 255 / 0.4);
-		letter-spacing: 0.05em;
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-		display: none;
-	}
-
-	.counter-current {
-		color: rgba(255 255 255 / 0.9);
-	}
-
-	/* ── Swipe hint ───────────────────────────────────────────────── */
-
-	.swipe-hint {
-		position: fixed;
-		bottom: clamp(1.5rem, 4vh, 2.5rem);
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 10;
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-		font-family: var(--font-sans);
-		font-size: var(--12px, 0.75rem);
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: rgba(255 255 255 / 0.4);
-		animation: hint-pulse 2.5s ease-in-out infinite;
-	}
-
-	.swipe-hint svg {
-		width: 14px;
-		height: 14px;
-	}
 	.hed h1 {
 		font-size: 100px;
 	}
@@ -2010,9 +2092,24 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
+		width: auto;
 		height: 100%;
+		object-fit: contain;
+		right: 0;
+		left: auto;
+	}
+
+	
+
+	.layout-center .video-bg video {
 		object-fit: cover;
+		width: 100%;
+		left: 0;
+	}
+
+	.soup-bg-transition {
+		position: absolute;
+		inset: 0;
 	}
 
 	.soup-bg img {
@@ -2022,6 +2119,7 @@
 		width: 100%;
 		height: auto;
 		user-select: none;
+		will-change: transform;
 	}
 
 	.soup-bg img.soup-zoom-resetting {
@@ -2054,7 +2152,13 @@
 		background: transparent;
 		z-index: 2;
 		transform: translateX(80%);
-		animation: soup-guide-peek 320ms cubic-bezier(0.22, 1, 0.36, 1);
+		animation: soup-guide-peek 320ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+	}
+	.soup-guide-overlay--hidden {
+		pointer-events: none;
+		visibility: hidden;
+		animation: none;
+		transform: translateX(100%);
 	}
 
 	.soup-guide-overlay img {
@@ -2065,6 +2169,7 @@
 		height: 100%;
 		width: auto;
 		max-width: none;
+		aspect-ratio: 1201 / 2472;
 		z-index: 100;
 	}
 
@@ -2101,6 +2206,7 @@
 
 	.soup-info-label summary {
 		cursor: pointer;
+		font-weight: 400;
 	}
 
 	.soup-info-label summary::-webkit-details-marker {
@@ -2121,13 +2227,18 @@
 		border: 1px solid rgba(66, 57, 42, 0.28);
 		border-radius: 2px;
 		padding: 8px 10px;
-		font-family: "Courier Prime", monospace;
-		font-size: 12px;
 		line-height: 1;
 		color: rgba(0, 0, 0, 0.78);
-		font-size: 16px;
 		font-family: 'EB Garamond';
-		font-weight: 900;
+		font-weight: 600;
+	}
+	.soup-slide-index-label summary {
+		font-size: 18px;
+		font-weight: 400;
+	}
+
+	.layout-center .soup-slide-index-label summary {
+		font-weight: 500;
 	}
 
 	.layout-center .soup-slide-index-label {
@@ -2184,6 +2295,7 @@
 		transform: rotate(-0.2deg);
 		letter-spacing: -0.7px;
 		color: rgba(0, 0, 0, .7);
+		line-height: 1;
 	}
 
 	.soup-top-label {
@@ -2546,7 +2658,7 @@
 		margin: 0 auto;
 		width: 150px;
 		min-width: auto;
-		bottom: 1.5rem;
+		bottom: .5rem;
 	}
 
 	.byline p {
@@ -2579,7 +2691,20 @@
 	}
 
 	.video-slide {
-		background: white;
+		background: #111;
+	}
+
+	.layout-center .video-slide {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+	.layout-center .video-slide a {
+		font-size: 18px;
+	}
+
+	.video-slide p {
+		color: white;
 	}
 
 	.explore {
@@ -2592,6 +2717,8 @@
 		margin-bottom: 1rem;
 		font-size: 24px;
 		display: block;
+		color: white;
+		text-decoration-color: white;
 	}
 
 	.explore img {
@@ -2639,4 +2766,24 @@
 	.slide-nav-btn svg {
 		stroke: white;
 	}
+	:global(b){
+		font-weight: 600;
+	}
+	:global(tspan) {
+		/* font-weight: 400;
+		-webkit-font-smoothing: antialiased;
+		stroke: none;
+		filter: none;
+		font-family: 'Atlas Grotesk';
+		color: #000000; */
+	}
+	/* feGaussianBlur lives on the parent <g>, not on <tspan> — target the right element */
+	:global(.soup-guide-overlay svg g[filter]),
+	:global(.slide-inline-image-frame svg g[filter]) {
+		filter: none;
+	}
+	.soup-guide-overlay {
+		/* transform:translateX(100px); */
+	}
+
 </style>

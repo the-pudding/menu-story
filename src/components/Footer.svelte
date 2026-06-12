@@ -10,7 +10,7 @@
 	let stories = $state([]);
 	let storyCount = $state(0);
 
-	let { recirc = false, recent = true, recircImages = false } = $props();
+	let { recirc = true, recent = true, recircImages = false } = $props();
 
 	const v = Date.now();
 	const url = `https://pudding.cool/assets/data/stories.json?v=${v}`;
@@ -163,13 +163,17 @@
 
 <style>
 	footer {
-		margin-top: 100px;
+		padding: 10px;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		max-width: 830px;
 	}
 
 	.c {
 		max-width: calc(var(--width-column-wide, 1280px) - var(--margin, 16px) * 2);
-		padding: 16px;
-		margin: 32px auto 100px auto;
+		padding: 0px;
+		margin: 0 auto;
 		font-family: var(--font-sans);
 	}
 
@@ -178,13 +182,15 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		margin: 0 0 64px 0;
+		margin: 0 0 0px 0;
+		margin-bottom: 10px;
 	}
 
 	.text {
-		font-size: var(--20px, 20px);
+		font-size: var(--18px, 18px);
 		text-align: center;
 		max-width: 900px;
+		
 	}
 
 	.images {
@@ -218,14 +224,18 @@
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: stretch;
-		gap: 48px;
+		gap: 10px;
 	}
 
 	.cta-wrapper {
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		gap: 48px;
+		gap: 15px;
+	}
+
+	.text-wrapper p {
+		margin: 5px 0;
 	}
 
 	.cta-wrapper section {
@@ -245,6 +255,7 @@
 		font-family: var(--mono);
 		font-weight: bold;
 		text-transform: uppercase;
+		margin: 5px 0;
 		font-size: var(--font-size-xsmall, 14px);
 	}
 
