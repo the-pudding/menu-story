@@ -91,3 +91,8 @@ svg {
 	width: 100%;
 	height: auto;
 }
+
+tspan, text {
+	/* -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale; */
+}

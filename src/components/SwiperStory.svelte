@@ -16,6 +16,8 @@
 	import guide from "$svg/guide-text.svg";
 	import sectionSvg from "$svg/section.svg";
 	import Footer from "./Footer.svelte";
+	import titleSvg from "$svg/title.svg";
+	import titleMobile from "$svg/title-mobile.svg";
 
 	[]
 
@@ -162,6 +164,15 @@
 			cleanupFns.push(() => group.removeEventListener('click', handler));
 		});
 		return { destroy() { cleanupFns.forEach(fn => fn()); } };
+	}
+
+	function bindPuddingLink(node) {
+		const group = node.querySelector('#pudding-link');
+		if (!group) return {};
+		group.style.cursor = 'pointer';
+		const handler = () => window.open('https://pudding.cool', '_blank', 'noopener,noreferrer');
+		group.addEventListener('click', handler);
+		return { destroy() { group.removeEventListener('click', handler); } };
 	}
 
 	function onGuideOverlayClick(event) {
@@ -378,7 +389,7 @@
 		{ rot: -20, tx: -120, ty:  40, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4046090.png` },  // bottom-left
 		{ rot:  3, tx:  -80, ty:  -20, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/476900.png` },  // bottom-right
 		{ rot: 2, tx: 5, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000008419.png` },  // top-left
-		{ rot: 1, tx: layout === "right" ? 50 : -10, ty:  layout === "right" ? 0 : -20, widthPct: layout === "right" ? 30 : 25, fitViewportHeight: true, src: `assets/menus/fish.png` },  // lower-left
+		{ rot: 1, tx: layout === "right" ? 50 : -10, ty:  layout === "right" ? 0 : -20, widthPct: layout === "right" ? 30 : 25, fitViewportHeight: true, src: `assets/menus/fish.webp` },  // lower-left
 		{ rot:  18, tx:  -20, ty:  35, widthPct: layout === "right" ? 50 : 75, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
 		{ rot: 10, tx: 50, ty: -50, widthPct: layout === "right" ? 50 : 30, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
 		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
@@ -540,8 +551,8 @@
 		const allSrcs = new Set([
 			...bgSrcs,
 			...slides.map(s => s.image).filter(Boolean),
-			'assets/menus/title-mobile.png',
-			...slides.filter(s => s.sectionCount).map(s => `assets/menus/${s.sectionCount}.png`),
+			'assets/menus/title-mobile.jpg',
+			...slides.filter(s => s.sectionCount).map(s => `assets/menus/${s.sectionCount}.webp`),
 			...STACK.map(c => c.src).filter(Boolean),
 		]);
 
@@ -1217,7 +1228,7 @@
 					data-swiper-slide-index={slideIndex}
 					style="left: {virtualData.offset}px; z-index: {slide?.id === 'illustration' ? 100 : 'auto'};"
 					class="swiper-slide"
-					class:image-title={slide?.image === 'assets/menus/title.png'}
+					class:image-title={slide?.image === 'assets/menus/title.jpg'}
 					class:image-section={slide?.image === 'assets/menus/section.png'}
 				>
 					{#if slide.id === 'footer'}
@@ -1328,15 +1339,22 @@
 								style="transform: translate(0,0) rotate({slide.image === 'assets/menus/section.png' ? '0deg' : '0deg'});"
 							>
 								<img
-									src={layout === 'center' && slide.image === 'assets/menus/title.png' ? 'assets/menus/title-mobile.png' : slide.image}
+									src={layout === 'center' && slide.image === 'assets/menus/title.jpg' ? 'assets/menus/title-mobile.jpg' : slide.image}
 									alt={slide.imageAlt ?? ''}
 									class={slide.class ? slide.class : ''}
-									class:title-slide={slide.image === 'assets/menus/title.png'}
+									class:title-slide={slide.image === 'assets/menus/title.jpg'}
 								/>
 								{#if slide.image === 'assets/menus/section.png'}
 									<div use:bindSectionClicks>{@html sectionSvg}</div>
 								{/if}
-								{#if slide.image === 'assets/menus/title.png'}
+								{#if slide.image === 'assets/menus/title.jpg'}
+									{#if layout === 'center'}
+										<div use:bindPuddingLink>{@html titleMobile}</div>
+									{:else}
+									<div use:bindPuddingLink>{@html titleSvg}</div>
+									{/if}
+								{/if}
+								{#if slide.image === 'assets/menus/title.jpg'}
 									<div class="byline">
 										<p><a href="https://pudding.cool/author/stephen-lurie/" target="_blank">By Stephen Lurie</a></p>
 										<p>June 2026</p>
@@ -1346,7 +1364,7 @@
 									<div class="section-text">
 										{#if slide.sectionCount}
 											<p class="course-count">Course {slide.sectionCount}</p>
-											<img src={`assets/menus/${slide.sectionCount}.png`} alt="" />
+											<img src={`assets/menus/${slide.sectionCount}.webp`} alt="" />
 											<p class="course-name">{slide.courseName}</p>
 											<p class="course-description">{slide.courseDescription}</p>
 										{/if}
@@ -1532,7 +1550,7 @@
 	.intro-bg {
 		position: absolute;
 		inset: 0;
-		background-image: url('/assets/menus/intro.png');
+		background-image: url('/assets/menus/intro.jpg');
 		background-size: contain;
 		background-position: center;
 		will-change: transform, opacity;
@@ -1657,6 +1675,10 @@
 
 	.slide-content details summary {
 		font-family: 'EB Garamond';
+	}
+
+	details {
+		cursor: pointer;
 	}
 
 
@@ -2705,6 +2727,7 @@
 
 	.video-slide p {
 		color: white;
+		-webkit-font-smoothing: antialiased;
 	}
 
 	.explore {

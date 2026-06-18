@@ -2,7 +2,7 @@
 	let {
 		title = "Title TK",
 		description = "Description TK",
-		url = "https://pudding.cool",
+		url = "https://pudding.cool/2026/06/menu-story",
 		keywords = "",
 		preloadFont = []
 	} = $props();

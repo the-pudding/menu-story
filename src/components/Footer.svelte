@@ -20,7 +20,7 @@
 		{ name: "Our Resources", url: "https://pudding.cool/resources/" },
 		{ name: "Pitch a Story", url: "https://pudding.cool/pitch/" },
 		{ name: "Brand Partnerships", url: "https://polygraph.cool" },
-		{ name: "Privacy Policy", url: "https://pudding.cool/pitch/" }
+		{ name: "Privacy Policy", url: "https://pudding.cool/privacy/" }
 	];
 
 	const follow = [
@@ -62,6 +62,7 @@
 
 <footer>
 	<div class="c">
+		<p style="" class="byline">Illustrations by <a href="https://www.jennalechner.com/" target="_blank">Jenna Lechner</a></p>
 		<div class="top">
 			{#if recirc && stories.length}
 				{#if recircImages}
@@ -259,6 +260,12 @@
 		font-size: var(--font-size-xsmall, 14px);
 	}
 
+	.byline {
+		text-align: center; font-size: 16px;
+		margin: 0;
+		margin-bottom: 10px;
+	}
+
 	.links .inner {
 		display: flex;
 		width: 100%;
@@ -368,7 +375,43 @@
 		transition: left calc(var(--1s) * 0.25);
 	}
 
-	@media only screen and (min-width: 400px) {
+	@media only screen and (max-width: 500px) {
+		.wordmark {
+			display: none;
+		}
+		.text-wrapper p {
+			font-size: 12px;
+			line-height: 1.1;
+		}
+		.top .text {
+			font-size: 14px;
+		}
+
+		.links p.title {
+			font-size: 12px;
+			margin: 0;
+		}
+
+		.about {
+			display: none;
+			/* width: 50%; */
+		}
+		.follow {
+			width: 100%;
+		}
+		.follow ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 5px
+		}
+
+		li a {
+			font-size: 12px;
+			font-weight: 600;
+		}
+	}
+
+	@media only screen and (min-width: 500px) {
 		.images ul li {
 			width: calc(50% - 16px);
 			padding: 0;

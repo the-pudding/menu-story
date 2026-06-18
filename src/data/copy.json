@@ -15,7 +15,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The New York Public Library has an archive of menus, primarily 1880-1920, including some of the first menus to resemble modern-day restaurant dining."
+          "value": "The New York Public Library has an archive of menus, primarily 1880-1920, that captures the emergence of modern-day restaurant dining."
         }
       ]
     },
@@ -56,7 +56,7 @@
     },
     {
       "id": "soup",
-      "image": "assets/menus/title.png",
+      "image": "assets/menus/title.jpg",
       "imageAlt": "Fish illustration",
       "body": []
     },
@@ -187,7 +187,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Restaurant dining was one way the post-Civil War elite <b> distinguished themselves from the masses.</b> French was an aspect of that gatekeeping—luxury was another."
+          "value": "Restaurant dining was one way the post-Civil War elite <b>distinguished themselves from the masses.</b> French was an aspect of that gatekeeping—luxury was another."
         },
         {
           "type": "text",
@@ -225,7 +225,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/470278.png",
+      "bgSrc": "assets/menus/470278.webp",
       "layout": "fit-height",
       "topLabel": "St. Nicholas Hotel, Cincinnati, 1895",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
@@ -269,7 +269,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/473284.png",
+      "bgSrc": "assets/menus/473284.webp",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
@@ -329,7 +329,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4039367.png",
+      "bgSrc": "assets/menus/4039367.webp",
       "layout": "fit-height",
       "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
       "topLabel": "English/French menus, Delmonico’s, NYC, 1917",
@@ -401,7 +401,7 @@
         },
         {
           "type": "text",
-          "value": "Andrew P. Haley <a href=https://uncpress.org/9781469609805/turning-the-tables/>writes</a> in <i>Turning Tables: Restaurants and the Rise of the Middle Class, 1880-1920</i>“The collective purchasing power of the emerging middle class encouraged restaurant entrepreneurs to cater to their tastes, and, over the course of forty years, small preferences about how to dine begot cultural changes that eventually birthed both middle-class restaurants and the modern middle class itself."
+          "value": "Andrew P. Haley <a href=https://uncpress.org/9781469609805/turning-the-tables/>writes</a> in <i>Turning Tables: Restaurants and the Rise of the Middle Class, 1880-1920</i> “The collective purchasing power of the emerging middle class encouraged restaurant entrepreneurs to cater to their tastes, and, over the course of forty years, small preferences about how to dine begot cultural changes that eventually birthed both middle-class restaurants and the modern middle class itself.”"
         }
       ]
     },
@@ -437,14 +437,14 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4066460.png",
+      "bgSrc": "assets/menus/4066460.webp",
       "layout": "fit-height",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Walton’s Old Homestead Oyster and Chop House, NYC, 1914",
       "body": [
         {
           "type": "text",
-          "value": "The <b>beefsteak or chophouse</b> was, as it sounds, a place to find meat. In 1881, The New York Times described how all kinds of men could be found here, “The customers were of all sorts and kinds – well dressed people, evidently with plenty of money in their pockets, market-men, countrymen, clerks, store boys – a regular gathering of clans scattered at Babel.”  These restaurants offered just as many ways to eat meat."
+          "value": "The <b>beefsteak or chophouse</b> was, as it sounds, a place to find meat. In 1881, The New York Times described how all kinds of men could be found here, “The customers were of all sorts and kinds—well dressed people, evidently with plenty of money in their pockets, market-men, countrymen, clerks, store boys—a regular gathering of clans scattered at Babel.” These restaurants offered just as many ways to eat meat."
         }
       ]
     },
@@ -813,7 +813,7 @@
       "body": [
         {
           "type": "text",
-          "value": "That fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve curated 5,000 menus for you."
+          "value": "That fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve curated 5,000 menus for you, as well as the story of how Buttolph sourced the menu collection."
         }
       ]
     },

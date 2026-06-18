@@ -1,0 +1,55 @@
+<svg viewBox="0 0 1240 2499" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 42">
+<g id="Group 43">
+<g id="pudding-link">
+<text id="the pudding" fill="rgba(0,0,0,0)" style="white-space: pre" xml:space="preserve" font-family="EB Garamond" font-size="90" letter-spacing="0.01em"><tspan x="623.672" y="185.405">THE </tspan><tspan x="504.681" y="302.405">PUDDING</tspan></text>
+</g>
+<g id="Group 36">
+<g id="History&#226;&#128;&#168;&#226;&#128;&#168;" filter="url(#filter0_f_602_39)">
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="Recoleta" font-size="114" letter-spacing="-0.02em"><tspan x="936.307" y="1735.8">&#x2028;</tspan><tspan x="724.5" y="1883.8">&#x2028;</tspan><tspan x="724.5" y="2031.8">&#10;</tspan></text>
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="Recoleta" font-size="140" letter-spacing="0.01em"><tspan x="420.271" y="1735.8">HISTORY</tspan></text>
+</g>
+<g id="a Menu of&#226;&#128;&#168;" filter="url(#filter1_f_602_39)">
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="EB Garamond" font-size="100" letter-spacing="0.07em"><tspan x="969.492" y="1979.45">&#x2028;</tspan></text>
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="EB Garamond" font-size="100" letter-spacing="0.07em"><tspan x="428.336" y="1979.45">A MENU OF</tspan></text>
+</g>
+<g id="History" filter="url(#filter2_f_602_39)">
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="EB Garamond" font-size="140" letter-spacing="0.01em"><tspan x="423.12" y="2130.63">HISTORY</tspan></text>
+</g>
+<g id="of Menus is" filter="url(#filter3_f_602_39)">
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="EB Garamond" font-size="100" letter-spacing="0.07em"><tspan x="392.479" y="1861.45">OF MENUS IS</tspan></text>
+</g>
+<g id="A" filter="url(#filter4_f_602_39)">
+<text fill="#2D372E" style="white-space: pre" xml:space="preserve" font-family="Recoleta" font-size="100" letter-spacing="-0.02em"><tspan x="691.053" y="1576">A</tspan></text>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_602_39" x="426.672" y="1633.2" width="602.777" height="106.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_602_39"/>
+</filter>
+<filter id="filter1_f_602_39" x="426.137" y="1908.4" width="593.855" height="74.2998" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_602_39"/>
+</filter>
+<filter id="filter2_f_602_39" x="426.301" y="2031.84" width="606.582" height="104.101" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_602_39"/>
+</filter>
+<filter id="filter3_f_602_39" x="394.98" y="1792.6" width="659.258" height="72.1006" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_602_39"/>
+</filter>
+<filter id="filter4_f_602_39" x="689.652" y="1503" width="70.3008" height="75" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_602_39"/>
+</filter>
+</defs>
+</svg>
