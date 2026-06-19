@@ -387,11 +387,11 @@
 		{ rot: 8, tx: 65, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000219.png` },  // top-left
 		{ rot:  50, tx:  50, ty: 0, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
 		{ rot: -20, tx: -120, ty:  40, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4046090.png` },  // bottom-left
-		{ rot:  3, tx:  -80, ty:  -20, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/476900.png` },  // bottom-right
+		{ rot:  3, tx:  -80, ty:  -20, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/476900.webp` },  // bottom-right
 		{ rot: 2, tx: 5, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000008419.png` },  // top-left
 		{ rot: 1, tx: layout === "right" ? 50 : -10, ty:  layout === "right" ? 0 : -20, widthPct: layout === "right" ? 30 : 25, fitViewportHeight: true, src: `assets/menus/fish.webp` },  // lower-left
 		{ rot:  18, tx:  -20, ty:  35, widthPct: layout === "right" ? 50 : 75, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
-		{ rot: 10, tx: 50, ty: -50, widthPct: layout === "right" ? 50 : 30, src: `assets/menus/474586.png`, role: 'heroRight' }, // hero right — animates to side-by-side
+		{ rot: 10, tx: 50, ty: -50, widthPct: layout === "right" ? 50 : 30, src: `assets/menus/474586.webp`, role: 'heroRight' }, // hero right — animates to side-by-side
 		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
 		{ rot:  -3, tx:   layout === "right" ? -2 : 20, ty:  layout === "right" ? -2 : 0, widthPct: layout === "right" ? 50 : 35, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
 	]);
@@ -1254,7 +1254,7 @@
 													{#if layout === 'center'}
 														<span>VIEW MENU</span>
 													{:else}
-														<span>VIEW FULL MENU -&gt;</span>
+														<span>VIEW FULL MENU</span>
 													{/if}
 												</button>
 											<!-- {/if} -->
@@ -1438,7 +1438,7 @@
 			{/if}
 			{#if activeIndex < slides.length - 1}
 				<button class="slide-nav-btn slide-nav-next" onclick={() => swiper?.slideNext()} tabindex="-1">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1em; height: 1em;"><g><polyline points="9 18 15 12 9 6"></polyline></g></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style=""><g><polyline points="9 18 15 12 9 6"></polyline></g></svg>
 				</button>
 			{/if}
 		</div>
@@ -2776,7 +2776,7 @@
 
 	.slide-nav-btn {
 		pointer-events: auto;
-		background: rgba(0, 0, 0, 0.85);
+		background: rgba(0, 0, 0, 1);
 		border: none;
 		font-size: 18px;
 		cursor: pointer;
@@ -2808,5 +2808,15 @@
 	.soup-guide-overlay {
 		/* transform:translateX(100px); */
 	}
+
+	.slide-nav-next {
+		padding: 15px 15px;
+	}
+
+	.slide-nav-next svg {
+		width: 25px;
+	}
+
+	
 
 </style>

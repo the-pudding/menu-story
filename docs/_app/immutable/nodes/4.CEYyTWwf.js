@@ -1,4 +1,4 @@
-import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,an as D,W as G,ac as j,Y as Z,a9 as ee,J as P,aE as fe,am as W,ba as ge,I as ve}from"../chunks/fIY8hlzX.js";import{b as l,f as v,c as A,t as ye}from"../chunks/qRSDpyPL.js";import{b as S,g as be,f as se}from"../chunks/DIpZJbic.js";import{e as B,i as R,b as we,s as re,c as xe,d as ke}from"../chunks/COXNYGUR.js";import{e as K}from"../chunks/CgUJQ4o5.js";import{c as Q}from"../chunks/Ruq6jjhS.js";import{s as $,p as I}from"../chunks/CJY6WVQT.js";import{s as ie}from"../chunks/D74kiLaa.js";import{b as Ce,i as U}from"../chunks/D_y4stUZ.js";import{h as q,c as Se,a as _e}from"../chunks/DjqvLBDQ.js";import{b as Ae}from"../chunks/CPi0-FyX.js";import"../chunks/DlOzM7pa.js";var Ne=v('<section id="demo-link"><h2>Link</h2> <p><a href="elements">Default element styles demo</a></p> <p><a href="fonts">Pudding-hosted font previews</a></p> <p><a href="ui">BitsUI styled components</a></p></section>');function Le(c){var e=Ne();l(c,e)}var Ye=v('<section id="demo-image"><h2>Image</h2> <p>img tag</p> <img src="../assets/demo/test.jpg" alt="cat" class="svelte-b56t42"/> <p>background image</p> <div class="svelte-b56t42"></div></section>');function Te(c){var e=Ye();l(c,e)}var Fe=v('<section id="demo-element"><h2>Dynamic Svelte Element</h2> <!></section>');function Ie(c){const e=[{tag:"h3",text:"I am a h3 tag."},{tag:"p",text:"I am p tag."}];var t=Fe(),n=g(p(t),2);B(n,17,()=>e,R,(s,a)=>{let h=()=>o(a).tag,m=()=>o(a).text;var f=A(),i=C(f);K(i,h,!1,(r,d)=>{var y=ye();N(()=>S(y,m())),l(d,y)}),l(s,f)}),u(t),l(c,t)}var De=v("<p> </p>");function Pe(c,e){var t=De(),n=p(t);u(t),N(()=>S(n,`I am component A and my favorite number is ${e.number??""}.`)),l(c,t)}var Be=v("<p> </p>");function Re(c,e){var t=Be(),n=p(t);u(t),N(()=>S(n,`I am component B and my name is ${e.name??""}.`)),l(c,t)}var He=v('<section id="demo-component"><h2>Dynamic Svelte Component</h2> <!></section>');function Me(c){const e={A:Pe,B:Re},t=[{component:"A",number:42},{component:"B",name:"Russell"}];var n=He(),s=g(p(n),2);B(s,17,()=>t,R,(a,h)=>{const m=D(()=>e[o(h).component]);var f=A(),i=C(f);Q(i,()=>o(m),(r,d)=>{d(r,$(()=>o(h)))}),l(a,f)}),u(n),l(c,n)}var We=v("<div><!></div>");function Xe(c,e){G(e,!0);let t=I(e,"root",3,null),n=I(e,"top",3,0),s=I(e,"bottom",3,0),a=I(e,"increments",3,100),h=I(e,"value",15,void 0),m=[],f=[],i=[],r=[],d;function y(){let b=0,w=0;for(let _=0;_<m.length;_++)m[_]>b&&(b=m[_],w=_);b>0?h(w):h(void 0)}function k(b,w){const _=M=>{M[0].isIntersecting;const z=M[0].intersectionRatio;m[w]=z,y()},X=n()?n()*-1:0,E=s()?s()*-1:0,ne=`${X}px 0px ${E}px 0px`,te={root:t(),rootMargin:ne,threshold:f};r[w]&&r[w].disconnect();const H=new IntersectionObserver(_,te);H.observe(b),r[w]=H}function L(){i.length&&i.forEach(k)}j(()=>{for(let b=0;b<a()+1;b++)f.push(b/a());i=d.querySelectorAll(":scope > *:not(iframe)"),L()}),j(()=>{n(),s(),L()});var x=We(),Y=p(x);ie(Y,()=>e.children??ee),u(x),Ce(x,b=>d=b,()=>d),l(c,x),Z()}var qe=v('<div><p class="svelte-1sxgmm9"> </p></div>'),Ee=v('<section id="scrolly"><h2 class="svelte-1sxgmm9">Scrolly <span> </span></h2> <div class="spacer svelte-1sxgmm9"></div> <!> <div class="spacer svelte-1sxgmm9"></div></section>');function Oe(c){let e=W(void 0);var t=Ee(),n=p(t),s=g(p(n)),a=p(s,!0);u(s),u(n);var h=g(n,4);Xe(h,{get value(){return o(e)},set value(m){P(e,m,!0)},children:(m,f)=>{var i=A(),r=C(i);B(r,16,()=>[0,1,2,3,4],R,(d,y,k)=>{const L=D(()=>o(e)===k);var x=qe();let Y;var b=p(x),w=p(b,!0);u(b),u(x),N(()=>{Y=we(x,1,"step svelte-1sxgmm9",null,Y,{active:o(L)}),S(w,y)}),l(d,x)}),l(m,i)},$$slots:{default:!0}}),fe(2),u(t),N(()=>S(a,o(e)||"-")),l(c,t)}const je=`{
+import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as Y,G as o,an as D,W as E,ac as j,Y as G,a9 as ee,J as X,aE as fe,am as M,ba as ge,I as ve}from"../chunks/fIY8hlzX.js";import{b as l,f as v,c as A,t as ye}from"../chunks/qRSDpyPL.js";import{b as S,g as be,f as se}from"../chunks/DIpZJbic.js";import{e as P,i as B,b as we,s as re,c as xe,d as ke}from"../chunks/COXNYGUR.js";import{e as K}from"../chunks/CgUJQ4o5.js";import{c as Q}from"../chunks/Ruq6jjhS.js";import{s as $,p as I}from"../chunks/CJY6WVQT.js";import{s as ie}from"../chunks/D74kiLaa.js";import{b as Ce,i as U}from"../chunks/D_y4stUZ.js";import{h as q,c as Se,a as _e}from"../chunks/DaCFxy1r.js";import{b as Ae}from"../chunks/k_vFVkoF.js";import"../chunks/DlOzM7pa.js";var Ye=v('<section id="demo-link"><h2>Link</h2> <p><a href="elements">Default element styles demo</a></p> <p><a href="fonts">Pudding-hosted font previews</a></p> <p><a href="ui">BitsUI styled components</a></p></section>');function Ne(c){var e=Ye();l(c,e)}var Le=v('<section id="demo-image"><h2>Image</h2> <p>img tag</p> <img src="../assets/demo/test.jpg" alt="cat" class="svelte-b56t42"/> <p>background image</p> <div class="svelte-b56t42"></div></section>');function Te(c){var e=Le();l(c,e)}var Fe=v('<section id="demo-element"><h2>Dynamic Svelte Element</h2> <!></section>');function Ie(c){const e=[{tag:"h3",text:"I am a h3 tag."},{tag:"p",text:"I am p tag."}];var t=Fe(),n=g(p(t),2);P(n,17,()=>e,B,(s,a)=>{let h=()=>o(a).tag,m=()=>o(a).text;var f=A(),i=C(f);K(i,h,!1,(r,d)=>{var y=ye();Y(()=>S(y,m())),l(d,y)}),l(s,f)}),u(t),l(c,t)}var De=v("<p> </p>");function Xe(c,e){var t=De(),n=p(t);u(t),Y(()=>S(n,`I am component A and my favorite number is ${e.number??""}.`)),l(c,t)}var Pe=v("<p> </p>");function Be(c,e){var t=Pe(),n=p(t);u(t),Y(()=>S(n,`I am component B and my name is ${e.name??""}.`)),l(c,t)}var Re=v('<section id="demo-component"><h2>Dynamic Svelte Component</h2> <!></section>');function He(c){const e={A:Xe,B:Be},t=[{component:"A",number:42},{component:"B",name:"Russell"}];var n=Re(),s=g(p(n),2);P(s,17,()=>t,B,(a,h)=>{const m=D(()=>e[o(h).component]);var f=A(),i=C(f);Q(i,()=>o(m),(r,d)=>{d(r,$(()=>o(h)))}),l(a,f)}),u(n),l(c,n)}var Me=v("<div><!></div>");function We(c,e){E(e,!0);let t=I(e,"root",3,null),n=I(e,"top",3,0),s=I(e,"bottom",3,0),a=I(e,"increments",3,100),h=I(e,"value",15,void 0),m=[],f=[],i=[],r=[],d;function y(){let b=0,w=0;for(let _=0;_<m.length;_++)m[_]>b&&(b=m[_],w=_);b>0?h(w):h(void 0)}function k(b,w){const _=H=>{H[0].isIntersecting;const z=H[0].intersectionRatio;m[w]=z,y()},W=n()?n()*-1:0,O=s()?s()*-1:0,ne=`${W}px 0px ${O}px 0px`,te={root:t(),rootMargin:ne,threshold:f};r[w]&&r[w].disconnect();const R=new IntersectionObserver(_,te);R.observe(b),r[w]=R}function N(){i.length&&i.forEach(k)}j(()=>{for(let b=0;b<a()+1;b++)f.push(b/a());i=d.querySelectorAll(":scope > *:not(iframe)"),N()}),j(()=>{n(),s(),N()});var x=Me(),L=p(x);ie(L,()=>e.children??ee),u(x),Ce(x,b=>d=b,()=>d),l(c,x),G()}var qe=v('<div><p class="svelte-1sxgmm9"> </p></div>'),Oe=v('<section id="scrolly"><h2 class="svelte-1sxgmm9">Scrolly <span> </span></h2> <div class="spacer svelte-1sxgmm9"></div> <!> <div class="spacer svelte-1sxgmm9"></div></section>');function Ze(c){let e=M(void 0);var t=Oe(),n=p(t),s=g(p(n)),a=p(s,!0);u(s),u(n);var h=g(n,4);We(h,{get value(){return o(e)},set value(m){X(e,m,!0)},children:(m,f)=>{var i=A(),r=C(i);P(r,16,()=>[0,1,2,3,4],B,(d,y,k)=>{const N=D(()=>o(e)===k);var x=qe();let L;var b=p(x),w=p(b,!0);u(b),u(x),Y(()=>{L=we(x,1,"step svelte-1sxgmm9",null,L,{active:o(N)}),S(w,y)}),l(d,x)}),l(m,i)},$$slots:{default:!0}}),fe(2),u(t),Y(()=>S(a,o(e)||"-")),l(c,t)}const je=`{
   "ignore": [],
   "slides": [
     {
@@ -24,7 +24,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "Frank E. Buttolph (pictured here) spent decades assembling the menus as a record for future generations of the culinary and social history of her time."
+          "value": "Frank E. Buttolph (pictured here) spent decades assembling the menus as a record of the culinary and social history of her time."
         }
       ]
     },
@@ -81,12 +81,11 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "annotationX": "620",
       "annotationY": "340",
       "topLabel": "Delmonico’s, NYC, 1881",
-      "infoLabel": "This menu is from Delmonico’s, founded in 1837 in New York, considered the origin of the French restaurant cuisine in America.",
       "course": "1 <i>of</i> 10&colon; Soup",
       "body": [
         {
           "type": "text",
-          "value": "We begin our historic meal with oysters, pardon me—<i>huitres</i> (in French)—and <i>potages</i>, the soup. The Consomme Châtelaine, a chicken soup, is an excellent choice, but I suggest the <b>Bisque d’Ecrevisses</b>, a crayfish soup made with cognac and cream."
+          "value": "We begin our historic meal with oysters, pardon me—<i>huitres</i> (in French)—and <i>potages</i>, the soup. The Consomme Châtelaine, a chicken soup, is an excellent choice, but I suggest the <i>Bisque d’ecrevisses</i>, a crayfish soup made with cognac and cream."
         },
         {
           "type": "text",
@@ -109,7 +108,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/476900.png",
+      "bgSrc": "assets/menus/476900.webp",
       "bgZoom": ".95",
       "focalX": "390",
       "focalY": "300",
@@ -117,11 +116,10 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "anchorY": "0.2",
       "topLabel": "Astor House, NYC, 1854, Printed on silk.",
       "course": "1 <i>of</i> 10&colon; Soup",
-      "infoLabel": "Terrapin is a turtle native to NYC waters.",
       "body": [
         {
           "type": "text",
-          "value": "Accordingly, you will order, in French, your French bisque, and your chef will have likely been imported from France—or at least somewhere over there. It will be 19th century America’s best possible imitation of the finest French cuisine."
+          "value": "Accordingly, you will order your French bisque in French, and your chef will have likely been imported from France—or at least somewhere over there. It will be 19th century America’s best possible imitation of the finest French cuisine."
         },
         {
           "type": "text",
@@ -144,8 +142,6 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "bgSrc": "assets/menus/4000008419.png",
       "layout": "fit-height",
       "topLabel": "Delmonico’s, NYC, 1900",
-      "annotationX": "344",
-      "annotationY": "405",
       "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
@@ -160,13 +156,13 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/474586.png",
+      "bgSrc": "assets/menus/474586.webp",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "annotationX": "344",
+      "annotationX": "800",
       "annotationY": "405",
       "topLabel": "Sherry’s, NY, 1891",
       "course": "2 <i>of</i> 10&colon; Celery",
@@ -180,14 +176,19 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/4000000711.png",
-      "bgZoom": "1",
-      "layout": "fit-height",
+      "bgZoom": ".5",
+      "focalX": "300",
+      "focalY": "400",
+      "anchorX": "0.8",
+      "anchorY": "0.2",
+      "annotationX": "234",
+      "annotationY": "423",
       "topLabel": "NY Board of Trade Dinner, Hotel Brunswick, NYC, 1887",
       "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
           "type": "text",
-          "value": "Restaurant dining was one way the post-Civil War elite <b>distinguished themselves from the masses.</b> French was an aspect of that gatekeeping—luxury was another."
+          "value": "Restaurant dining was one way the post-Civil War elite distinguished themselves from the masses. French was an aspect of that gatekeeping—luxury was another."
         },
         {
           "type": "text",
@@ -232,7 +233,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "The <b>public nature of this luxury</b> was useful to differentiate the status and power of the elite: what they ate, how much of it, and with what customs and trappings."
+          "value": "The public nature of this luxury was useful to differentiate the status and power of the elite: what they ate, how much of it, and with what customs and trappings."
         }
       ]
     },
@@ -252,31 +253,30 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000003816.png",
+      "bgSrc": "assets/menus/4000003816.webp",
       "bgZoom": "1",
       "layout": "fit-height",
       "topLabelSmall": "true",
       "type": "auto",
-      "infoLabel": "This menu from a celebration held by a Scottish expat society is even carved, roughly, in the shape of Scotland.",
       "topLabel": "St. Andrew’s Society, Palace Hotel, San Francisco, 1896",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
-          "value": "Feasting in public also became easier than hosting at home. As industrialization offered more kinds of employment to the lower classes, elite households started to lose domestic staff. Restaurants offered another space for the elite to be seen, hosting events of all kinds, such as community celebrations—like this one for the Scottish expat society—memorials, and club meetings."
+          "value": "Feasting in public also became easier than hosting at home. As industrialization offered more kinds of employment to the lower classes, elite households started to lose domestic staff. Restaurants offered another space for the elite to be seen, hosting events of all kinds, such as community celebrations—like this one for a Scottish expat society—memorials, and club meetings."
         }
       ]
     },
     {
       "id": "soup",
       "bgSrc": "assets/menus/473284.webp",
-      "bgZoom": "1",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "344",
-      "annotationY": "405",
+      "bgZoom": ".4",
+      "focalX": "100",
+      "focalY": "900",
+      "anchorX": "0.7",
+      "anchorY": "0.1",
+      "annotationX": "40",
+      "annotationY": "1400",
       "type": "auto",
       "topLabel": "William Clauss Dinner, St Nicolas Hotel, Cincinnati, 1908",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
@@ -300,7 +300,13 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/466407.png",
-      "layout": "fit-height",
+      "bgZoom": ".5",
+      "focalX": "500",
+      "focalY": "800",
+      "anchorX": "0.7",
+      "anchorY": "0.4",
+      "annotationX": "220",
+      "annotationY": "1030",
       "topLabel": "Union Hotel, NYC, 1900",
       "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
       "body": [
@@ -310,7 +316,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "“Pork Chops Saute, Sauce Robert” feels like a fitting next course: a traditional French sauce, sure, but American culture is starting to come through. Nevermind hours long banquets, this new  menu even warns that some dishes may take 15 minutes more to prepare!"
+          "value": "“Pork Chops Saute, Sauce Robert” feels like a fitting next course: a traditional French sauce, sure, but American culture is starting to come through. Nevermind hours-long banquets, this new  menu even warns that some dishes may take 15 minutes more to prepare!"
         }
       ]
     },
@@ -323,7 +329,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "Our menus are following that same general structure from oysters to coffee, but they’re noticeably more complicated: prices are attached, <i>à la carte</i> options have displaced the coursed menu, …"
+          "value": "Our menus are following that same general structure from oysters to coffee, but they’re noticeably more complicated: prices are attached, <i>à la carte</i> options have displaced the coursed menu…"
         }
       ]
     },
@@ -340,7 +346,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "Why? Elite dining is changing, as we’ll see, because restaurant dining is being transformed by everyone else."
+          "value": "Why? As we’ll see, elite dining is changing because restaurant dining is being transformed by everyone else."
         }
       ]
     },
@@ -357,13 +363,19 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/4000009030.png",
-      "layout": "fit-height",
+      "bgZoom": ".6",
+      "focalX": "460",
+      "focalY": "1400",
+      "anchorX": "0.7",
+      "anchorY": "0.7",
+      "annotationX": "460",
+      "annotationY": "1400",
       "topLabel": "Hamblen’s Restaurant, NYC, 1900",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
           "type": "text",
-          "value": "Here’s an iced coffee, on the house. If that’s pricey now, it was a real splurge in the hot spring of 1900, when ice was cut and shipped to cities from frozen lakes and rivers. The American Ice Company had just <a href=https://www.bklynlibrary.org/blog/2014/05/21/ice-delivery-city target=_blank>formed</a> a monopoly in the New York City, doubling its rates and cutting deliveries in order to juice profits."
+          "value": "Here’s an iced coffee, on the house. If that’s pricey now, it was a real splurge in the hot spring of 1900, when ice was cut and shipped to cities from frozen lakes and rivers. The American Ice Company had just <a href=https://www.bklynlibrary.org/blog/2014/05/21/ice-delivery-city target=_blank>formed</a> a monopoly in New York City, doubling its rates and cutting deliveries in order to juice profits."
         }
       ]
     },
@@ -401,7 +413,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "Andrew P. Haley <a href=https://uncpress.org/9781469609805/turning-the-tables/>writes</a> in <i>Turning Tables: Restaurants and the Rise of the Middle Class, 1880-1920</i> “The collective purchasing power of the emerging middle class encouraged restaurant entrepreneurs to cater to their tastes, and, over the course of forty years, small preferences about how to dine begot cultural changes that eventually birthed both middle-class restaurants and the modern middle class itself.”"
+          "value": "Together, as Andrew P. Haley <a href=https://uncpress.org/9781469609805/turning-the-tables/>writes</a> in <i>Turning Tables: Restaurants and the Rise of the Middle Class, 1880-1920</i>: “The collective purchasing power of the emerging middle class encouraged restaurant entrepreneurs to cater to their tastes, and, over the course of forty years, small preferences about how to dine begot cultural changes that eventually birthed both middle-class restaurants and the modern middle class itself.”"
         }
       ]
     },
@@ -470,14 +482,18 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "Finally, at <b>coffee and cake saloons,</b> women could find cakes, ice creams, and light lunches, without the expectation of a male dining companion."
+          "value": "Finally, at <b>coffee and cake saloons,</b> women could find cakes, ice creams, and light lunches, without the expectation of a male dining companion. Middle-class women dining alone here in the course of their work or errands also helped normalize mixed-gender dining in more formal contexts."
         }
       ]
     },
     {
       "id": "soup",
       "bgSrc": "assets/menus/4034351.png",
-      "layout": "fit-height",
+      "bgZoom": ".6",
+      "focalX": "800",
+      "focalY": "800",
+      "anchorX": "0.8",
+      "anchorY": "0.5",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Regal Bakery & Restaurant, NYC, 1919",
       "body": [
@@ -506,7 +522,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "anchorX": "0.7",
       "anchorY": "0.2",
       "annotationX": "270",
-      "annotationY": "660",
+      "annotationY": "665",
       "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Cafe, NYC, 1914",
       "body": [
@@ -516,17 +532,17 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "Offering specials or plates where a main comes with sides was a restaurant breakthrough at the time. It signified that, while diners surely wanted to eat out to enjoy it, they also demanded that it met their practical needs: balanced, affordable, and efficient."
+          "value": "Offering plates where a main comes with sides was a restaurant breakthrough at the time. While diners still wanted to eat out and enjoy it, they also now demanded that it met their practical needs: balanced, affordable, and efficient."
         }
       ]
     },
     {
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
-      "bgZoom": ".7",
-      "focalX": "300",
+      "bgZoom": ".6",
+      "focalX": "400",
       "focalY": "100",
-      "anchorX": "0.7",
+      "anchorX": "0.6",
       "anchorY": "0.2",
       "annotationX": "80",
       "annotationY": "50",
@@ -552,7 +568,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "The elite European menu took hours to experience. The middle-class restaurant understood that busy workers wanted a good deal and a complete meal in a fixed amount of time. A new wave of shoppers could also be convinced to stop for a meal among their errands."
+          "value": "The elite European menu took hours to experience. The middle-class restaurateur understood that workers wanted a good deal and a complete meal in a matter of minutes. A new wave of shoppers could also be convinced to stop for a meal among their errands."
         },
         {
           "type": "text",
@@ -573,7 +589,13 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/4046433.png",
-      "layout": "fit-height",
+      "bgZoom": "1",
+      "focalX": "1300",
+      "focalY": "600",
+      "anchorX": "0.7",
+      "anchorY": "0.7",
+      "annotationX": "1300",
+      "annotationY": "260",
       "topLabel": "Café Savarin, NYC, 1915",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
@@ -589,7 +611,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4066701.png",
+      "bgSrc": "assets/menus/4066701.webp",
       "layout": "fit-height",
       "topLabel": "Rathskeller, NYC, 1914",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
@@ -619,7 +641,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/471895.png",
+      "bgSrc": "assets/menus/4047826.webp",
       "layout": "fit-height",
       "topLabel": "Tokio Restaurant, NYC, 1914",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
@@ -637,7 +659,13 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     {
       "id": "soup",
       "bgSrc": "assets/menus/4041320.png",
-      "layout": "fit-height",
+      "bgZoom": ".6",
+      "focalX": "400",
+      "focalY": "900",
+      "anchorX": "0.7",
+      "anchorY": "0.5",
+      "annotationX": "40",
+      "annotationY": "900",
       "topLabel": "Healy’s Forty Second Street Restaurant, NYC, 1917",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
@@ -647,7 +675,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "Then, as now, Americans embracing foreign food didn’t end xenophobia. Nonetheless, whether expressing sincere inclusion or more cynical exoticism, these diners rejected expertise in French gastronomy in favor of the worldliness they attributed to eating expansively."
+          "value": "Then, as now, Americans embracing foreign food didn’t end xenophobia. Nonetheless, whether expressing sincere inclusion or more cynical exoticism, these diners rejected expertise in French gastronomy in favor of a worldliness in diverse eating."
         }
       ]
     },
@@ -680,8 +708,14 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4029870.png",
-      "layout": "fit-height",
+      "bgSrc": "assets/menus/4029871.webp",
+      "bgZoom": ".5",
+      "focalX": "200",
+      "focalY": "1400",
+      "anchorX": "0.6",
+      "anchorY": "0.8",
+      "annotationX": "184",
+      "annotationY": "1360",
       "topLabel": "Joe's Restaurant, Brooklyn, NY, 1920",
       "course": "8 <i>of</i> 10&colon; Horse’s Neck",
       "body": [
@@ -745,7 +779,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "Just as middle-class restaurants offered customers a variety of options to meet their desires, some elite restaurants confronted the newly crowded restaurant market with a new take on abundance."
+          "value": "Just as middle-class restaurants offered customers a variety of options to meet their desires, some elite restaurants confronted the newly crowded restaurant market with their take on abundance."
         },
         {
           "type": "text",
@@ -765,8 +799,12 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4036997.png",
-      "layout": "fit-height",
+      "bgSrc": "assets/menus/4036998.webp",
+      "bgZoom": ".9",
+      "focalX": "300",
+      "focalY": "1800",
+      "anchorX": "0.5",
+      "anchorY": "0.8",
       "topLabel": "Fleischmann’s, NYC, 1917",
       "course": "10 <i>of</i> 10&colon; Baked Alaska",
       "body": [
@@ -776,7 +814,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "Baked Alaska is not among the 40-plus desserts on offer at Fleischmann’s. Advances in artificial refrigeration made all kinds of sweet cold treats much easier. But I know a place where we can still get one…"
+          "value": "Baked Alaska is not among the 40-plus desserts on offer at Fleischmann’s 1917 menu. Advances in artificial refrigeration made all kinds of cold treats much easier to serve. But I know a place where we can still get one…"
         }
       ]
     },
@@ -793,7 +831,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
         },
         {
           "type": "text",
-          "value": "In fact, if you visit Delmonico’s today, the menu has changed a bit. There’s yellowtail crudo, a burrata, Sichuan peppercorn sauce, and a cocktail with pandan. But you can also still order a baked Alaska, invented there in 1867."
+          "value": "In fact, if you visit Delmonico’s today, the menu has changed a bit. There’s yellowtail crudo, burrata, Sichuan peppercorn sauce, and a cocktail with pandan. But you can also still order a baked Alaska, invented there in 1867."
         }
       ]
     },
@@ -813,7 +851,7 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": [
         {
           "type": "text",
-          "value": "That fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve curated 5,000 menus for you, as well as the story of how Buttolph sourced the menu collection."
+          "value": "The Frank Buttolph collection helped us serve you that history – but we bet there’s plenty more still to uncover. We’ve curated 5,000 menus for you, as well as the story of how Buttolph sourced her menus. Maybe you’ll find some intriguing artifacts yourself."
         }
       ]
     },
@@ -822,4 +860,4 @@ import"../chunks/DsnmJJEf.js";import{al as g,Z as p,$ as C,_ as u,X as N,G as o,
       "body": []
     }
   ]
-}`;var Ge=v("<p></p>"),Ze=v('<details><summary></summary> <div class="content"><!></div></details>');function ze(c,e){let t=D(()=>typeof e.content=="string"),n=D(()=>e.open==="true");var s=Ze(),a=p(s);q(a,()=>e.summary,!0),u(a);var h=g(a,2),m=p(h);{var f=r=>{var d=A(),y=C(d);q(y,()=>e.content),l(r,d)},i=r=>{var d=A(),y=C(d);B(y,17,()=>e.content,R,(k,L)=>{let x=()=>o(L).value;var Y=Ge();q(Y,x,!0),u(Y),l(k,Y)}),l(r,d)};U(m,r=>{o(t)?r(f):r(i,-1)})}u(h),u(s),N(()=>{s.open=o(n),re(s,"name",e.name)}),l(c,s)}var Ve=v("<li></li>"),Je=v("<ul></ul>");function Ue(c,e){var t=Je();B(t,21,()=>e.li,R,(n,s)=>{var a=Ve();q(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var Ke=v("<li></li>"),Qe=v("<ol></ol>");function $e(c,e){var t=Qe();B(t,21,()=>e.li,R,(n,s)=>{var a=Ke();q(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var en=v("<p></p>"),nn=v("<section><!></section>");function tn(c,e){G(e,!0);const t={details:ze,ul:Ue,ol:$e};let n=I(e,"components",19,()=>({})),s=I(e,"body",19,()=>[]);var a=A(),h=C(a);B(h,17,s,R,(m,f)=>{let i=()=>o(f).section,r=()=>o(f).content;const d=D(()=>i().toLowerCase().replace(/[^a-z0-9]/g,"")),y=D(()=>n()[i()]);var k=nn(),L=p(k);{var x=b=>{var w=A(),_=C(w);Q(_,()=>o(y),(X,E)=>{E(X,$(r))}),l(b,w)},Y=b=>{var w=A(),_=C(w);B(_,17,r,R,(X,E,ne,te)=>{let H=()=>o(E).type,M=()=>o(E).value;const z=D(()=>n()[H()]||t[H()]),le=D(()=>typeof M()=="string");var ae=A(),ce=C(ae);{var ue=T=>{var F=A(),O=C(F);Q(O,()=>o(z),(V,J)=>{J(V,$(M))}),l(T,F)},de=T=>{var F=en();q(F,M,!0),u(F),l(T,F)},he=T=>{var F=A(),O=C(F);K(O,H,!1,(V,J)=>{var oe=A(),pe=C(oe);q(pe,M),l(J,oe)}),l(T,F)},me=T=>{var F=A(),O=C(F);K(O,H,!1,(V,J)=>{xe(V,()=>({...M()}))}),l(T,F)};U(ce,T=>{o(z)?T(ue):H()==="text"?T(de,1):o(le)?T(he,2):T(me,-1)})}l(X,ae)}),l(b,w)};U(L,b=>{o(y)?b(x):b(Y,-1)})}u(k),N(()=>re(k,"id",o(d))),l(m,k)}),l(c,a),Z()}var an=v('<p> </p> <progress max="100"></progress>',1);function on(c,e){let t=I(e,"label",3,"A"),n=I(e,"value",3,0);var s=an(),a=C(s),h=p(a,!0);u(a);var m=g(a,2);N(()=>{S(h,t()),ke(m,n())}),l(c,s)}var sn=v('<section id="cms"><h2>MicroCMS</h2> <code><pre> </pre></code> <!></section>');function rn(c,e){G(e,!0);const{body:t}=Se,n={Test:on};var s=sn(),a=g(p(s),2),h=p(a),m=p(h,!0);u(h),u(a);var f=g(a,2);tn(f,{get components(){return n},get body(){return t}}),u(s),N(i=>S(m,i),[()=>je.replace(/\t/g," ")]),l(c,s),Z()}const ln=(c,e=ee)=>{var t=cn(),n=p(t),s=p(n,!0);u(n);var a=g(n,2),h=p(a,!0);u(a),u(t),N(()=>{S(s,e().name),S(h,e().age)}),l(c,t)};var cn=v('<div class="person svelte-q3gttf"><p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p></div>'),un=v('<h2>Svelte5</h2> <h3>Reactive variables 3 ways:</h3> <button class="svelte-q3gttf">count++</button> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <h3>Children (previously slots):</h3> <div class="children"><!></div> <h3>Dispatch Event</h3> <button class="svelte-q3gttf">Random</button>  <h3>Snippets</h3> <div class="people svelte-q3gttf"></div>',1);function dn(c,e){G(e,!0),I(e,"age",3,30);const t=[{name:"John",age:30},{name:"Jill",age:45}];let n=W(0),s=D(()=>o(n)*2),a=D(()=>o(n)*2),h=W(0);j(()=>{P(h,o(n)*2)});var m=un(),f=g(C(m),4),i=g(f,2),r=p(i);u(i);var d=g(i,2),y=p(d);u(d);var k=g(d,2),L=p(k);u(k);var x=g(k,4),Y=p(x);ie(Y,()=>e.children??ee),u(x);var b=g(x,4),w=g(b,4);B(w,21,()=>t,R,(_,X)=>{ln(_,()=>o(X))}),u(w),N(()=>{S(r,`${o(n)??""} doubled is ${o(s)??""} (derived)`),S(y,`${o(n)??""} doubled is ${o(a)??""} (derived by)`),S(L,`${o(n)??""} doubled is ${o(h)??""} ($effect)`)}),se("click",f,()=>ge(n)),se("click",b,()=>e.random(Math.floor(Math.random()*10))),l(c,m),Z()}be(["click"]);const hn=(c,e)=>{let t=W(ve(c)),n=W(null),s=W(!0),a=W(void 0);const h=(i=!0)=>{P(s,i,!0),i===!0&&(P(a,null),P(n,null))},m=async()=>{try{const i=await fetch(o(t),e);if(!i.ok)throw new Error(`Unexpected error occurred (status ${i.status})`);let r;if(o(t).includes(".csv")){const d=await i.text();r=_e(d)}else r=await i.json();return[null,r]}catch(i){const{errorMessage:r="Unexpected error eccurred"}=i;return[r,null]}},f=async i=>{h(!0);const[r,d]=await m();if(i===o(t)){if(r){h(!1),P(a,r,!0);return}h(!1),P(n,d,!0)}};return j(()=>{f(o(t))}),{get data(){return o(n)},get loading(){return o(s)},get error(){return o(a)},get url(){return o(t)},set url(i){o(t)!==i&&P(t,i,!0)}}};var mn=v("<p>loading data...</p>"),pn=v("<p> </p>"),fn=v("<p>data loaded</p> <pre> </pre>",1),gn=v('<div class="c"><h2>Load Data</h2> <div class="response"><!></div></div>');function vn(c,e){G(e,!0);const t=`${Ae}/assets/demo/test.csv`,n=hn(t);j(()=>{});var s=gn(),a=g(p(s),2),h=p(a);{var m=r=>{var d=mn();l(r,d)},f=r=>{var d=pn(),y=p(d);u(d),N(()=>S(y,`error: ${n.error??""}`)),l(r,d)},i=r=>{var d=fn(),y=g(C(d),2),k=p(y,!0);u(y),N(L=>S(k,L),[()=>JSON.stringify(n.data,null,2)]),l(r,d)};U(h,r=>{n.loading?r(m):n.error?r(f,1):r(i,-1)})}u(a),u(s),l(c,s),Z()}var yn=v('<div id="demo" class="svelte-15aotx7"><h1>Demo</h1> <!> <!> <!> <!> <!> <!> <!> <!></div>');function bn(c){let e=W(0);function t(y){console.log(y)}var n=yn(),s=g(p(n),2);Le(s);var a=g(s,2);Te(a);var h=g(a,2);Ie(h);var m=g(h,2);Me(m);var f=g(m,2);rn(f,{});var i=g(f,2);vn(i,{});var r=g(i,2);Oe(r);var d=g(r,2);dn(d,{random:t,get value(){return o(e)},set value(y){P(e,y,!0)}}),u(n),l(c,n)}function Dn(c){bn(c)}export{Dn as component};
+}`;var Ee=v("<p></p>"),Ge=v('<details><summary></summary> <div class="content"><!></div></details>');function ze(c,e){let t=D(()=>typeof e.content=="string"),n=D(()=>e.open==="true");var s=Ge(),a=p(s);q(a,()=>e.summary,!0),u(a);var h=g(a,2),m=p(h);{var f=r=>{var d=A(),y=C(d);q(y,()=>e.content),l(r,d)},i=r=>{var d=A(),y=C(d);P(y,17,()=>e.content,B,(k,N)=>{let x=()=>o(N).value;var L=Ee();q(L,x,!0),u(L),l(k,L)}),l(r,d)};U(m,r=>{o(t)?r(f):r(i,-1)})}u(h),u(s),Y(()=>{s.open=o(n),re(s,"name",e.name)}),l(c,s)}var Ve=v("<li></li>"),Je=v("<ul></ul>");function Ue(c,e){var t=Je();P(t,21,()=>e.li,B,(n,s)=>{var a=Ve();q(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var Ke=v("<li></li>"),Qe=v("<ol></ol>");function $e(c,e){var t=Qe();P(t,21,()=>e.li,B,(n,s)=>{var a=Ke();q(a,()=>o(s),!0),u(a),l(n,a)}),u(t),l(c,t)}var en=v("<p></p>"),nn=v("<section><!></section>");function tn(c,e){E(e,!0);const t={details:ze,ul:Ue,ol:$e};let n=I(e,"components",19,()=>({})),s=I(e,"body",19,()=>[]);var a=A(),h=C(a);P(h,17,s,B,(m,f)=>{let i=()=>o(f).section,r=()=>o(f).content;const d=D(()=>i().toLowerCase().replace(/[^a-z0-9]/g,"")),y=D(()=>n()[i()]);var k=nn(),N=p(k);{var x=b=>{var w=A(),_=C(w);Q(_,()=>o(y),(W,O)=>{O(W,$(r))}),l(b,w)},L=b=>{var w=A(),_=C(w);P(_,17,r,B,(W,O,ne,te)=>{let R=()=>o(O).type,H=()=>o(O).value;const z=D(()=>n()[R()]||t[R()]),le=D(()=>typeof H()=="string");var ae=A(),ce=C(ae);{var ue=T=>{var F=A(),Z=C(F);Q(Z,()=>o(z),(V,J)=>{J(V,$(H))}),l(T,F)},de=T=>{var F=en();q(F,H,!0),u(F),l(T,F)},he=T=>{var F=A(),Z=C(F);K(Z,R,!1,(V,J)=>{var oe=A(),pe=C(oe);q(pe,H),l(J,oe)}),l(T,F)},me=T=>{var F=A(),Z=C(F);K(Z,R,!1,(V,J)=>{xe(V,()=>({...H()}))}),l(T,F)};U(ce,T=>{o(z)?T(ue):R()==="text"?T(de,1):o(le)?T(he,2):T(me,-1)})}l(W,ae)}),l(b,w)};U(N,b=>{o(y)?b(x):b(L,-1)})}u(k),Y(()=>re(k,"id",o(d))),l(m,k)}),l(c,a),G()}var an=v('<p> </p> <progress max="100"></progress>',1);function on(c,e){let t=I(e,"label",3,"A"),n=I(e,"value",3,0);var s=an(),a=C(s),h=p(a,!0);u(a);var m=g(a,2);Y(()=>{S(h,t()),ke(m,n())}),l(c,s)}var sn=v('<section id="cms"><h2>MicroCMS</h2> <code><pre> </pre></code> <!></section>');function rn(c,e){E(e,!0);const{body:t}=Se,n={Test:on};var s=sn(),a=g(p(s),2),h=p(a),m=p(h,!0);u(h),u(a);var f=g(a,2);tn(f,{get components(){return n},get body(){return t}}),u(s),Y(i=>S(m,i),[()=>je.replace(/\t/g," ")]),l(c,s),G()}const ln=(c,e=ee)=>{var t=cn(),n=p(t),s=p(n,!0);u(n);var a=g(n,2),h=p(a,!0);u(a),u(t),Y(()=>{S(s,e().name),S(h,e().age)}),l(c,t)};var cn=v('<div class="person svelte-q3gttf"><p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p></div>'),un=v('<h2>Svelte5</h2> <h3>Reactive variables 3 ways:</h3> <button class="svelte-q3gttf">count++</button> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <p class="svelte-q3gttf"> </p> <h3>Children (previously slots):</h3> <div class="children"><!></div> <h3>Dispatch Event</h3> <button class="svelte-q3gttf">Random</button>  <h3>Snippets</h3> <div class="people svelte-q3gttf"></div>',1);function dn(c,e){E(e,!0),I(e,"age",3,30);const t=[{name:"John",age:30},{name:"Jill",age:45}];let n=M(0),s=D(()=>o(n)*2),a=D(()=>o(n)*2),h=M(0);j(()=>{X(h,o(n)*2)});var m=un(),f=g(C(m),4),i=g(f,2),r=p(i);u(i);var d=g(i,2),y=p(d);u(d);var k=g(d,2),N=p(k);u(k);var x=g(k,4),L=p(x);ie(L,()=>e.children??ee),u(x);var b=g(x,4),w=g(b,4);P(w,21,()=>t,B,(_,W)=>{ln(_,()=>o(W))}),u(w),Y(()=>{S(r,`${o(n)??""} doubled is ${o(s)??""} (derived)`),S(y,`${o(n)??""} doubled is ${o(a)??""} (derived by)`),S(N,`${o(n)??""} doubled is ${o(h)??""} ($effect)`)}),se("click",f,()=>ge(n)),se("click",b,()=>e.random(Math.floor(Math.random()*10))),l(c,m),G()}be(["click"]);const hn=(c,e)=>{let t=M(ve(c)),n=M(null),s=M(!0),a=M(void 0);const h=(i=!0)=>{X(s,i,!0),i===!0&&(X(a,null),X(n,null))},m=async()=>{try{const i=await fetch(o(t),e);if(!i.ok)throw new Error(`Unexpected error occurred (status ${i.status})`);let r;if(o(t).includes(".csv")){const d=await i.text();r=_e(d)}else r=await i.json();return[null,r]}catch(i){const{errorMessage:r="Unexpected error eccurred"}=i;return[r,null]}},f=async i=>{h(!0);const[r,d]=await m();if(i===o(t)){if(r){h(!1),X(a,r,!0);return}h(!1),X(n,d,!0)}};return j(()=>{f(o(t))}),{get data(){return o(n)},get loading(){return o(s)},get error(){return o(a)},get url(){return o(t)},set url(i){o(t)!==i&&X(t,i,!0)}}};var mn=v("<p>loading data...</p>"),pn=v("<p> </p>"),fn=v("<p>data loaded</p> <pre> </pre>",1),gn=v('<div class="c"><h2>Load Data</h2> <div class="response"><!></div></div>');function vn(c,e){E(e,!0);const t=`${Ae}/assets/demo/test.csv`,n=hn(t);j(()=>{});var s=gn(),a=g(p(s),2),h=p(a);{var m=r=>{var d=mn();l(r,d)},f=r=>{var d=pn(),y=p(d);u(d),Y(()=>S(y,`error: ${n.error??""}`)),l(r,d)},i=r=>{var d=fn(),y=g(C(d),2),k=p(y,!0);u(y),Y(N=>S(k,N),[()=>JSON.stringify(n.data,null,2)]),l(r,d)};U(h,r=>{n.loading?r(m):n.error?r(f,1):r(i,-1)})}u(a),u(s),l(c,s),G()}var yn=v('<div id="demo" class="svelte-15aotx7"><h1>Demo</h1> <!> <!> <!> <!> <!> <!> <!> <!></div>');function bn(c){let e=M(0);function t(y){console.log(y)}var n=yn(),s=g(p(n),2);Ne(s);var a=g(s,2);Te(a);var h=g(a,2);Ie(h);var m=g(h,2);He(m);var f=g(m,2);rn(f,{});var i=g(f,2);vn(i,{});var r=g(i,2);Ze(r);var d=g(r,2);dn(d,{random:t,get value(){return o(e)},set value(y){X(e,y,!0)}}),u(n),l(c,n)}function Dn(c){bn(c)}export{Dn as component};

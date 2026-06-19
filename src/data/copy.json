@@ -24,7 +24,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Frank E. Buttolph (pictured here) spent decades assembling the menus as a record for future generations of the culinary and social history of her time."
+          "value": "Frank E. Buttolph (pictured here) spent decades assembling the menus as a record of the culinary and social history of her time."
         }
       ]
     },
@@ -81,12 +81,11 @@
       "annotationX": "620",
       "annotationY": "340",
       "topLabel": "Delmonico’s, NYC, 1881",
-      "infoLabel": "This menu is from Delmonico’s, founded in 1837 in New York, considered the origin of the French restaurant cuisine in America.",
       "course": "1 <i>of</i> 10&colon; Soup",
       "body": [
         {
           "type": "text",
-          "value": "We begin our historic meal with oysters, pardon me—<i>huitres</i> (in French)—and <i>potages</i>, the soup. The Consomme Châtelaine, a chicken soup, is an excellent choice, but I suggest the <b>Bisque d’Ecrevisses</b>, a crayfish soup made with cognac and cream."
+          "value": "We begin our historic meal with oysters, pardon me—<i>huitres</i> (in French)—and <i>potages</i>, the soup. The Consomme Châtelaine, a chicken soup, is an excellent choice, but I suggest the <i>Bisque d’ecrevisses</i>, a crayfish soup made with cognac and cream."
         },
         {
           "type": "text",
@@ -109,7 +108,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/476900.png",
+      "bgSrc": "assets/menus/476900.webp",
       "bgZoom": ".95",
       "focalX": "390",
       "focalY": "300",
@@ -117,11 +116,10 @@
       "anchorY": "0.2",
       "topLabel": "Astor House, NYC, 1854, Printed on silk.",
       "course": "1 <i>of</i> 10&colon; Soup",
-      "infoLabel": "Terrapin is a turtle native to NYC waters.",
       "body": [
         {
           "type": "text",
-          "value": "Accordingly, you will order, in French, your French bisque, and your chef will have likely been imported from France—or at least somewhere over there. It will be 19th century America’s best possible imitation of the finest French cuisine."
+          "value": "Accordingly, you will order your French bisque in French, and your chef will have likely been imported from France—or at least somewhere over there. It will be 19th century America’s best possible imitation of the finest French cuisine."
         },
         {
           "type": "text",
@@ -144,8 +142,6 @@
       "bgSrc": "assets/menus/4000008419.png",
       "layout": "fit-height",
       "topLabel": "Delmonico’s, NYC, 1900",
-      "annotationX": "344",
-      "annotationY": "405",
       "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
@@ -160,13 +156,13 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/474586.png",
+      "bgSrc": "assets/menus/474586.webp",
       "bgZoom": "1",
       "focalX": "490",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
-      "annotationX": "344",
+      "annotationX": "800",
       "annotationY": "405",
       "topLabel": "Sherry’s, NY, 1891",
       "course": "2 <i>of</i> 10&colon; Celery",
@@ -180,14 +176,19 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4000000711.png",
-      "bgZoom": "1",
-      "layout": "fit-height",
+      "bgZoom": ".5",
+      "focalX": "300",
+      "focalY": "400",
+      "anchorX": "0.8",
+      "anchorY": "0.2",
+      "annotationX": "234",
+      "annotationY": "423",
       "topLabel": "NY Board of Trade Dinner, Hotel Brunswick, NYC, 1887",
       "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
           "type": "text",
-          "value": "Restaurant dining was one way the post-Civil War elite <b>distinguished themselves from the masses.</b> French was an aspect of that gatekeeping—luxury was another."
+          "value": "Restaurant dining was one way the post-Civil War elite distinguished themselves from the masses. French was an aspect of that gatekeeping—luxury was another."
         },
         {
           "type": "text",
@@ -232,7 +233,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The <b>public nature of this luxury</b> was useful to differentiate the status and power of the elite: what they ate, how much of it, and with what customs and trappings."
+          "value": "The public nature of this luxury was useful to differentiate the status and power of the elite: what they ate, how much of it, and with what customs and trappings."
         }
       ]
     },
@@ -252,31 +253,30 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000003816.png",
+      "bgSrc": "assets/menus/4000003816.webp",
       "bgZoom": "1",
       "layout": "fit-height",
       "topLabelSmall": "true",
       "type": "auto",
-      "infoLabel": "This menu from a celebration held by a Scottish expat society is even carved, roughly, in the shape of Scotland.",
       "topLabel": "St. Andrew’s Society, Palace Hotel, San Francisco, 1896",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
           "type": "text",
-          "value": "Feasting in public also became easier than hosting at home. As industrialization offered more kinds of employment to the lower classes, elite households started to lose domestic staff. Restaurants offered another space for the elite to be seen, hosting events of all kinds, such as community celebrations—like this one for the Scottish expat society—memorials, and club meetings."
+          "value": "Feasting in public also became easier than hosting at home. As industrialization offered more kinds of employment to the lower classes, elite households started to lose domestic staff. Restaurants offered another space for the elite to be seen, hosting events of all kinds, such as community celebrations—like this one for a Scottish expat society—memorials, and club meetings."
         }
       ]
     },
     {
       "id": "soup",
       "bgSrc": "assets/menus/473284.webp",
-      "bgZoom": "1",
-      "focalX": "490",
-      "focalY": "300",
-      "anchorX": "0.5",
-      "anchorY": "0.2",
-      "annotationX": "344",
-      "annotationY": "405",
+      "bgZoom": ".4",
+      "focalX": "100",
+      "focalY": "900",
+      "anchorX": "0.7",
+      "anchorY": "0.1",
+      "annotationX": "40",
+      "annotationY": "1400",
       "type": "auto",
       "topLabel": "William Clauss Dinner, St Nicolas Hotel, Cincinnati, 1908",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
@@ -300,7 +300,13 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/466407.png",
-      "layout": "fit-height",
+      "bgZoom": ".5",
+      "focalX": "500",
+      "focalY": "800",
+      "anchorX": "0.7",
+      "anchorY": "0.4",
+      "annotationX": "220",
+      "annotationY": "1030",
       "topLabel": "Union Hotel, NYC, 1900",
       "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
       "body": [
@@ -310,7 +316,7 @@
         },
         {
           "type": "text",
-          "value": "“Pork Chops Saute, Sauce Robert” feels like a fitting next course: a traditional French sauce, sure, but American culture is starting to come through. Nevermind hours long banquets, this new  menu even warns that some dishes may take 15 minutes more to prepare!"
+          "value": "“Pork Chops Saute, Sauce Robert” feels like a fitting next course: a traditional French sauce, sure, but American culture is starting to come through. Nevermind hours-long banquets, this new  menu even warns that some dishes may take 15 minutes more to prepare!"
         }
       ]
     },
@@ -323,7 +329,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Our menus are following that same general structure from oysters to coffee, but they’re noticeably more complicated: prices are attached, <i>à la carte</i> options have displaced the coursed menu, …"
+          "value": "Our menus are following that same general structure from oysters to coffee, but they’re noticeably more complicated: prices are attached, <i>à la carte</i> options have displaced the coursed menu…"
         }
       ]
     },
@@ -340,7 +346,7 @@
         },
         {
           "type": "text",
-          "value": "Why? Elite dining is changing, as we’ll see, because restaurant dining is being transformed by everyone else."
+          "value": "Why? As we’ll see, elite dining is changing because restaurant dining is being transformed by everyone else."
         }
       ]
     },
@@ -357,13 +363,19 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4000009030.png",
-      "layout": "fit-height",
+      "bgZoom": ".6",
+      "focalX": "460",
+      "focalY": "1400",
+      "anchorX": "0.7",
+      "anchorY": "0.7",
+      "annotationX": "460",
+      "annotationY": "1400",
       "topLabel": "Hamblen’s Restaurant, NYC, 1900",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "body": [
         {
           "type": "text",
-          "value": "Here’s an iced coffee, on the house. If that’s pricey now, it was a real splurge in the hot spring of 1900, when ice was cut and shipped to cities from frozen lakes and rivers. The American Ice Company had just <a href=https://www.bklynlibrary.org/blog/2014/05/21/ice-delivery-city target=_blank>formed</a> a monopoly in the New York City, doubling its rates and cutting deliveries in order to juice profits."
+          "value": "Here’s an iced coffee, on the house. If that’s pricey now, it was a real splurge in the hot spring of 1900, when ice was cut and shipped to cities from frozen lakes and rivers. The American Ice Company had just <a href=https://www.bklynlibrary.org/blog/2014/05/21/ice-delivery-city target=_blank>formed</a> a monopoly in New York City, doubling its rates and cutting deliveries in order to juice profits."
         }
       ]
     },
@@ -401,7 +413,7 @@
         },
         {
           "type": "text",
-          "value": "Andrew P. Haley <a href=https://uncpress.org/9781469609805/turning-the-tables/>writes</a> in <i>Turning Tables: Restaurants and the Rise of the Middle Class, 1880-1920</i> “The collective purchasing power of the emerging middle class encouraged restaurant entrepreneurs to cater to their tastes, and, over the course of forty years, small preferences about how to dine begot cultural changes that eventually birthed both middle-class restaurants and the modern middle class itself.”"
+          "value": "Together, as Andrew P. Haley <a href=https://uncpress.org/9781469609805/turning-the-tables/>writes</a> in <i>Turning Tables: Restaurants and the Rise of the Middle Class, 1880-1920</i>: “The collective purchasing power of the emerging middle class encouraged restaurant entrepreneurs to cater to their tastes, and, over the course of forty years, small preferences about how to dine begot cultural changes that eventually birthed both middle-class restaurants and the modern middle class itself.”"
         }
       ]
     },
@@ -470,14 +482,18 @@
       "body": [
         {
           "type": "text",
-          "value": "Finally, at <b>coffee and cake saloons,</b> women could find cakes, ice creams, and light lunches, without the expectation of a male dining companion."
+          "value": "Finally, at <b>coffee and cake saloons,</b> women could find cakes, ice creams, and light lunches, without the expectation of a male dining companion. Middle-class women dining alone here in the course of their work or errands also helped normalize mixed-gender dining in more formal contexts."
         }
       ]
     },
     {
       "id": "soup",
       "bgSrc": "assets/menus/4034351.png",
-      "layout": "fit-height",
+      "bgZoom": ".6",
+      "focalX": "800",
+      "focalY": "800",
+      "anchorX": "0.8",
+      "anchorY": "0.5",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Regal Bakery & Restaurant, NYC, 1919",
       "body": [
@@ -506,7 +522,7 @@
       "anchorX": "0.7",
       "anchorY": "0.2",
       "annotationX": "270",
-      "annotationY": "660",
+      "annotationY": "665",
       "course": "6 <i>of</i> 10&colon; Thursday Special",
       "topLabel": "Hotel Princesa Cafe, NYC, 1914",
       "body": [
@@ -516,17 +532,17 @@
         },
         {
           "type": "text",
-          "value": "Offering specials or plates where a main comes with sides was a restaurant breakthrough at the time. It signified that, while diners surely wanted to eat out to enjoy it, they also demanded that it met their practical needs: balanced, affordable, and efficient."
+          "value": "Offering plates where a main comes with sides was a restaurant breakthrough at the time. While diners still wanted to eat out and enjoy it, they also now demanded that it met their practical needs: balanced, affordable, and efficient."
         }
       ]
     },
     {
       "id": "soup",
       "bgSrc": "assets/menus/4067328.png",
-      "bgZoom": ".7",
-      "focalX": "300",
+      "bgZoom": ".6",
+      "focalX": "400",
       "focalY": "100",
-      "anchorX": "0.7",
+      "anchorX": "0.6",
       "anchorY": "0.2",
       "annotationX": "80",
       "annotationY": "50",
@@ -552,7 +568,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The elite European menu took hours to experience. The middle-class restaurant understood that busy workers wanted a good deal and a complete meal in a fixed amount of time. A new wave of shoppers could also be convinced to stop for a meal among their errands."
+          "value": "The elite European menu took hours to experience. The middle-class restaurateur understood that workers wanted a good deal and a complete meal in a matter of minutes. A new wave of shoppers could also be convinced to stop for a meal among their errands."
         },
         {
           "type": "text",
@@ -573,7 +589,13 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4046433.png",
-      "layout": "fit-height",
+      "bgZoom": "1",
+      "focalX": "1300",
+      "focalY": "600",
+      "anchorX": "0.7",
+      "anchorY": "0.7",
+      "annotationX": "1300",
+      "annotationY": "260",
       "topLabel": "Café Savarin, NYC, 1915",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
@@ -589,7 +611,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4066701.png",
+      "bgSrc": "assets/menus/4066701.webp",
       "layout": "fit-height",
       "topLabel": "Rathskeller, NYC, 1914",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
@@ -619,7 +641,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/471895.png",
+      "bgSrc": "assets/menus/4047826.webp",
       "layout": "fit-height",
       "topLabel": "Tokio Restaurant, NYC, 1914",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
@@ -637,7 +659,13 @@
     {
       "id": "soup",
       "bgSrc": "assets/menus/4041320.png",
-      "layout": "fit-height",
+      "bgZoom": ".6",
+      "focalX": "400",
+      "focalY": "900",
+      "anchorX": "0.7",
+      "anchorY": "0.5",
+      "annotationX": "40",
+      "annotationY": "900",
       "topLabel": "Healy’s Forty Second Street Restaurant, NYC, 1917",
       "course": "7 <i>of</i> 10&colon; Pepper Pot",
       "body": [
@@ -647,7 +675,7 @@
         },
         {
           "type": "text",
-          "value": "Then, as now, Americans embracing foreign food didn’t end xenophobia. Nonetheless, whether expressing sincere inclusion or more cynical exoticism, these diners rejected expertise in French gastronomy in favor of the worldliness they attributed to eating expansively."
+          "value": "Then, as now, Americans embracing foreign food didn’t end xenophobia. Nonetheless, whether expressing sincere inclusion or more cynical exoticism, these diners rejected expertise in French gastronomy in favor of a worldliness in diverse eating."
         }
       ]
     },
@@ -680,8 +708,14 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4029870.png",
-      "layout": "fit-height",
+      "bgSrc": "assets/menus/4029871.webp",
+      "bgZoom": ".5",
+      "focalX": "200",
+      "focalY": "1400",
+      "anchorX": "0.6",
+      "anchorY": "0.8",
+      "annotationX": "184",
+      "annotationY": "1360",
       "topLabel": "Joe's Restaurant, Brooklyn, NY, 1920",
       "course": "8 <i>of</i> 10&colon; Horse’s Neck",
       "body": [
@@ -745,7 +779,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Just as middle-class restaurants offered customers a variety of options to meet their desires, some elite restaurants confronted the newly crowded restaurant market with a new take on abundance."
+          "value": "Just as middle-class restaurants offered customers a variety of options to meet their desires, some elite restaurants confronted the newly crowded restaurant market with their take on abundance."
         },
         {
           "type": "text",
@@ -765,8 +799,12 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4036997.png",
-      "layout": "fit-height",
+      "bgSrc": "assets/menus/4036998.webp",
+      "bgZoom": ".9",
+      "focalX": "300",
+      "focalY": "1800",
+      "anchorX": "0.5",
+      "anchorY": "0.8",
       "topLabel": "Fleischmann’s, NYC, 1917",
       "course": "10 <i>of</i> 10&colon; Baked Alaska",
       "body": [
@@ -776,7 +814,7 @@
         },
         {
           "type": "text",
-          "value": "Baked Alaska is not among the 40-plus desserts on offer at Fleischmann’s. Advances in artificial refrigeration made all kinds of sweet cold treats much easier. But I know a place where we can still get one…"
+          "value": "Baked Alaska is not among the 40-plus desserts on offer at Fleischmann’s 1917 menu. Advances in artificial refrigeration made all kinds of cold treats much easier to serve. But I know a place where we can still get one…"
         }
       ]
     },
@@ -793,7 +831,7 @@
         },
         {
           "type": "text",
-          "value": "In fact, if you visit Delmonico’s today, the menu has changed a bit. There’s yellowtail crudo, a burrata, Sichuan peppercorn sauce, and a cocktail with pandan. But you can also still order a baked Alaska, invented there in 1867."
+          "value": "In fact, if you visit Delmonico’s today, the menu has changed a bit. There’s yellowtail crudo, burrata, Sichuan peppercorn sauce, and a cocktail with pandan. But you can also still order a baked Alaska, invented there in 1867."
         }
       ]
     },
@@ -813,7 +851,7 @@
       "body": [
         {
           "type": "text",
-          "value": "That fundamental break away from the old European style happened in the years Frank Buttolph collected all those menus. Maybe you’ll find some intriguing artifacts yourself. We’ve curated 5,000 menus for you, as well as the story of how Buttolph sourced the menu collection."
+          "value": "The Frank Buttolph collection helped us serve you that history – but we bet there’s plenty more still to uncover. We’ve curated 5,000 menus for you, as well as the story of how Buttolph sourced her menus. Maybe you’ll find some intriguing artifacts yourself."
         }
       ]
     },
