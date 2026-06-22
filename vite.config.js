@@ -31,6 +31,6 @@ export default defineConfig({
 		noExternal: ["bits-ui"],
 	},
 	server: {
-		allowedHosts: ["1a64-2601-406-5083-c8c0-28b9-a653-1f29-ddd8.ngrok-free.app"]
+		allowedHosts: ["320e-76-20-131-233.ngrok-free.app"]
 	}
 });

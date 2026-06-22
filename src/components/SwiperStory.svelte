@@ -18,6 +18,7 @@
 	import Footer from "./Footer.svelte";
 	import titleSvg from "$svg/title.svg";
 	import titleMobile from "$svg/title-mobile.svg";
+	import focusTrap from "../actions/focusTrap";
 
 	[]
 
@@ -71,6 +72,9 @@
 	const BODY_CHAPTER_BG_CLASS = 'story-chapter-active';
 	let soupGuideOpen = $state(false);
 	let guideOverlayEl = $state(null);
+	let guideSummaryEl = $state(null);
+	let soupPanZoomModalEl = $state(null);
+	let soupPanZoomExitBtnEl = $state(null);
 	
 	onMount(async () => {
 		const mod = await import("@chenglou/pretext");
@@ -148,20 +152,39 @@
 		return true;
 	}
 
+	function bindGuideTarget(group, idAttr) {
+		const idNum = Number.parseInt(idAttr, 10);
+		group.style.cursor = 'pointer';
+		group.setAttribute('tabindex', '0');
+		group.setAttribute('role', 'button');
+		group.setAttribute('aria-label', `Go to course ${idNum}`);
+
+		const activate = (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			goToGuideSlide(idAttr);
+		};
+		const onKeydown = (event) => {
+			if (event.key !== 'Enter' && event.key !== ' ') return;
+			activate(event);
+		};
+
+		group.addEventListener('click', activate);
+		group.addEventListener('keydown', onKeydown);
+
+		return () => {
+			group.removeEventListener('click', activate);
+			group.removeEventListener('keydown', onKeydown);
+		};
+	}
+
 	function bindSectionClicks(node) {
 		const cleanupFns = [];
 		Array.from(node.querySelectorAll('svg g[id]')).forEach((group) => {
 			const idAttr = group.getAttribute('id') ?? '';
 			const idNum = Number.parseInt(idAttr, 10);
 			if (!Number.isInteger(idNum) || idNum < 1 || idNum > 10) return;
-			group.style.cursor = 'pointer';
-			const handler = (event) => {
-				event.preventDefault();
-				event.stopPropagation();
-				goToGuideSlide(idAttr);
-			};
-			group.addEventListener('click', handler);
-			cleanupFns.push(() => group.removeEventListener('click', handler));
+			cleanupFns.push(bindGuideTarget(group, idAttr));
 		});
 		return { destroy() { cleanupFns.forEach(fn => fn()); } };
 	}
@@ -170,15 +193,49 @@
 		const group = node.querySelector('#pudding-link');
 		if (!group) return {};
 		group.style.cursor = 'pointer';
-		const handler = () => window.open('https://pudding.cool', '_blank', 'noopener,noreferrer');
-		group.addEventListener('click', handler);
-		return { destroy() { group.removeEventListener('click', handler); } };
+		group.setAttribute('tabindex', '0');
+		group.setAttribute('role', 'link');
+		group.setAttribute('aria-label', 'Visit The Pudding');
+
+		const openLink = () => window.open('https://pudding.cool', '_blank', 'noopener,noreferrer');
+		const onClick = (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			openLink();
+		};
+		const onKeydown = (event) => {
+			if (event.key !== 'Enter' && event.key !== ' ') return;
+			event.preventDefault();
+			event.stopPropagation();
+			openLink();
+		};
+
+		group.addEventListener('click', onClick);
+		group.addEventListener('keydown', onKeydown);
+		return {
+			destroy() {
+				group.removeEventListener('click', onClick);
+				group.removeEventListener('keydown', onKeydown);
+			}
+		};
 	}
 
 	function onGuideOverlayClick(event) {
 		// Fallback: clicking outside bound guide targets closes the overlay.
 		soupGuideOpen = false;
 	}
+
+	function getGuideFocusableTargets() {
+		const targets = [];
+		if (guideSummaryEl) targets.push(guideSummaryEl);
+		if (guideOverlayEl) {
+			targets.push(
+				...Array.from(guideOverlayEl.querySelectorAll('svg g[id][tabindex="0"]'))
+			);
+		}
+		return targets.filter((el) => !!el && typeof el.focus === 'function');
+	}
+
 	// turned off
 	$effect(() => {
 		if (!soupGuideOpen || !guideOverlayEl) return;
@@ -189,19 +246,59 @@
 			const idAttr = group.getAttribute('id') ?? '';
 			const idNum = Number.parseInt(idAttr, 10);
 			if (!Number.isInteger(idNum) || idNum < 1 || idNum > 10) return;
-
-			group.style.cursor = 'pointer';
-			const onGroupClick = (event) => {
-				event.preventDefault();
-				event.stopPropagation();
-				goToGuideSlide(idAttr);
-			};
-			group.addEventListener('click', onGroupClick);
-			cleanupFns.push(() => group.removeEventListener('click', onGroupClick));
+			cleanupFns.push(bindGuideTarget(group, idAttr));
 		});
 
 		return () => {
 			cleanupFns.forEach((fn) => fn());
+		};
+	});
+
+	$effect(() => {
+		if (!soupGuideOpen || !guideOverlayEl) return;
+
+		const onKeydown = (event) => {
+			// Close guide on Escape and restore focus to summary
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				soupGuideOpen = false;
+				tick().then(() => {
+					guideSummaryEl?.focus();
+				});
+				return;
+			}
+
+			if (event.key !== 'Tab') return;
+			const targets = getGuideFocusableTargets();
+			if (!targets.length) {
+				// Fallback: if no targets, keep focus on summary
+				event.preventDefault();
+				guideSummaryEl?.focus();
+				return;
+			}
+
+			const currentIndex = targets.findIndex((el) => el === document.activeElement);
+			const nextIndex = event.shiftKey
+				? (currentIndex <= 0 ? targets.length - 1 : currentIndex - 1)
+				: (currentIndex === -1 || currentIndex >= targets.length - 1 ? 0 : currentIndex + 1);
+
+			event.preventDefault();
+			targets[nextIndex]?.focus();
+		};
+
+		guideOverlayEl.addEventListener('keydown', onKeydown, true);
+		tick().then(() => {
+			if (!soupGuideOpen) return;
+			const targets = getGuideFocusableTargets();
+			const activeEl = document.activeElement;
+			// If focus is not already on a target (or no targets exist), focus the summary
+			if (!targets.length || !targets.includes(activeEl)) {
+				targets[0]?.focus() ?? guideSummaryEl?.focus();
+			}
+		});
+
+		return () => {
+			guideOverlayEl.removeEventListener('keydown', onKeydown, true);
 		};
 	});
 
@@ -384,16 +481,16 @@
 		}
 	}
 	let STACK = $derived([
-		{ rot: 8, tx: 65, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000219.png` },  // top-left
-		{ rot:  50, tx:  50, ty: 0, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000068.png` },  // bottom — top-right corner
-		{ rot: -20, tx: -120, ty:  40, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4046090.png` },  // bottom-left
-		{ rot:  3, tx:  -80, ty:  -20, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/476900.webp` },  // bottom-right
-		{ rot: 2, tx: 5, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000008419.png` },  // top-left
-		{ rot: 1, tx: layout === "right" ? 50 : -10, ty:  layout === "right" ? 0 : -20, widthPct: layout === "right" ? 30 : 25, fitViewportHeight: true, src: `assets/menus/fish.webp` },  // lower-left
-		{ rot:  18, tx:  -20, ty:  35, widthPct: layout === "right" ? 50 : 75, src: `assets/menus/470904.png`,  role: 'heroLeft' },   // hero left — animates to side-by-side
-		{ rot: 10, tx: 50, ty: -50, widthPct: layout === "right" ? 50 : 30, src: `assets/menus/474586.webp`, role: 'heroRight' }, // hero right — animates to side-by-side
-		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second' }, // flies off on slide 2→3
-		{ rot:  -3, tx:   layout === "right" ? -2 : 20, ty:  layout === "right" ? -2 : 0, widthPct: layout === "right" ? 50 : 35, src: "assets/menus/4000003649.png", role: 'top' },  // flies off on slide 1→2
+		{ rot: 8, tx: 65, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000219.png`, alt: 'Menu of Delmonico’s, NYC, 1881' },  // top-left
+		{ rot:  50, tx:  50, ty: 0, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000000068.png`, alt: 'Menu of Manhattan Club, NYC, 1866' },  // bottom — top-right corner
+		{ rot: -20, tx: -120, ty:  40, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4046090.png`, alt: "Menu  of Hotel Colorado, Glenwood Springs, CO, 1915" },  // bottom-left
+		{ rot:  3, tx:  -80, ty:  -20, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/476900.webp`, alt: "Menu of Astor House, NYC, 1854" },  // bottom-right
+		{ rot: 2, tx: 5, ty: -50, widthPct: layout === "right" ? 50 : 25, src: `assets/menus/4000008419.png`, alt: "Menu of Delmonico’s, NYC, 1900" },  // top-left
+		{ rot: 1, tx: layout === "right" ? 50 : -10, ty:  layout === "right" ? 0 : -20, widthPct: layout === "right" ? 30 : 25, fitViewportHeight: true, src: `assets/menus/fish.webp`, alt: "Menus from Buttolph Collection" },  // lower-left
+		{ rot:  18, tx:  -20, ty:  35, widthPct: layout === "right" ? 50 : 75, src: `assets/menus/470904.png`,  role: 'heroLeft', alt: "Menus from Buttolph Collection" },   // hero left — animates to side-by-side
+		{ rot: 10, tx: 50, ty: -50, widthPct: layout === "right" ? 50 : 30, src: `assets/menus/474586.webp`, role: 'heroRight', alt: "Menu from Sherry’s, NY, 1891" }, // hero right — animates to side-by-side
+		{ rot:  buttolphPos["rot"], tx:   buttolphPos["tx"], ty:   buttolphPos["ty"], widthPct: buttolphPos["widthPct"], src: "assets/menus/buttolph_portrait.png", role: 'second', alt: "Frank Bullolph Photograph" }, // flies off on slide 2→3
+		{ rot:  -3, tx:   layout === "right" ? -2 : 20, ty:  layout === "right" ? -2 : 0, widthPct: layout === "right" ? 50 : 35, src: "assets/menus/4000003649.png", role: 'top', alt:"Menu of Hotel Bellevue, 1896" },  // flies off on slide 1→2
 	]);
 
 	const clamp01 = (v) => Math.max(0, Math.min(1, v));
@@ -478,7 +575,13 @@
 	// so a fast flick still plays the full animation rather than jumping to the end state
 	const SNAP_TRANSITION = `transform ${STACK_SPEED}ms cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity ${STACK_SPEED}ms cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
 
-	let stackStyles = $derived(STACK.map((card) => {
+	// Pre-compute styles for static (non-animated) stack cards — only depends on STACK geometry,
+	// not on per-frame animation values, so this only reruns when STACK itself changes.
+	let staticCardStyles = $derived(
+		STACK.map(c => c.role ? null : `transform: rotate(${c.rot}deg) translate(${c.tx}%, ${c.ty}%); opacity: 1`)
+	);
+
+	let stackStyles = $derived(STACK.map((card, i) => {
 		const isTop = card.role === 'top';
 		const isSecond = card.role === 'second';
 		const isHeroLeft = card.role === 'heroLeft';
@@ -513,7 +616,7 @@
 				: '';
 			return `${widthStr}transform: rotate(${rot}deg) translate(${tx}%, ${ty}%); transition: ${transition}; opacity: ${opacity}`;
 		} else {
-			return `transform: rotate(${card.rot}deg) translate(${card.tx}%, ${card.ty}%); opacity: ${opacity}`;
+			return staticCardStyles[i];
 		}
 	}));
 
@@ -538,36 +641,36 @@
 		soupDragLocked ? soupDragDelta * dims.width * -dragMultiplier : 0
 	);
 
-	// Soup background — preload all bgSrc images up front so the img tag always gets
+	// Soup background — preload bgSrc images on-demand so the img tag gets
 	// pixel data that's already in memory, making in:fade play against a visible image.
 	let preloadedImages = $state(/** @type {Map<string, HTMLImageElement>} */ (new Map()));
 	let lastSoupBgSrc = $state(null);
 
 	let loading = $state(true);
 
-	function preloadAllImages() {
-		const bgSrcs = new Set(slides.map(s => s.bgSrc).filter(Boolean));
-
-		const allSrcs = new Set([
-			...bgSrcs,
-			...slides.map(s => s.image).filter(Boolean),
-			'assets/menus/title-mobile.jpg',
-			...slides.filter(s => s.sectionCount).map(s => `assets/menus/${s.sectionCount}.webp`),
-			...STACK.map(c => c.src).filter(Boolean),
-		]);
-
-		const promises = [...allSrcs].map(src => new Promise(resolve => {
+	function preloadImage(src) {
+		return new Promise(resolve => {
 			const img = new Image();
 			img.onload = async () => {
-				if (bgSrcs.has(src)) {
-					// Wait for decode so the image is GPU-ready before it's needed at swap time.
-					// This prevents the browser from doing expensive decode/rasterize work
-					// in the middle of a slide transition, which causes long frames.
-					try { await img.decode(); } catch (e) {}
-					preloadedImages = new Map([...preloadedImages, [src, img]]);
-				}
+				try { await img.decode(); } catch (e) {}
+				preloadedImages.set(src, img);
+				preloadedImages = preloadedImages;
 				resolve();
 			};
+			img.onerror = resolve;
+			img.src = src;
+		});
+	}
+
+	function preloadInitialImages() {
+		// Only preload stack cards and intro bg on page load
+		const initialSrcs = [
+			...STACK.map(c => c.src).filter(Boolean),
+		];
+
+		const promises = initialSrcs.map(src => new Promise(resolve => {
+			const img = new Image();
+			img.onload = resolve;
 			img.onerror = resolve;
 			img.src = src;
 		}));
@@ -577,7 +680,7 @@
 
 	onMount(async () => {
 		loading = false;
-		await preloadAllImages();
+		await preloadInitialImages();
 	});
 
 	let soupBgReadySrc = $derived(soupBgRenderSrc && preloadedImages.has(soupBgRenderSrc) ? soupBgRenderSrc : null);
@@ -587,6 +690,43 @@
 	$effect(() => {
 		if (soupBg.src) lastSoupBgSrc = soupBg.src;
 	});
+
+	// Lazy-load soup bg images when they come into view
+	$effect(() => {
+		if (soupBgRenderSrc && !preloadedImages.has(soupBgRenderSrc)) {
+			preloadImage(soupBgRenderSrc);
+		}
+	});
+
+	// When user reaches title slide, preload all remaining images for fast navigation
+	$effect(() => {
+		const activeSlide = slides[activeIndex];
+		if (activeSlide?.id === 'soup' && !soupGuideOpen && slides.length > 0) {
+			console.log('🎯 Reached title slide, preloading remaining images');
+			
+			const remainingSrcs = [
+				...slides.map(s => s.image).filter(Boolean),
+				'assets/menus/title-mobile.jpg',
+				...slides.filter(s => s.sectionCount).map(s => `assets/menus/${s.sectionCount}.webp`),
+				...slides.map(s => s.bgSrc).filter(Boolean),
+			];
+
+			console.log('📊 Total images to preload:', remainingSrcs.length);
+			console.log('Already in cache:', preloadedImages.size);
+			
+			// Filter out already preloaded and duplicates
+			const toPreload = [...new Set(remainingSrcs)].filter(src => !preloadedImages.has(src));
+			
+			console.log('🚀 Starting preload of', toPreload.length, 'images');
+			
+			// Batch preload all remaining images
+			const promises = toPreload.map(src => preloadImage(src));
+			Promise.allSettled(promises).then(() => {
+				console.log('✅ Batch preload complete! Now cached:', preloadedImages.size, 'images');
+			});
+		}
+	});
+
 	let soupBgNaturalW = $derived(preloadedImages.get(soupBgRenderSrc)?.naturalWidth ?? 0);
 	let soupBgNaturalH = $derived(preloadedImages.get(soupBgRenderSrc)?.naturalHeight ?? 0);
 	// // Only expose src to the template once it's preloaded — prevents assigning a src the browser hasn't fetched yet
@@ -671,8 +811,8 @@
 		// Focal zoom target
 		const pf  = (v, d) => parseFloat(v ?? d);
 		const s   = pf(slide?.bgZoom, 1) * (layout === 'center' ? 2 : 1);
-		const px  = pf(slide?.focalX, 0) * (vw / nw);
-		const py  = pf(slide?.focalY, 0) * (vw / nw);
+		const px  = pf(layout === 'center' ? (slide?.focalXMobile ?? slide?.focalX) : slide?.focalX, 0) * (vw / nw);
+		const py  = pf(layout === 'center' ? (slide?.focalYMobile ?? slide?.focalY) : slide?.focalY, 0) * (vw / nw);
 		const ax  = (layout === 'center' ? 0.5 : pf(slide?.anchorX, 0.5)) * vw;
 		const ay  = pf(slide?.anchorY, 0.5) * vh;
 		const focal = { tx: ax - px * s, ty: ay - py * s, s };
@@ -683,21 +823,38 @@
 	// Interpolate between the two soup slide transforms — exposes raw values for annotation positioning.
 	// The from slide uses live zoomProgress; the to slide always starts at zp=0 (fit-height)
 	// so each new zoom slide begins its animation fresh on arrival.
-
-	let soupBgXform = $derived.by(() => {
-		const vw = dims.width, vh = dims.height;
-		const nw = soupBgNaturalW, nh = soupBgNaturalH;
+	//
+	// The per-slide transforms (focal targets, fit-height) only change when the active slides or
+	// viewport/image dimensions change — not on every drag tick. Caching them here means soupBgXform
+	// only does 3 lerps per frame during smooth swipes instead of re-running soupSlideXform twice.
+	let soupFromXformCache = $derived.by(() => {
 		const from = slides[soupRefFromIdx];
 		const to   = slides[soupRefToIdx];
 		const fromIsSoup = hasSoupBg(from);
 		const toIsSoup   = hasSoupBg(to);
 		if (!fromIsSoup && !toIsSoup) return null;
+		const vw = dims.width, vh = dims.height;
+		const nw = soupBgNaturalW, nh = soupBgNaturalH;
 		const fromIsZoom = fromIsSoup && from?.layout !== 'fit-height';
-		const zpFrom = !fromIsZoom ? 0
-			: soupRefFromIdx === activeIndex ? zoomProgress
-			: 0;
-		const a = soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, zpFrom);
-		const b = soupSlideXform(toIsSoup   ? to   : from, vw, vh, nw, nh, 0);
+		const zpFrom = !fromIsZoom ? 0 : soupRefFromIdx === activeIndex ? zoomProgress : 0;
+		return soupSlideXform(fromIsSoup ? from : to, vw, vh, nw, nh, zpFrom);
+	});
+
+	let soupToXformCache = $derived.by(() => {
+		const from = slides[soupRefFromIdx];
+		const to   = slides[soupRefToIdx];
+		const fromIsSoup = hasSoupBg(from);
+		const toIsSoup   = hasSoupBg(to);
+		if (!fromIsSoup && !toIsSoup) return null;
+		const vw = dims.width, vh = dims.height;
+		const nw = soupBgNaturalW, nh = soupBgNaturalH;
+		return soupSlideXform(toIsSoup ? to : from, vw, vh, nw, nh, 0);
+	});
+
+	let soupBgXform = $derived.by(() => {
+		const a = soupFromXformCache;
+		const b = soupToXformCache;
+		if (!a || !b) return null;
 		const t = smoothstep(soupRefBlendT);
 		const activeBgSrc = slides[activeIndex]?.bgSrc;
 		const neighborSharesBg = slides[activeIndex - 1]?.bgSrc === activeBgSrc || slides[activeIndex + 1]?.bgSrc === activeBgSrc;
@@ -1097,6 +1254,15 @@
 			window.removeEventListener('keydown', onPanZoomKeydown);
 		};
 	});
+
+	$effect(() => {
+		if (!soupPanZoom) return;
+		tick().then(() => {
+			const activeEl = document?.activeElement;
+			if (soupPanZoomModalEl && activeEl && soupPanZoomModalEl.contains(activeEl)) return;
+			soupPanZoomExitBtnEl?.focus();
+		});
+	});
 </script>
 
 <section class="story layout-{layout ? layout : ''}"
@@ -1112,6 +1278,7 @@
 		{#if soupBgReadySrc}
 			<div class="soup-bg"
 				class:panzoom-active={soupPanZoom}
+				aria-hidden={soupPanZoom ? 'true' : 'false'}
 				style="opacity: {soupBgLayerOpacity}; transition: opacity 320ms ease;"
 				onpointerdown={soupPanZoom ? onPzPointerDown : undefined}
 				onpointermove={soupPanZoom ? onPzPointerMove : undefined}
@@ -1123,7 +1290,7 @@
 					{#key soupBgReadySrc}
 						<img
 							src={soupBgReadySrc}
-							alt=""
+							alt={`Menu of ${soupTopLabel ?? ''}`}
 							draggable="false"
 							onintroend={() => { soupBgMounted = true; justLeftNoImage = false; }}
 							onoutroend={() => { if (!soupBgReadySrc) soupBgMounted = false; }}
@@ -1157,7 +1324,7 @@
 						class="soup-annotation"
 						style="right: calc(100% - {annotationScreenPos.x}px); top: {annotationScreenPos.y}px; opacity: {annotationOpacity};"
 					>
-						<img src="assets/pointer.png" />
+						<img src="assets/pointer.png" alt="" />
 					</div>
 				{/if}
 			</div>
@@ -1167,7 +1334,7 @@
 			<div class="video-bg" aria-hidden="true">
 				<video
 					bind:this={videoEl}
-					src="assets/menus/menu-explorer-video.mp4"
+					src={layout === 'center' ? 'assets/menus/menu-explorer-video-mobile.mp4' : 'assets/menus/menu-explorer-video.mp4'}
 					muted
 					playsinline
 				></video>
@@ -1176,7 +1343,7 @@
 
 		<div class="stack" style="pointer-events: none; opacity: {stackTitleOpacity * (soupGuideOpen ? 0.18 : 1)}; transform: translate3d(0%, {layout == "center" ? 0 : -tweenedStackSlideX}%, 0); transition: opacity 700ms ease;">
 			{#each STACK as card, i}
-				<img class="stack-card" src={card.src} alt="" loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
+				<img class="stack-card" src={card.src} alt={card.alt ?? ''} loading="lazy" decoding="async" draggable="false" style={stackStyles[i]} onload={(e) => {
 						if (card.fitViewportHeight) {
 							e.currentTarget.style.height = layout === 'center' ? '70%' : '100%';
 							e.currentTarget.style.width = 'auto';
@@ -1198,13 +1365,14 @@
 	<button
 		type="button"
 		bind:this={guideOverlayEl}
+		id="soup-guide-overlay"
 		class="soup-guide-overlay"
 		class:soup-guide-overlay--hidden={!soupGuideOpen}
 		onclick={onGuideOverlayClick}
 		aria-label="Close guide"
 	>
 		{@html guide}
-		<img src="/assets/menus/guide.png" alt="" />
+		<img src="assets/menus/guide.png" alt="" />
 	</button>
 
 	{#if !soupPanZoom && slides[activeIndex]?.course}
@@ -1214,7 +1382,7 @@
 				aria-live="polite"
 			>
 				<details bind:open={soupGuideOpen}>
-					<summary>Course {@html slides[activeIndex]?.course}</summary>
+					<summary bind:this={guideSummaryEl}>Course {@html slides[activeIndex]?.course}</summary>
 				</details>
 			</div>	
 	{/if}
@@ -1223,9 +1391,12 @@
 		<div class="swiper-wrapper">
 			{#each virtualData.slides as slideIndex, i (slideIndex)}
 				{@const slide = slides[slideIndex]}
+				{@const isActiveSlide = slideIndex === activeIndex}
 				{@const firstSlide = slideIndex === 0}
 				<div
 					data-swiper-slide-index={slideIndex}
+					inert={isActiveSlide ? undefined : true}
+					aria-hidden={isActiveSlide ? 'false' : 'true'}
 					style="left: {virtualData.offset}px; z-index: {slide?.id === 'illustration' ? 100 : 'auto'};"
 					class="swiper-slide"
 					class:image-title={slide?.image === 'assets/menus/title.jpg'}
@@ -1236,7 +1407,7 @@
 					{/if}
 					{#if !slide.image && slide.id !== 'footer'}
 						<div class="slide-inner {layout === 'right' ? 'right-align' : ''}"
-							class:is-active={activeIndex === i}
+							class:is-active={isActiveSlide}
 							class:center-align={slide.layout === 'no-image'}
 							class:first-slide={firstSlide}
 							class:hidden={soupPanZoom}
@@ -1348,6 +1519,7 @@
 									<div use:bindSectionClicks>{@html sectionSvg}</div>
 								{/if}
 								{#if slide.image === 'assets/menus/title.jpg'}
+									<h1 class="sr-only">A history of menus is a menu of history</h1>
 									{#if layout === 'center'}
 										<div use:bindPuddingLink>{@html titleMobile}</div>
 									{:else}
@@ -1364,7 +1536,7 @@
 									<div class="section-text">
 										{#if slide.sectionCount}
 											<p class="course-count">Course {slide.sectionCount}</p>
-											<img src={`assets/menus/${slide.sectionCount}.webp`} alt="" />
+											<img src={`assets/menus/${slide.sectionCount}.webp`} alt="Illustration of {slide.courseName}" />
 											<p class="course-name">{slide.courseName}</p>
 											<p class="course-description">{slide.courseDescription}</p>
 										{/if}
@@ -1382,62 +1554,70 @@
 
 
 	{#if soupPanZoom}
-
-		<div class="soup-panzoom-controls" aria-label="Pan and zoom controls" role="group">
-			{#if layout === 'center'}
-				<p>pan/zoom by pinch/swipe</p>
-			{:else}
-				<p>pan/zoom with your mouse</p>
-			{/if}
-			<div class="soup-panzoom-controls-grid">
-				<button class="pz-btn pz-up" onclick={() => nudgePan(0, PZ_PAN_STEP)} aria-label="Pan up">
-					<div style="transform: rotate(-90deg);">
-						{@html arrowRight}
-					</div>
-				</button>
-				<button class="pz-btn pz-left" onclick={() => nudgePan(PZ_PAN_STEP, 0)} aria-label="Pan left">
-					<div style="transform: rotate(180deg);">
-						{@html arrowRight}
-					</div>
-				</button>
-				<button class="pz-btn pz-right" onclick={() => nudgePan(-PZ_PAN_STEP, 0)} aria-label="Pan right">
-					<div style="transform: rotate(0deg);">
-						{@html arrowRight}
-					</div>
-				</button>
-				<button class="pz-btn pz-down" onclick={() => nudgePan(0, -PZ_PAN_STEP)} aria-label="Pan down">
-					<div style="transform: rotate(90deg);">
-						{@html arrowRight}
-					</div>
-				</button>
+		<div
+			class="soup-panzoom-modal"
+			bind:this={soupPanZoomModalEl}
+			role="dialog"
+			aria-modal="true"
+			aria-label="Menu pan and zoom controls"
+			use:focusTrap
+		>
+			<div class="soup-panzoom-controls" aria-label="Pan and zoom controls" role="group">
+				{#if layout === 'center'}
+					<p>pan/zoom by pinch/swipe</p>
+				{:else}
+					<p>pan/zoom with your mouse</p>
+				{/if}
+				<div class="soup-panzoom-controls-grid">
+					<button class="pz-btn pz-up" onclick={() => nudgePan(0, PZ_PAN_STEP)} aria-label="Pan up">
+						<div style="transform: rotate(-90deg);">
+							{@html arrowRight}
+						</div>
+					</button>
+					<button class="pz-btn pz-left" onclick={() => nudgePan(PZ_PAN_STEP, 0)} aria-label="Pan left">
+						<div style="transform: rotate(180deg);">
+							{@html arrowRight}
+						</div>
+					</button>
+					<button class="pz-btn pz-right" onclick={() => nudgePan(-PZ_PAN_STEP, 0)} aria-label="Pan right">
+						<div style="transform: rotate(0deg);">
+							{@html arrowRight}
+						</div>
+					</button>
+					<button class="pz-btn pz-down" onclick={() => nudgePan(0, -PZ_PAN_STEP)} aria-label="Pan down">
+						<div style="transform: rotate(90deg);">
+							{@html arrowRight}
+						</div>
+					</button>
+				</div>
+				<div class="soup-panzoom-controls-actions">
+					<button class="pz-btn" onclick={() => stepZoom(PZ_ZOOM_STEP)} aria-label="Zoom in">{@html plus}</button>
+					<button class="pz-btn" onclick={() => stepZoom(1 / PZ_ZOOM_STEP)} aria-label="Zoom out">{@html minus}</button>
+				</div>
 			</div>
-			<div class="soup-panzoom-controls-actions">
-				<button class="pz-btn" onclick={() => stepZoom(PZ_ZOOM_STEP)} aria-label="Zoom in">{@html plus}</button>
-				<button class="pz-btn" onclick={() => stepZoom(1 / PZ_ZOOM_STEP)} aria-label="Zoom out">{@html minus}</button>
+			<button bind:this={soupPanZoomExitBtnEl} class="soup-panzoom-exit soup-top-label" onclick={exitPanZoom} aria-label="Exit pan/zoom">
+				<span>
+					GO BACK
+				</span>
+			</button>
+			<div class="panzoom-label">
+				<p>{soupTopLabel}</p>
 			</div>
-		</div>
-		<button class="soup-panzoom-exit soup-top-label" onclick={exitPanZoom} aria-label="Exit pan/zoom">
-			<span>
-				GO BACK
-			</span>
-		</button>
-		<div class="panzoom-label">
-			<p>{soupTopLabel}</p>
 		</div>
 
 	{/if}
 
 	{#if layout == "right" && !soupGuideOpen && !soupPanZoom}
-		<div class="slide-nav" aria-hidden="true">
+		<div class="slide-nav">
 			{#if activeIndex > 0}
-				<button class="slide-nav-btn slide-nav-prev" onclick={() => swiper?.slidePrev()} tabindex="-1">
+				<button class="slide-nav-btn slide-nav-prev" onclick={() => swiper?.slidePrev()} aria-label="Previous slide">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1em; height: 1em;"><g><polyline points="15 18 9 12 15 6"></polyline></g></svg>
 				</button>
 			{:else}
 				<div></div>
 			{/if}
 			{#if activeIndex < slides.length - 1}
-				<button class="slide-nav-btn slide-nav-next" onclick={() => swiper?.slideNext()} tabindex="-1">
+				<button class="slide-nav-btn slide-nav-next" onclick={() => swiper?.slideNext()} aria-label="Next slide">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style=""><g><polyline points="9 18 15 12 9 6"></polyline></g></svg>
 				</button>
 			{/if}
@@ -1498,6 +1678,18 @@
 		font-size: 14px;
 		letter-spacing: 0.05em;
 		color: rgba(0, 0, 0, 0.5);
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 
 	.story {
@@ -2209,6 +2401,12 @@
 		display: none;
 	}
 
+	:global(.soup-guide-overlay svg g[id]:focus-visible) {
+		outline: 2px solid #e74c3c;
+		outline-offset: 2px;
+		filter: drop-shadow(0 0 4px rgba(231, 76, 60, 0.8));
+	}
+
 	.soup-info-label {
 		position: absolute;
 		right: 12px;
@@ -2255,12 +2453,22 @@
 		font-weight: 600;
 	}
 	.soup-slide-index-label summary {
+		border: 0;
+		background: transparent;
+		padding: 0;
+		font: inherit;
+		color: inherit;
+		cursor: pointer;
+	}
+
+	.soup-slide-index-label summary {
 		font-size: 18px;
 		font-weight: 400;
 	}
 
 	.layout-center .soup-slide-index-label summary {
 		font-weight: 500;
+		font-size: 16px;
 	}
 
 	.layout-center .soup-slide-index-label {
@@ -2499,6 +2707,18 @@
 		line-height: 1;
 		cursor: pointer;
 		padding: 8px;
+	}
+
+	.soup-panzoom-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 31;
+		pointer-events: none;
+	}
+
+	.soup-panzoom-modal .soup-panzoom-controls,
+	.soup-panzoom-modal .soup-panzoom-exit {
+		pointer-events: auto;
 	}
 
 	.pz-btn:focus-visible {
@@ -2815,6 +3035,28 @@
 
 	.slide-nav-next svg {
 		width: 25px;
+	}
+
+	.layout-center 	p.course-name {
+		max-width: calc(100% - 20px);
+		font-size: 40px;
+	}
+
+	.layout-center .course-description {
+		font-size: 20px;
+		max-width: calc(100% - 20px);
+	}
+
+	.layout-center .explore img {
+		display: none;
+	}
+
+	.layout-center .explore {
+		padding-top: 20px;
+	}
+
+	.layout-center .explore a {
+		font-size: 24px;
 	}
 
 	

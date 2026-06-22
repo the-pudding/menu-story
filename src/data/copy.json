@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "A History of Menus is a Menu of History",
+    "description": "What do America’s earliest restaurant menus teach us about America?"
+  },
   "ignore": [],
   "slides": [
     {
@@ -15,7 +19,7 @@
       "body": [
         {
           "type": "text",
-          "value": "The New York Public Library has an archive of menus, primarily 1880-1920, that captures the emergence of modern-day restaurant dining."
+          "value": "The New York Public Library’s <a href=https://digitalcollections.nypl.org/collections/e5114e30-c52f-012f-993c-58d385a7bc34 target=_blank>Buttolph Collection</a> of menus, dated 1880-1920, captures the emergence of modern-day restaurant dining."
         }
       ]
     },
@@ -24,7 +28,7 @@
       "body": [
         {
           "type": "text",
-          "value": "Frank E. Buttolph (pictured here) spent decades assembling the menus as a record of the culinary and social history of her time."
+          "value": "The archive was assembled by Frank E. Buttolph (pictured here), who spent decades collecting menus as a record of the culinary and social history of her time."
         }
       ]
     },
@@ -57,7 +61,7 @@
     {
       "id": "soup",
       "image": "assets/menus/title.jpg",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Historic Menu Background",
       "body": []
     },
     {
@@ -66,7 +70,7 @@
       "sectionCount": "1",
       "courseDescription": "Learning French",
       "courseName": "Bisque d’Ecrevisses",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Bisque d’Ecrevisses",
       "class": "chapter",
       "body": []
     },
@@ -133,7 +137,7 @@
       "sectionCount": "2",
       "courseDescription": "Lives of luxury",
       "courseName": "Celery in a Crystal Celery Vase",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Celery in a Crystal Celery Vase",
       "class": "chapter",
       "body": []
     },
@@ -159,6 +163,7 @@
       "bgSrc": "assets/menus/474586.webp",
       "bgZoom": "1",
       "focalX": "490",
+      "focalXMobile": "800",
       "focalY": "300",
       "anchorX": "0.5",
       "anchorY": "0.2",
@@ -183,7 +188,7 @@
       "anchorY": "0.2",
       "annotationX": "234",
       "annotationY": "423",
-      "topLabel": "NY Board of Trade Dinner, Hotel Brunswick, NYC, 1887",
+      "topLabel": "Hotel Brunswick, NYC, 1887",
       "course": "2 <i>of</i> 10&colon; Celery",
       "body": [
         {
@@ -202,7 +207,7 @@
       "sectionCount": "3",
       "courseDescription": "Seating and being seen",
       "courseName": "Vol-au-vent",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Vol-au-vent",
       "class": "chapter",
       "body": []
     },
@@ -210,7 +215,7 @@
       "id": "soup",
       "bgSrc": "assets/menus/4000003649.png",
       "layout": "fit-height",
-      "topLabel": "Hotel Bellevue, 1896, 9th Annual Honor of Crow Charlton",
+      "topLabel": "Hotel Bellevue, 1896, Annual Honor of Crow Charlton",
       "topLabelSmall": "true",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
@@ -272,13 +277,14 @@
       "bgSrc": "assets/menus/473284.webp",
       "bgZoom": ".4",
       "focalX": "100",
+      "focalXMobile": "200",
       "focalY": "900",
       "anchorX": "0.7",
       "anchorY": "0.1",
       "annotationX": "40",
       "annotationY": "1400",
       "type": "auto",
-      "topLabel": "William Clauss Dinner, St Nicolas Hotel, Cincinnati, 1908",
+      "topLabel": "St Nicolas Hotel, Cincinnati, 1908",
       "course": "3 <i>of</i> 10&colon; Vol-au-vent",
       "body": [
         {
@@ -293,13 +299,13 @@
       "sectionCount": "4",
       "courseDescription": "Dining gets an American accent",
       "courseName": "Pork Chops Saute",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Pork Chops Saute",
       "class": "chapter",
       "body": []
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/466407.png",
+      "bgSrc": "assets/menus/466407.webp",
       "bgZoom": ".5",
       "focalX": "500",
       "focalY": "800",
@@ -322,7 +328,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000004412.png",
+      "bgSrc": "assets/menus/4000004412.webp",
       "layout": "fit-height",
       "topLabel": "Waldorf-Astoria, NYC, 1897",
       "course": "4 <i>of</i> 10&colon; Pork Chops Saute",
@@ -356,16 +362,17 @@
       "sectionCount": "5",
       "courseDescription": "The middle-class blows up dining",
       "courseName": "Iced Coffee",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Iced Coffee",
       "class": "chapter",
       "body": []
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000009030.png",
+      "bgSrc": "assets/menus/4000009030.webp",
       "bgZoom": ".6",
       "focalX": "460",
       "focalY": "1400",
+      "focalYMobile": "1800",
       "anchorX": "0.7",
       "anchorY": "0.7",
       "annotationX": "460",
@@ -398,7 +405,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/467291.png",
+      "bgSrc": "assets/menus/467291.webp",
       "layout": "no-image",
       "topLabel": "&nbsp;",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
@@ -419,7 +426,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/475432.png",
+      "bgSrc": "assets/menus/475432.webp",
       "layout": "fit-height",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Putnam House, Table d’ Hote, NYC, 1900",
@@ -452,7 +459,7 @@
       "bgSrc": "assets/menus/4066460.webp",
       "layout": "fit-height",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
-      "topLabel": "Walton’s Old Homestead Oyster and Chop House, NYC, 1914",
+      "topLabel": "Walton’s Oyster & Chop House, NYC, 1914",
       "body": [
         {
           "type": "text",
@@ -462,7 +469,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/470923.png",
+      "bgSrc": "assets/menus/470923.webp",
       "layout": "fit-height",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Child’s Lunch Rooms, NYC, 1901",
@@ -475,7 +482,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/475314.png",
+      "bgSrc": "assets/menus/4000007306.png",
       "layout": "fit-height",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
       "topLabel": "Dennett’s Surpassing Coffee, NYC, 1900",
@@ -492,6 +499,8 @@
       "bgZoom": ".6",
       "focalX": "800",
       "focalY": "800",
+      "focalYMobile": "900",
+      "focalXMobile": "600",
       "anchorX": "0.8",
       "anchorY": "0.5",
       "course": "5 <i>of</i> 10&colon; Iced Coffee",
@@ -506,7 +515,7 @@
     {
       "id": "soup",
       "image": "assets/menus/section.png",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Roast ham, sweet potato dressing, southern yams, apple sauce, johnny cakes.",
       "sectionCount": "6",
       "courseDescription": "Faster food",
       "courseName": "Thursday Special",
@@ -579,7 +588,7 @@
     {
       "id": "soup",
       "image": "assets/menus/section.png",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Pepper Pot",
       "sectionCount": "7",
       "courseDescription": "American dining is global dining",
       "courseName": "Pepper Pot",
@@ -588,7 +597,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4046433.png",
+      "bgSrc": "assets/menus/4046433.webp",
       "bgZoom": "1",
       "focalX": "1300",
       "focalY": "600",
@@ -682,7 +691,7 @@
     {
       "id": "soup",
       "image": "assets/menus/section.png",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Horse’s Neck Drink",
       "sectionCount": "8",
       "courseDescription": "Going family style",
       "courseName": "Horse’s Neck",
@@ -728,7 +737,7 @@
     {
       "id": "soup",
       "image": "assets/menus/section.png",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Potatoes O’Brien Au Gratin",
       "sectionCount": "9",
       "courseDescription": "The customer is king",
       "courseName": "Potatoes O’Brien Au Gratin",
@@ -772,7 +781,7 @@
     },
     {
       "id": "soup",
-      "bgSrc": "assets/menus/4000017237.png",
+      "bgSrc": "assets/menus/4000017237.webp",
       "layout": "fit-height",
       "topLabel": "Rector’s, Chicago, IL, 1906",
       "course": "9 <i>of</i> 10&colon; Potatoes O’Brien Au Gratin",
@@ -790,7 +799,7 @@
     {
       "id": "soup",
       "image": "assets/menus/section.png",
-      "imageAlt": "Fish illustration",
+      "imageAlt": "Illustration of Baked Alaska",
       "class": "chapter",
       "sectionCount": "10",
       "courseDescription": "There’s always room for dessert",

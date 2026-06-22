@@ -115,7 +115,7 @@
 						<a href="https://pudding.cool/subscribe">
 							<img
 								src="{base}/assets/stickers/subscribe-footer@2x.png"
-								alt="donate sticker"
+								alt="subscribe sticker"
 							/>
 						</a>
 					</div>
